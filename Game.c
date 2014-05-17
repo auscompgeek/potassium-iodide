@@ -86,7 +86,7 @@ static vertex nextVertex(vertex current, vertex previous, char direction) {
 
 // Finds the adjacent vertexes around a vertex
 // If less than 3 adjacent, sets NULL to 2nd/3rd element
-static void adjacentVertexes(vertex current, vertex adjacents[3]); {
+static void adjacentVertexes(vertex current, vertex adjacents[3]) {
 
 }
 
@@ -101,10 +101,6 @@ Game newGame (int discipline[], int dice[]) {
 }
 
 void disposeGame (Game g) {
-
-}
-
-void throwDice (Game g, int diceScore) {
 
 }
 
@@ -124,6 +120,9 @@ int getMostARCs (Game g) {
 }
 
 // Matthew
+void throwDice (Game g, int diceScore) {
+}
+
 int getMostPublications (Game g) {
     // TODO
     return 0;
