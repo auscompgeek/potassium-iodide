@@ -166,8 +166,8 @@ int isLegalAction(Game g, action a) {
     } else if (code == OBTAIN_IP_PATENT) {
         result = FALSE;
     } else if (code == RETRAIN_STUDENTS) {
-        result = getStudents(g, player, a.disiplineFrom) <=
-            getExchangeRate(g, player, a.disiplineFrom, a.disiplineTo);
+        result = getStudents(g, player, a.disciplineFrom) <=
+            getExchangeRate(g, player, a.disciplineFrom, a.disciplineTo);
     } else {
         result = FALSE;
     }
@@ -209,22 +209,59 @@ int getCampuses(Game g, int player) {
 
 // Dominic
 void makeAction (Game g, action a) {
+    int code = a.actionCode;
+    int player = getWhoseTurn(g);
+    int rate;
+    int highestCount;
+    if (a.actionCode == BUILD_CAMPUS) {
+        // TODO
+    } else if (code == BUILD_G08) {
+        // TODO
+    } else if (code == OBTAIN_ARC) {
+        g->unis[player].arcs[g->unis[player].arcCount]
+            = arcToCoord(a.destination);
+        g->unis[player].arcCount++;
+        highestCount = g->unis[g->mostARCs - 1].arcCount;
+        if (g->unis[player].arcCount > highestCount) {
+            g->mostARCs = player;
+        }
 
+    } else if (code == OBTAIN_PUBLICATION) {
+        g->unis[player - 1].publicationCount++;
+        highestCount = 
+            g->unis[g->mostPublications - 1].publicationCount;
+        if (g->unis[player - 1].publicationCount > highestCount) {
+            g->mostPublications = player;
+        }
+
+    } else if (code == OBTAIN_IP_PATENT) {
+        g->unis[player - 1].patentCount++;
+        highestCount = g->unis[g->mostPatents - 1].patentCount;
+        if (g->unis[player - 1].patentCount > highestCount) {
+            g->mostPatents = player;
+        }
+
+    } else if (code == RETRAIN_STUDENTS) {
+        rate = getExchangeRate(g, getWhoseTurn(g), 
+            a.disciplineFrom, a.disciplineTo);
+        g->unis[player - 1].students[a.disciplineFrom] -= rate;
+        g->unis[player - 1].students[a.disciplineTo]++;
+    }
 }
 
 int getIPs (Game g, int player) {
-
+    return g->unis[player - 1].patentCount;
 }
 
 int getPublications (Game g, int player) {
-
+    return g->unis[player - 1].publicationCount;
 }
 
 int getStudents (Game g, int player, int discipline) {
-
+    return g->unis[player - 1].students[discipline];
 }
 
 int getExchangeRate (Game g, int player, 
                      int disciplineFrom, int disciplineTo) {
-
+    // TODO
 }
