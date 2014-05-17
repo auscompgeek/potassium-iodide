@@ -7,8 +7,8 @@
 
 #include "Game.h"
 
-#define NO_OF_DISCIPLINES 6
-#define NO_OF_REGIONS 19
+#define NUM_DISCIPLINES 6
+#define NUM_REGIONS 19
 #define ARC_LIMIT 68
 #define CAMPUS_LIMIT 50
 #define GO8_CAMPUS_LIMIT 8
@@ -22,7 +22,7 @@ typedef vertex ARC[2];
 typedef struct _uni {
     int publicationCount;
     int patentCount;
-    int students[NO_OF_DISCIPLINES];
+    int students[NUM_DISCIPLINES];
     int arcCount;
     int campusCount;
     int gO8Count;
@@ -33,8 +33,8 @@ typedef struct _uni {
 
 struct _game {
     int turnNumber; // Calculate whoseTurn from this
-    int regionDiscipline[NO_OF_REGIONS];
-    int regionDiceValue[NO_OF_REGIONS];
+    int regionDiscipline[NUM_REGIONS];
+    int regionDiceValue[NUM_REGIONS];
     uni unis[NUM_UNIS];
 
     int mostPublications;
