@@ -17,7 +17,7 @@ typedef struct _vertex {
     int x, y;
 } vertex;
 
-typedef vertex aRC[2];
+typedef vertex ARC[2];
 
 typedef struct _uni {
     int publicationCount;
@@ -26,7 +26,7 @@ typedef struct _uni {
     int arcCount;
     int campusCount;
     int gO8Count;
-    aRC arcs[ARC_LIMIT];
+    ARC arcs[ARC_LIMIT];
     vertex campuses[CAMPUS_LIMIT];
     vertex gO8Campuses[GO8_CAMPUS_LIMIT];
 } uni;
@@ -38,7 +38,6 @@ struct _game {
     uni unis[NUM_UNIS];
 
     int mostPublications;
-    int mostPatents;
     int mostARCs;
 }
 
@@ -46,7 +45,7 @@ struct _game {
 
 // Given the LRB path of a vertex, returns its coord value
 // Returns NULL if invalid path
-static aRC arcToCoord(path arcPath) {
+static void arcToCoord(path arcPath, ARC destinationArc) {
 
 }
 
@@ -54,7 +53,7 @@ static aRC arcToCoord(path arcPath) {
 // returns the coords of the 2 adjacent vertexes
 // Returns NULL if invalid path
 static vertex vertexToCoord(path vertexPath) {
-
+    return NULL;
 }
 
 // Given the coords of a vertex, sets vertexPath to a converted
@@ -67,7 +66,7 @@ static void vertexToPath(vertex vertexLocation, path vertexPath); {
 // Given the coords of an ARC's adjacent vertexes
 // sets vertexPath to a converted LRB path array
 // sets to NULL if invalid coords
-static void arcToPath(aRC arcCoord, path arcPath) {
+static void arcToPath(ARC arcCoord, path arcPath) {
 
 }
 
@@ -81,8 +80,8 @@ static void vertexesofRegion(int regionID, vertex vertexCoords[6]) {
 // finds the next vertex given by the single direction of the
 // LRB path
 // returns NULL if the vertex ends up in the sea
-static coord nextVertex(vertex current, vertex previous, char direction) {
-
+static vertex nextVertex(vertex current, vertex previous, char direction) {
+    return NULL;
 }
 
 // Finds the adjacent vertexes around a vertex
@@ -98,7 +97,7 @@ static void adjacentVertexes(vertex current, vertex adjacents[3]); {
 
 // Shravan
 Game newGame (int discipline[], int dice[]) {
-
+    return NULL;
 }
 
 void disposeGame (Game g) {
@@ -110,36 +109,44 @@ void throwDice (Game g, int diceScore) {
 }
 
 int getDiscipline (Game g, int regionID) {
-
+    // TODO
+    return -1;
 }
 
 int getDiceValue (Game g, int regionID) {
-
+    // TODO
+    return 0;
 }
 
 int getMostARCs (Game g) {
-
+    // TODO
+    return 0;
 }
 
 // Matthew
 int getMostPublications (Game g) {
-
+    // TODO
+    return 0;
 }
 
 int getTurnNumber (Game g) {
-
+    // TODO
+    return 0;
 }
 
 int getWhoseTurn (Game g) {
-
+    // TODO
+    return 0;
 }
 
 int getCampus(Game g, path pathToVertex) {
-
+    // TODO
+    return 0;
 }
 
 int getARC(Game g, path pathToEdge) {
-
+    // TODO
+    return 0;
 }
 
 // David
@@ -226,6 +233,9 @@ void makeAction (Game g, action a) {
             g->mostARCs = player;
         }
 
+        g->unis[player - 1].students[STUDENT_BPS]--;
+        g->unis[player - 1].students[STUDENT_BQN]--;
+
     } else if (code == OBTAIN_PUBLICATION) {
         g->unis[player - 1].publicationCount++;
         highestCount = 
@@ -234,12 +244,17 @@ void makeAction (Game g, action a) {
             g->mostPublications = player;
         }
 
+        g->unis[player - 1].students[STUDENT_MJ]--;
+        g->unis[player - 1].students[STUDENT_MTV]--;
+        g->unis[player - 1].students[STUDENT_MMONEY]--;
+
     } else if (code == OBTAIN_IP_PATENT) {
         g->unis[player - 1].patentCount++;
         highestCount = g->unis[g->mostPatents - 1].patentCount;
-        if (g->unis[player - 1].patentCount > highestCount) {
-            g->mostPatents = player;
-        }
+
+        g->unis[player - 1].students[STUDENT_MJ]--;
+        g->unis[player - 1].students[STUDENT_MTV]--;
+        g->unis[player - 1].students[STUDENT_MMONEY]--;
 
     } else if (code == RETRAIN_STUDENTS) {
         rate = getExchangeRate(g, getWhoseTurn(g), 
@@ -264,4 +279,5 @@ int getStudents (Game g, int player, int discipline) {
 int getExchangeRate (Game g, int player, 
                      int disciplineFrom, int disciplineTo) {
     // TODO
+    return 3;
 }

@@ -36,7 +36,7 @@ int main() {
     }
     assert(getTurnNumber(g) == -1);
     assert(getWhoseTurn(g) == NO_ONE);
-    assert(getTurnNumber(g) == -1)
+    assert(getTurnNumber(g) == -1);
 
     assert(getCampus(g, "RB") == CAMPUS_A);
     assert(getCampus(g, "RLRLRLRLRLL") == CAMPUS_A);
@@ -82,5 +82,4 @@ void checkStudents(
     assert(getStudents(g, player, STUDENT_MJ) == countMJ);
     assert(getStudents(g, player, STUDENT_MTV) == countMTV);
     assert(getStudents(g, player, STUDENT_MMONEY) == countMMoney);
-    return;
 }
