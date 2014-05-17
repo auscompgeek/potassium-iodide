@@ -143,24 +143,68 @@ int getARC(Game g, path pathToEdge) {
 }
 
 // David
-int isLegalAction (Game g, action a) {
+int isLegalAction(Game g, action a) {
+    int code = a.actionCode;
+    int player = g->playerTurn;
+    int result;
 
+    // no actions are valid in Terra Nullius
+    if (getTurnNumber(g) == -1) {
+        result = FALSE;
+    } else if (code == PASS) {
+        result = TRUE;
+    } else if (code == BUILD_CAMPUS) {
+        // TODO
+    } else if (code == BUILD_G08) {
+        // TODO
+    } else if (code == OBTAIN_ARC) {
+        // TODO
+    } else if (code == START_SPINOFF) {
+        // TODO
+    } else if (code == OBTAIN_PUBLICATION) {
+        result = FALSE;
+    } else if (code == OBTAIN_IP_PATENT) {
+        result = FALSE;
+    } else if (code == RETRAIN_STUDENTS) {
+        result = getStudents(g, player, a.disiplineFrom) <=
+            getExchangeRate(g, player, a.disiplineFrom, a.disiplineTo);
+    } else {
+        result = FALSE;
+    }
+    return result;
 }
 
-int getKPIpoints (Game g, int player) {
+int getKPIpoints(Game g, int player) {
+    // Should we keep a rolling count of KPI points, neglecting the
+    // most ARCs and publications prestige awards? Would be easier.
+    //int points = g->unis[player - 1].kpiPoints;
 
+    int points =
+        10 * getCampuses(g, player) +
+        20 * getGO8s(g, player) +
+        2 * getARCs(g, player) +
+        10 * getIPs(g, player);
+
+    if (getMostARCs(g) == player) {
+        points += 10;
+    }
+    if (getMostPublications(g) == player) {
+        points += 10;
+    }
+
+    return points;
 }
 
-int getARCs (Game g, int player) {
-
+int getARCs(Game g, int player) {
+    return g->unis[player - 1].arcCount;
 }
 
-int getGO8s (Game g, int player) {
-
+int getGO8s(Game g, int player) {
+    return g->unis[player - 1].g08Count;
 }
 
-int getCampuses (Game g, int player) {
-
+int getCampuses(Game g, int player) {
+    return g->unis[player - 1].campusCount;
 }
 
 // Dominic
