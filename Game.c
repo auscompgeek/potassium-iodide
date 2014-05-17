@@ -97,11 +97,12 @@ static void adjacentVertexes(vertex current, vertex adjacents[3]) {
 
 // Shravan
 Game newGame (int discipline[], int dice[]) {
+    // TODO
     return NULL;
 }
 
 void disposeGame (Game g) {
-
+    // TODO
 }
 
 int getDiscipline (Game g, int regionID) {
@@ -121,6 +122,7 @@ int getMostARCs (Game g) {
 
 // Matthew
 void throwDice (Game g, int diceScore) {
+    // TODO
 }
 
 int getMostPublications (Game g) {
