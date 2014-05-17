@@ -26,7 +26,7 @@ void checkStudents( Game g, int player,
 int main() {
     int disciplines[] = DISCIPLINES;
     int diceValues[] = DICE_VALUES;
-    action gameAction;
+    //action gameAction;
     Game g = newGame(disciplines, diceValues);
 
     int id = 0;
@@ -40,8 +40,8 @@ int main() {
 
     assert(getCampus(g, "RB") == CAMPUS_A);
     assert(getCampus(g, "RLRLRLRLRLL") == CAMPUS_A);
-    assert(getCampus(g, "RRLRL" == CAMPUS_B));
-    assert(getCampus(g, "RRLRLLRLRL" == CAMPUS_C));
+    assert(getCampus(g, "RRLRL") == CAMPUS_B);
+    assert(getCampus(g, "RRLRLLRLRL") == CAMPUS_C);
     assert(getCampus(g, "LRLRL") == CAMPUS_C);
     assert(getCampus(g, "LRLRLRRLRL") == CAMPUS_B);
 

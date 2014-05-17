@@ -5,6 +5,7 @@
 // 17/05/2014
 // ADT functions for KI
 
+#include <stdlib.h>
 #include "Game.h"
 
 #define NUM_DISCIPLINES 6
@@ -39,7 +40,7 @@ struct _game {
 
     int mostPublications;
     int mostARCs;
-}
+};
 
 // MAP FUNCTIONS: use these to get info on the map
 
@@ -53,13 +54,14 @@ static void arcToCoord(path arcPath, ARC destinationArc) {
 // returns the coords of the 2 adjacent vertexes
 // Returns NULL if invalid path
 static vertex vertexToCoord(path vertexPath) {
-    return NULL;
+    vertex v;
+    return v;
 }
 
 // Given the coords of a vertex, sets vertexPath to a converted
 // LRB path char array
 // sets to NULL if invalid coords
-static void vertexToPath(vertex vertexLocation, path vertexPath); {
+static void vertexToPath(vertex vertexLocation, path vertexPath) {
 
 }
 
@@ -81,7 +83,8 @@ static void vertexesofRegion(int regionID, vertex vertexCoords[6]) {
 // LRB path
 // returns NULL if the vertex ends up in the sea
 static vertex nextVertex(vertex current, vertex previous, char direction) {
-    return NULL;
+    vertex v;
+    return v;
 }
 
 // Finds the adjacent vertexes around a vertex
@@ -163,7 +166,7 @@ int isLegalAction(Game g, action a) {
         result = TRUE;
     } else if (code == BUILD_CAMPUS) {
         // TODO
-    } else if (code == BUILD_G08) {
+    } else if (code == BUILD_GO8) {
         // TODO
     } else if (code == OBTAIN_ARC) {
         // TODO
@@ -208,7 +211,7 @@ int getARCs(Game g, int player) {
 }
 
 int getGO8s(Game g, int player) {
-    return g->unis[player - 1].g08Count;
+    return g->unis[player - 1].gO8Count;
 }
 
 int getCampuses(Game g, int player) {
@@ -220,14 +223,17 @@ void makeAction (Game g, action a) {
     int code = a.actionCode;
     int player = getWhoseTurn(g);
     int rate;
+    int currentCount;
     int highestCount;
     if (a.actionCode == BUILD_CAMPUS) {
         // TODO
-    } else if (code == BUILD_G08) {
+    } else if (code == BUILD_GO8) {
         // TODO
     } else if (code == OBTAIN_ARC) {
-        g->unis[player].arcs[g->unis[player].arcCount]
-            = arcToCoord(a.destination);
+        ARC obtainedArc;
+        arcToCoord(a.destination, obtainedArc);
+        currentCount = g->unis[player].arcCount;
+        g->unis[player].arcs[currentCount] = obtainedArc;
         g->unis[player].arcCount++;
         highestCount = g->unis[g->mostARCs - 1].arcCount;
         if (g->unis[player].arcCount > highestCount) {
@@ -251,7 +257,6 @@ void makeAction (Game g, action a) {
 
     } else if (code == OBTAIN_IP_PATENT) {
         g->unis[player - 1].patentCount++;
-        highestCount = g->unis[g->mostPatents - 1].patentCount;
 
         g->unis[player - 1].students[STUDENT_MJ]--;
         g->unis[player - 1].students[STUDENT_MTV]--;

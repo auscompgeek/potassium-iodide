@@ -1,0 +1,1 @@
+gcc -Wall -Werror -O -std=c99 -o testGame testGame.c Game.c
