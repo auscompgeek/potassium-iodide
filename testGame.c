@@ -142,6 +142,9 @@ void buildGO8(Game g, path location) {
 void obtainArc(Game g, path location) {
     action gameAction;
     int i;
+    int numARCs = getARCs(g, getWhoseTurn(g));
+
+    assert(getARC(g, location) == NO_ONE);
     gameAction.actionCode = OBTAIN_ARC;
     i = 0;
     while (location[i] != END_PATH) {
@@ -149,25 +152,49 @@ void obtainArc(Game g, path location) {
         i++;
     }
     gameAction.destination[i] = END_PATH;
+    assert(isLegalAction(g, gameAction) == TRUE);
     makeAction(g, gameAction);
+
+    assert(getARC(g, location) == getWhoseTurn(g));
+    assert(getARCs(g, getWhoseTurn(g)) == numARCs + 1);
 }
 
 void startSpinoff(Game g, int obtainPatent) {
     action gameAction;
+    int count;
+
+    gameAction.actionCode = START_SPINOFF;
+    assert(isLegalAction(g, gameAction) == TRUE);
     if (obtainPatent == TRUE) {
+        count = getIPs(g, getWhoseTurn(g));
         gameAction.actionCode = OBTAIN_IP_PATENT;
+        makeAction(g, gameAction);
+        assert(getIPs(g, getWhoseTurn(g)) == count + 1);
     } else {
+        count = getPublications(g, getWhoseTurn(g));
         gameAction.actionCode = OBTAIN_PUBLICATION;
+        makeAction(g, gameAction);
+        assert(getPublications(g, getWhoseTurn(g)) == count + 1);
     }
-    makeAction(g, gameAction);
 }
 
 void retrain(Game g, int disciplineFrom, int disciplineTo) {
+    int fromCount = getStudents(g, getWhoseTurn(g), disciplineFrom);
+    int toCount = getStudents(g, getWhoseTurn(g), disciplineTo);
+    assert(fromCount >= getExchangeRate(g, getWhoseTurn(g), 
+        disciplineFrom, disciplineTo));
+
     action gameAction;
     gameAction.actionCode = RETRAIN_STUDENTS;
     gameAction.disciplineFrom = disciplineFrom;
     gameAction.disciplineTo = disciplineTo;
+    assert(isLegalAction(g, gameAction) == TRUE);
     makeAction(g, gameAction);
+    assert(getStudents(g, getWhoseTurn(g), disciplineFrom) == 
+        fromCount - getExchangeRate(g, getWhoseTurn(g), 
+        disciplineFrom, disciplineTo));
+    assert(getStudents(g, getWhoseTurn(g), disciplineTo) ==
+        toCount + 1);
 }
 
 void checkStudents(
