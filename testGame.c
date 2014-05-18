@@ -17,6 +17,16 @@
                 STUDENT_MMONEY, STUDENT_MTV, STUDENT_BQN, STUDENT_BPS }
 #define DICE_VALUES {9, 10, 8, 12, 6, 5, 3, 11, 3, \
                 11, 4, 6, 4, 7, 9, 2, 8, 10, 5}
+#define END_PATH '\0'
+
+void checkStart(Game g);
+
+void pass(Game g);
+void buildCampus(Game g, path location);
+void buildGO8(Game g, path location);
+void obtainArc(Game g, path location);
+void startSpinoff(Game g, int obtainPatent);
+void retrain(Game g, int disciplineFrom, int disciplineTo);
 
 // Checks students for entire uni
 void checkStudents( Game g, int player,
@@ -26,7 +36,6 @@ void checkStudents( Game g, int player,
 int main() {
     int disciplines[] = DISCIPLINES;
     int diceValues[] = DICE_VALUES;
-    //action gameAction;
     Game g = newGame(disciplines, diceValues);
 
     int id = 0;
@@ -34,6 +43,17 @@ int main() {
         assert(getDiscipline(g, id) == disciplines[id]);
         assert(getDiceValue(g, id) == diceValues[id]);
     }
+    checkStart(g);
+
+    // Insert turns here
+
+    // Dispose game
+    disposeGame(g);
+    printf("All Tests Passed\n");
+    return EXIT_SUCCESS;
+}
+
+void checkStart(Game g) {
     assert(getTurnNumber(g) == -1);
     assert(getWhoseTurn(g) == NO_ONE);
     assert(getTurnNumber(g) == -1);
@@ -63,13 +83,69 @@ int main() {
     checkStudents(g, UNI_A, 0, 3, 3, 1, 1, 1);
     checkStudents(g, UNI_A, 0, 3, 3, 1, 1, 1);
     checkStudents(g, UNI_A, 0, 3, 3, 1, 1, 1);
+}
 
-    // Insert turns here
+void pass(Game g) {
+    action gameAction;
+    gameAction.actionCode = PASS;
+    makeAction(g, gameAction);
+}
 
-    // Dispose game
-    disposeGame(g);
-    printf("All Tests Passed\n");
-    return EXIT_SUCCESS;
+void buildCampus(Game g, path location) {
+    action gameAction;
+    int i;
+    gameAction.actionCode = BUILD_CAMPUS;
+    i = 0;
+    while (location[i] != END_PATH) {
+        gameAction.destination[i] = location[i];
+        i++;
+    }
+    gameAction.destination[i] = END_PATH;
+    makeAction(g, gameAction);
+}
+
+void buildGO8(Game g, path location) {
+    action gameAction;
+    int i;
+    gameAction.actionCode = BUILD_GO8;
+    i = 0;
+    while (location[i] != END_PATH) {
+        gameAction.destination[i] = location[i];
+        i++;
+    }
+    gameAction.destination[i] = END_PATH;
+    makeAction(g, gameAction);
+}
+
+void obtainArc(Game g, path location) {
+    action gameAction;
+    int i;
+    gameAction.actionCode = OBTAIN_ARC;
+    i = 0;
+    while (location[i] != END_PATH) {
+        gameAction.destination[i] = location[i];
+        i++;
+    }
+    gameAction.destination[i] = END_PATH;
+    makeAction(g, gameAction);
+}
+
+void startSpinoff(Game g, int obtainPatent) {
+    action gameAction;
+    if (obtainPatent == TRUE) {
+        gameAction.actionCode = OBTAIN_IP_PATENT;
+    } else {
+        gameAction.actionCode = OBTAIN_PUBLICATION;
+    }
+    makeAction(g, gameAction);
+}
+
+void retrain(Game g, int disciplineFrom, int disciplineTo) {
+    action gameAction;
+    gameAction.actionCode = RETRAIN_STUDENTS;
+    gameAction.disciplineFrom = disciplineFrom;
+    gameAction.disciplineTo = disciplineTo;
+    makeAction(g, gameAction);
 }
 
 void checkStudents(
