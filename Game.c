@@ -225,48 +225,56 @@ void makeAction (Game g, action a) {
     int rate;
     int currentCount;
     int highestCount;
-    if (a.actionCode == BUILD_CAMPUS) {
+    uni *playerUni = &(g->unis[player - 1]);
+    ARC obtainedArc;
+
+    if (code == BUILD_CAMPUS) {
         // TODO
     } else if (code == BUILD_GO8) {
         // TODO
     } else if (code == OBTAIN_ARC) {
-        ARC obtainedArc;
         arcToCoord(a.destination, obtainedArc);
-        currentCount = g->unis[player].arcCount;
-        g->unis[player].arcs[currentCount] = obtainedArc;
-        g->unis[player].arcCount++;
-        highestCount = g->unis[g->mostARCs - 1].arcCount;
-        if (g->unis[player].arcCount > highestCount) {
+        currentCount = playerUni->arcCount;
+        playerUni->arcs[currentCount] = obtainedArc;
+        playerUni->arcCount++;
+        if (g->mostARCs == NO_ONE) {
             g->mostARCs = player;
+        } else {
+            highestCount = g->unis[g->mostARCs - 1].arcCount;
+            if (currentCount+1 > highestCount) {
+                g->mostARCs = player;
+            }
         }
 
-        g->unis[player - 1].students[STUDENT_BPS]--;
-        g->unis[player - 1].students[STUDENT_BQN]--;
+        playerUni->students[STUDENT_BPS]--;
+        playerUni->students[STUDENT_BQN]--;
 
     } else if (code == OBTAIN_PUBLICATION) {
-        g->unis[player - 1].publicationCount++;
+        playerUni->publicationCount++;
         highestCount = 
             g->unis[g->mostPublications - 1].publicationCount;
-        if (g->unis[player - 1].publicationCount > highestCount) {
+        if (g->mostPublications == NO_ONE) {
+            g->mostPublications = player;
+        } else if (playerUni->publicationCount > highestCount) {
             g->mostPublications = player;
         }
 
-        g->unis[player - 1].students[STUDENT_MJ]--;
-        g->unis[player - 1].students[STUDENT_MTV]--;
-        g->unis[player - 1].students[STUDENT_MMONEY]--;
+        playerUni->students[STUDENT_MJ]--;
+        playerUni->students[STUDENT_MTV]--;
+        playerUni->students[STUDENT_MMONEY]--;
 
     } else if (code == OBTAIN_IP_PATENT) {
-        g->unis[player - 1].patentCount++;
+        playerUni->patentCount++;
 
-        g->unis[player - 1].students[STUDENT_MJ]--;
-        g->unis[player - 1].students[STUDENT_MTV]--;
-        g->unis[player - 1].students[STUDENT_MMONEY]--;
+        playerUni->students[STUDENT_MJ]--;
+        playerUni->students[STUDENT_MTV]--;
+        playerUni->students[STUDENT_MMONEY]--;
 
     } else if (code == RETRAIN_STUDENTS) {
-        rate = getExchangeRate(g, getWhoseTurn(g), 
+        rate = getExchangeRate(g, player, 
             a.disciplineFrom, a.disciplineTo);
-        g->unis[player - 1].students[a.disciplineFrom] -= rate;
-        g->unis[player - 1].students[a.disciplineTo]++;
+        playerUni->students[a.disciplineFrom] -= rate;
+        playerUni->students[a.disciplineTo]++;
     }
 }
 
