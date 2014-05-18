@@ -88,12 +88,17 @@ void checkStart(Game g) {
 void pass(Game g) {
     action gameAction;
     gameAction.actionCode = PASS;
+    assert(isLegalAction(g, gameAction) == TRUE);
     makeAction(g, gameAction);
 }
 
 void buildCampus(Game g, path location) {
     action gameAction;
     int i;
+    int numCampuses = getCampuses(g, getWhoseTurn(g));
+    int kpiPoints = getKPIpoints(g, gameAction);
+
+    assert(getCampus(g, location) == VACANT_VERTEX);
     gameAction.actionCode = BUILD_CAMPUS;
     i = 0;
     while (location[i] != END_PATH) {
@@ -101,12 +106,22 @@ void buildCampus(Game g, path location) {
         i++;
     }
     gameAction.destination[i] = END_PATH;
+    assert(isLegalAction(g, gameAction) == TRUE);
     makeAction(g, gameAction);
+
+    assert(getCampuses(g, getWhoseTurn(g)) == numCampuses + 1);
+    assert(getCampus(g, location) == getWhoseTurn(g));
+    assert(getKPIpoints(g, getWhoseTurn(g)) == kpiPoints + 10);
 }
 
 void buildGO8(Game g, path location) {
     action gameAction;
     int i;
+    int numNormalCampuses = getCampuses(g, getWhoseTurn(g));
+    int numGO8 = getGO8s(g, getWhoseTurn(g));
+    int kpiPoints = getKPIpoints(g, gameAction);
+
+    assert(getCampus(g, location) == getWhoseTurn());
     gameAction.actionCode = BUILD_GO8;
     i = 0;
     while (location[i] != END_PATH) {
@@ -114,7 +129,14 @@ void buildGO8(Game g, path location) {
         i++;
     }
     gameAction.destination[i] = END_PATH;
+    assert(isLegalAction(g, gameAction) == TRUE);
     makeAction(g, gameAction);
+
+    assert(getCampuses(g, getWhoseTurn(g)) == numNormalCampuses - 1);
+    assert(getGO8s(g, getWhoseTurn(g) == numGO8 + 1));
+    // GO8 campuse code = normal code + 3
+    assert(getCampus(g, location) == getWhoseTurn(g) + 3);
+    assert(getKPIpoints(g, getWhoseTurn(g)) == kpiPoints + 10);
 }
 
 void obtainArc(Game g, path location) {
