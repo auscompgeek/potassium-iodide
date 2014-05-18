@@ -156,7 +156,7 @@ int getARC(Game g, path pathToEdge) {
 // David
 int isLegalAction(Game g, action a) {
     int code = a.actionCode;
-    int player = g->playerTurn;
+    int player = getWhoseTurn(g);
     int result;
 
     // no actions are valid in Terra Nullius
@@ -235,7 +235,9 @@ void makeAction (Game g, action a) {
     } else if (code == OBTAIN_ARC) {
         arcToCoord(a.destination, obtainedArc);
         currentCount = playerUni->arcCount;
-        playerUni->arcs[currentCount] = obtainedArc;
+        //playerUni->arcs[currentCount] = obtainedArc;
+        playerUni->arcs[currentCount][0] = obtainedArc[0];
+        playerUni->arcs[currentCount][1] = obtainedArc[1];
         playerUni->arcCount++;
         if (g->mostARCs == NO_ONE) {
             g->mostARCs = player;
