@@ -96,7 +96,7 @@ void buildCampus(Game g, path location) {
     action gameAction;
     int i;
     int numCampuses = getCampuses(g, getWhoseTurn(g));
-    int kpiPoints = getKPIpoints(g, gameAction);
+    int kpiPoints = getKPIpoints(g, getWhoseTurn(g));
 
     assert(getCampus(g, location) == VACANT_VERTEX);
     gameAction.actionCode = BUILD_CAMPUS;
@@ -119,9 +119,9 @@ void buildGO8(Game g, path location) {
     int i;
     int numNormalCampuses = getCampuses(g, getWhoseTurn(g));
     int numGO8 = getGO8s(g, getWhoseTurn(g));
-    int kpiPoints = getKPIpoints(g, gameAction);
+    int kpiPoints = getKPIpoints(g, getWhoseTurn(g));
 
-    assert(getCampus(g, location) == getWhoseTurn());
+    assert(getCampus(g, location) == getWhoseTurn(g));
     gameAction.actionCode = BUILD_GO8;
     i = 0;
     while (location[i] != END_PATH) {
