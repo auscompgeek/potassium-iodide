@@ -20,6 +20,8 @@
 #define END_PATH '\0'
 
 void checkStart(Game g);
+void playTurns(Game g);
+void nextTurn(Game g, int *whoseTurn, int *turnNum, int diceValue);
 
 void pass(Game g);
 void buildCampus(Game g, path location);
@@ -28,7 +30,6 @@ void obtainArc(Game g, path location);
 void startSpinoff(Game g, int obtainPatent);
 void retrain(Game g, int disciplineFrom, int disciplineTo);
 
-// Checks students for entire uni
 void checkStudents( Game g, int player,
     int countThD, int countBPS, int countBQn,
     int countMJ, int countMTV, int countMMoney);
@@ -44,8 +45,7 @@ int main() {
         assert(getDiceValue(g, id) == diceValues[id]);
     }
     checkStart(g);
-
-    // Insert turns here
+    playTurns(g);
 
     // Dispose game
     disposeGame(g);
@@ -83,6 +83,76 @@ void checkStart(Game g) {
     checkStudents(g, UNI_A, 0, 3, 3, 1, 1, 1);
     checkStudents(g, UNI_A, 0, 3, 3, 1, 1, 1);
     checkStudents(g, UNI_A, 0, 3, 3, 1, 1, 1);
+}
+
+void playTurns(Game g) {
+    int whoseTurn = NO_ONE;
+    int turnNum = -1;
+
+    // 0 UNI_A
+    nextTurn(g, &whoseTurn, &turnNum, 5);
+    checkStudents(g, UNI_B, 0, 4, 3, 1, 1, 1);
+    obtainArc(g, ""); // TODO
+    obtainArc(g, ""); // TODO
+    checkStudents(g, UNI_A, 0, 1, 1, 1, 1, 1);
+    buildCampus(g, ""); // TODO
+
+    nextTurn(g, &whoseTurn, &turnNum, 2); // 1 UNI_B
+    obtainArc(g, ""); // TODO
+    obtainArc(g, ""); // TODO
+    buildCampus(g, ""); // TODO
+
+    nextTurn(g, &whoseTurn, &turnNum, 5); // 2 UNI_C
+    obtainArc(g, ""); // TODO
+    obtainArc(g, ""); // TODO
+    buildCampus(g, ""); // TODO
+
+    nextTurn(g, &whoseTurn, &turnNum, 4); // 3 UNI_A
+
+    nextTurn(g, &whoseTurn, &turnNum, 5); // 4 UNI_B
+
+    nextTurn(g, &whoseTurn, &turnNum, 9); // 5 UNI_C
+
+    nextTurn(g, &whoseTurn, &turnNum, 7); // 6 UNI_A
+
+    nextTurn(g, &whoseTurn, &turnNum, 8); // 7 UNI_B
+
+    nextTurn(g, &whoseTurn, &turnNum, 9); // 8 UNI_C
+
+    nextTurn(g, &whoseTurn, &turnNum, 6); // 9 UNI_A
+
+    nextTurn(g, &whoseTurn, &turnNum, 7); // 10 UNI_B
+
+    nextTurn(g, &whoseTurn, &turnNum, 9); // 11 UNI_C
+
+    nextTurn(g, &whoseTurn, &turnNum, 5); // 12 UNI_A
+
+    nextTurn(g, &whoseTurn, &turnNum, 10); // 13 UNI_B
+    assert(getExchangeRate(g, UNI_B, STUDENT_BQN, STUDENT_MMONEY) == 2);
+    retrain(g, STUDENT_BQN, STUDENT_MMONEY);
+    assert(getExchangeRate(g, UNI_B, STUDENT_BPS, STUDENT_MMONEY) == 3);
+    retrain(g, STUDENT_BPS, STUDENT_MMONEY);
+    checkStudents(g, UNI_B, 1, 1, 2, 0, 0, 2);
+
+    nextTurn(g, &whoseTurn, &turnNum, 11); // 14 UNI_C
+
+    nextTurn(g, &whoseTurn, &turnNum, 8); // 15 UNI_A
+
+    nextTurn(g, &whoseTurn, &turnNum, 9); // 16 UNI_B
+
+    // TODO turn 
+}
+
+void nextTurn(Game g, int *whoseTurn, int *turnNum, int diceValue) {
+    pass(g);
+    *whoseTurn = *whoseTurn + 1;
+    if (*whoseTurn > UNI_C) {
+        *whoseTurn = UNI_A;
+    }
+    *turnNum = *turnNum + 1;
+    throwDice(g, diceValue);
+    assert(getWhoseTurn(g) == *whoseTurn);
+    assert(getTurnNumber(g) == *turnNum);
 }
 
 void pass(Game g) {
