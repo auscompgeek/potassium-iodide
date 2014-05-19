@@ -92,20 +92,20 @@ void playTurns(Game g) {
     // 0 UNI_A
     nextTurn(g, &whoseTurn, &turnNum, 5);
     checkStudents(g, UNI_B, 0, 4, 3, 1, 1, 1);
-    obtainArc(g, ""); // TODO
-    obtainArc(g, ""); // TODO
+    obtainArc(g, "LRRLRLRLRLR");
+    obtainArc(g, "LRRLRLRLRL");
     checkStudents(g, UNI_A, 0, 1, 1, 1, 1, 1);
-    buildCampus(g, ""); // TODO
+    buildCampus(g, "LRRLRLRLR");
 
     nextTurn(g, &whoseTurn, &turnNum, 2); // 1 UNI_B
-    obtainArc(g, ""); // TODO
-    obtainArc(g, ""); // TODO
-    buildCampus(g, ""); // TODO
+    obtainArc(g, "LRLRLRRLRL");
+    obtainArc(g, "LRLRLRRLR");
+    buildCampus(g, "LRLRLRRL");
 
     nextTurn(g, &whoseTurn, &turnNum, 5); // 2 UNI_C
-    obtainArc(g, ""); // TODO
-    obtainArc(g, ""); // TODO
-    buildCampus(g, ""); // TODO
+    obtainArc(g, "LRLRLRRLRL");
+    obtainArc(g, "LRLRLRRLR"); 
+    buildCampus(g, "LRLRLRRL"); 
 
     nextTurn(g, &whoseTurn, &turnNum, 4); // 3 UNI_A
 
