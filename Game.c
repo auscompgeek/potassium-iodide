@@ -82,7 +82,9 @@ static void vertexesofRegion(int regionID, vertex vertexCoords[6]) {
 // finds the next vertex given by the single direction of the
 // LRB path
 // returns NULL if the vertex ends up in the sea
-static vertex nextVertex(vertex current, vertex previous, char direction) {
+static vertex nextVertex(
+    vertex current, vertex previous, char direction) {
+
     vertex v;
     return v;
 }
@@ -95,6 +97,20 @@ static void adjacentVertexes(vertex current, vertex adjacents[3]) {
 
 // INTERNAL FUNCTIONS: label as static if you decide to implement 
 // internal functions to use for the ADT functions.
+static int compareVertex(vertex vertex1, vertex vertex2) {
+    return (vertex1.x == vertex2.x) && (vertex1.y == vertex2.y);
+}
+
+static int vertexInPlayer(uni *playerUni, vertex campus) {
+    int i = 0;
+    int result = FALSE;
+    while (i < playerUni->campusCount || result == TRUE) {
+        if (compareVertex(playerUni->campuses[i], campus) == TRUE) {
+            result = TRUE;
+        }
+    }
+    return result;
+}
 
 // ADT FUNCTIONS
 
@@ -193,6 +209,8 @@ int isLegalAction(Game g, action a) {
     } else if (code == OBTAIN_IP_PATENT) {
         result = FALSE;
     } else if (code == RETRAIN_STUDENTS) {
+        // TODO check that the codes aren't out of range, 
+        // no ThD students
         result = getStudents(g, player, a.disciplineFrom) <=
             getExchangeRate(g, player, a.disciplineFrom, a.disciplineTo);
     } else {
@@ -310,6 +328,41 @@ int getStudents (Game g, int player, int discipline) {
 
 int getExchangeRate (Game g, int player, 
                      int disciplineFrom, int disciplineTo) {
-    // TODO
-    return 3;
+    uni *playerUni = &(g->unis[player - 1]);
+    int rate;
+    vertex retraincenter1;
+    vertex retraincenter2;
+    if (disciplineFrom == STUDENT_BPS) { // (1,2) (1,1)
+        retraincenter1.x = 1;
+        retraincenter1.y = 2;
+        retraincenter2.x = 1;
+        retraincenter2.y = 1;
+    } else if (disciplineFrom == STUDENT_BQN) {
+        retraincenter1.x = 5;
+        retraincenter1.y = 5;
+        retraincenter2.x = 5;
+        retraincenter2.y = 4;
+    } else if (disciplineFrom == STUDENT_MJ) {
+        retraincenter1.x = 4;
+        retraincenter1.y = 2;
+        retraincenter2.x = 5;
+        retraincenter2.y = 2;
+    } else if (disciplineFrom == STUDENT_MTV) {
+        retraincenter1.x = 1;
+        retraincenter1.y = 9;
+        retraincenter2.x = 2;
+        retraincenter2.y = 9;
+    } else { // disciplineFrom == STUDENT_MMONEY
+        retraincenter1.x = 3;
+        retraincenter1.y = 9;
+        retraincenter2.x = 4;
+        retraincenter2.y = 9;
+    }
+    if (vertexInPlayer(playerUni, retraincenter1) == TRUE ||
+        vertexInPlayer(playerUni, retraincenter2) == TRUE) {
+        rate = 2;
+    } else {
+        rate = 3;
+    }
+    return rate;
 }

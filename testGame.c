@@ -96,49 +96,62 @@ void playTurns(Game g) {
     obtainArc(g, "LRRLRLRLRL");
     checkStudents(g, UNI_A, 0, 1, 1, 1, 1, 1);
     buildCampus(g, "LRRLRLRLR");
-
-    nextTurn(g, &whoseTurn, &turnNum, 2); // 1 UNI_B
+    // 1 UNI_B
+    nextTurn(g, &whoseTurn, &turnNum, 2);
     obtainArc(g, "LRLRLRRLRL");
     obtainArc(g, "LRLRLRRLR");
     buildCampus(g, "LRLRLRRL");
+    // 2 UNI_C
+    nextTurn(g, &whoseTurn, &turnNum, 5);
+    obtainArc(g, "RRLRLLRLRLL");
+    obtainArc(g, "RRLRLLRLRLLL"); 
+    buildCampus(g, "RRLRLLRLRLLL"); 
 
-    nextTurn(g, &whoseTurn, &turnNum, 5); // 2 UNI_C
-    obtainArc(g, "LRLRLRRLRL");
-    obtainArc(g, "LRLRLRRLR"); 
-    buildCampus(g, "LRLRLRRL"); 
+    // 3 UNI_A
+    nextTurn(g, &whoseTurn, &turnNum, 4); 
 
-    nextTurn(g, &whoseTurn, &turnNum, 4); // 3 UNI_A
-
-    nextTurn(g, &whoseTurn, &turnNum, 5); // 4 UNI_B
-
-    nextTurn(g, &whoseTurn, &turnNum, 9); // 5 UNI_C
-
-    nextTurn(g, &whoseTurn, &turnNum, 7); // 6 UNI_A
-
-    nextTurn(g, &whoseTurn, &turnNum, 8); // 7 UNI_B
-
-    nextTurn(g, &whoseTurn, &turnNum, 9); // 8 UNI_C
-
-    nextTurn(g, &whoseTurn, &turnNum, 6); // 9 UNI_A
-
-    nextTurn(g, &whoseTurn, &turnNum, 7); // 10 UNI_B
-
-    nextTurn(g, &whoseTurn, &turnNum, 9); // 11 UNI_C
-
-    nextTurn(g, &whoseTurn, &turnNum, 5); // 12 UNI_A
-
-    nextTurn(g, &whoseTurn, &turnNum, 10); // 13 UNI_B
+    // 4 UNI_B
+    nextTurn(g, &whoseTurn, &turnNum, 5);
+    
+    // 5 UNI_C
+    nextTurn(g, &whoseTurn, &turnNum, 9);
+    
+    // 6 UNI_A
+    nextTurn(g, &whoseTurn, &turnNum, 7);
+    
+    // 7 UNI_B
+    nextTurn(g, &whoseTurn, &turnNum, 8);
+    
+    // 8 UNI_C
+    nextTurn(g, &whoseTurn, &turnNum, 9);
+    
+    // 9 UNI_A
+    nextTurn(g, &whoseTurn, &turnNum, 6);
+    
+    // 10 UNI_B
+    nextTurn(g, &whoseTurn, &turnNum, 7);
+    
+    // 11 UNI_C
+    nextTurn(g, &whoseTurn, &turnNum, 9);
+    
+    // 12 UNI_A
+    nextTurn(g, &whoseTurn, &turnNum, 5);
+    
+    // 13 UNI_B
+    nextTurn(g, &whoseTurn, &turnNum, 10);
     assert(getExchangeRate(g, UNI_B, STUDENT_BQN, STUDENT_MMONEY) == 2);
     retrain(g, STUDENT_BQN, STUDENT_MMONEY);
     assert(getExchangeRate(g, UNI_B, STUDENT_BPS, STUDENT_MMONEY) == 3);
     retrain(g, STUDENT_BPS, STUDENT_MMONEY);
     checkStudents(g, UNI_B, 1, 1, 2, 0, 0, 2);
 
-    nextTurn(g, &whoseTurn, &turnNum, 11); // 14 UNI_C
+    // 14 UNI_C
+    nextTurn(g, &whoseTurn, &turnNum, 11);
 
-    nextTurn(g, &whoseTurn, &turnNum, 8); // 15 UNI_A
+    // 15 UNI_A
+    nextTurn(g, &whoseTurn, &turnNum, 8);
 
-    nextTurn(g, &whoseTurn, &turnNum, 9); // 16 UNI_B
+    nextTurn(g, &whoseTurn, &turnNum, 9);
 
     // TODO turn 
 }
