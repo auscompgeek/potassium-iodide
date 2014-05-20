@@ -134,17 +134,33 @@ int getMostPublications (Game g) {
 }
 
 int getTurnNumber (Game g) {
-    // TODO
-    return 0;
+    // WIP
+    return turnNumber;
 }
 
 int getWhoseTurn (Game g) {
-    // TODO
-    return 0;
+    // WIP
+    if (g->turnNumber == -1){
+        currentTurn = -1;
+    }else if (g->turnNumber > 0){
+        if ((getTurnNumber (g) % 3) == 0){
+            currentTurn = 0;
+        }
+        if ((getTurnNumber (g) % 2) == 0) || 
+           ((getTurnNumber (g) % 2) == 5){
+            currentTurn = 1;
+        }
+        if ((getTurnNumber (g) % 3) == 0){
+            currentTurn = 2;
+        }
+
+    
+    }
+    return currentTurn;
 }
 
 int getCampus(Game g, path pathToVertex) {
-    // TODO
+    while 
     return 0;
 }
 
