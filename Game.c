@@ -104,10 +104,11 @@ static int compareVertex(vertex vertex1, vertex vertex2) {
 static int vertexInPlayer(uni *playerUni, vertex campus) {
     int i = 0;
     int result = FALSE;
-    while (i < playerUni->campusCount || result == TRUE) {
-        if (compareVertex(playerUni->campuses[i], campus) == TRUE) {
+    while (i < playerUni->campusCount && !result) {
+        if (compareVertex(playerUni->campuses[i], campus)) {
             result = TRUE;
         }
+        i++;
     }
     return result;
 }
@@ -269,17 +270,13 @@ void makeAction (Game g, action a) {
     } else if (code == OBTAIN_ARC) {
         arcToCoord(a.destination, obtainedArc);
         currentCount = playerUni->arcCount;
-        //playerUni->arcs[currentCount] = obtainedArc;
         playerUni->arcs[currentCount][0] = obtainedArc[0];
         playerUni->arcs[currentCount][1] = obtainedArc[1];
         playerUni->arcCount++;
-        if (g->mostARCs == NO_ONE) {
+
+        highestCount = g->unis[g->mostARCs - 1].arcCount;
+        if (g->mostARCs == NO_ONE || currentCount + 1 > highestCount) {
             g->mostARCs = player;
-        } else {
-            highestCount = g->unis[g->mostARCs - 1].arcCount;
-            if (currentCount+1 > highestCount) {
-                g->mostARCs = player;
-            }
         }
 
         playerUni->students[STUDENT_BPS]--;
@@ -289,9 +286,8 @@ void makeAction (Game g, action a) {
         playerUni->publicationCount++;
         highestCount = 
             g->unis[g->mostPublications - 1].publicationCount;
-        if (g->mostPublications == NO_ONE) {
-            g->mostPublications = player;
-        } else if (playerUni->publicationCount > highestCount) {
+        if (g->mostPublications == NO_ONE ||
+            playerUni->publicationCount > highestCount) {
             g->mostPublications = player;
         }
 
@@ -332,7 +328,7 @@ int getExchangeRate (Game g, int player,
     int rate;
     vertex retraincenter1;
     vertex retraincenter2;
-    if (disciplineFrom == STUDENT_BPS) { // (1,2) (1,1)
+    if (disciplineFrom == STUDENT_BPS) {
         retraincenter1.x = 1;
         retraincenter1.y = 2;
         retraincenter2.x = 1;
@@ -358,8 +354,8 @@ int getExchangeRate (Game g, int player,
         retraincenter2.x = 4;
         retraincenter2.y = 9;
     }
-    if (vertexInPlayer(playerUni, retraincenter1) == TRUE ||
-        vertexInPlayer(playerUni, retraincenter2) == TRUE) {
+    if (vertexInPlayer(playerUni, retraincenter1) ||
+        vertexInPlayer(playerUni, retraincenter2)) {
         rate = 2;
     } else {
         rate = 3;
