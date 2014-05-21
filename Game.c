@@ -1,9 +1,9 @@
-// Dominic He
-// Matthew Solomonson
-// David Vo
-// Shravan Jeevan
-// 17/05/2014
-// ADT functions for KI
+/*
+ * Game.c - implementation of struct _game
+ * by David Vo, Dominic He, Matthew Solomonson, Shravan Jeevan
+ * Copyleft 2014
+ * All wrongs reserved
+ */
 
 #include <stdlib.h>
 #include "Game.h"
@@ -74,7 +74,7 @@ static void arcToPath(ARC arcCoord, path arcPath) {
 
 // Given a region's ID, sets vertexCoords to the vertex coords
 // that belong to the region
-static void vertexesofRegion(int regionID, vertex vertexCoords[6]) {
+static void verticesOfRegion(int regionID, vertex vertexCoords[6]) {
 
 }
 
@@ -82,9 +82,8 @@ static void vertexesofRegion(int regionID, vertex vertexCoords[6]) {
 // finds the next vertex given by the single direction of the
 // LRB path
 // returns NULL if the vertex ends up in the sea
-static vertex nextVertex(
-    vertex current, vertex previous, char direction) {
-
+static vertex nextVertex(vertex current, vertex previous,
+                         char direction) {
     vertex v;
     return v;
 }
@@ -116,58 +115,58 @@ static int vertexInPlayer(uni *playerUni, vertex campus) {
 // ADT FUNCTIONS
 
 // Shravan
-Game newGame (int discipline[], int dice[]) {
+Game newGame(int discipline[], int dice[]) {
     // TODO
     return NULL;
 }
 
-void disposeGame (Game g) {
+void disposeGame(Game g) {
     // TODO
 }
 
-int getDiscipline (Game g, int regionID) {
+int getDiscipline(Game g, int regionID) {
     // TODO
     return -1;
 }
 
-int getDiceValue (Game g, int regionID) {
+int getDiceValue(Game g, int regionID) {
     // TODO
     return 0;
 }
 
-int getMostARCs (Game g) {
+int getMostARCs(Game g) {
     // TODO
     return 0;
 }
 
 // Matthew
-void throwDice (Game g, int diceScore) {
+void throwDice(Game g, int diceScore) {
     // TODO
 }
 
-int getMostPublications (Game g) {
+int getMostPublications(Game g) {
     // TODO
     return 0;
 }
 
-int getTurnNumber (Game g) {
+int getTurnNumber(Game g) {
     // WIP
     return turnNumber;
 }
 
-int getWhoseTurn (Game g) {
+int getWhoseTurn(Game g) {
     // WIP
-    if (g->turnNumber == -1){
+    if (g->turnNumber == -1) {
         currentTurn = -1;
-    }else if (g->turnNumber > 0){
-        if ((getTurnNumber (g) % 3) == 0){
+    } else if (g->turnNumber > 0) {
+        if ((getTurnNumber(g) % 3) == 0) {
             currentTurn = 0;
         }
-        if ((getTurnNumber (g) % 2) == 0) || 
-           ((getTurnNumber (g) % 2) == 5){
+        if ((getTurnNumber(g) % 2) == 0) || 
+           ((getTurnNumber(g) % 2) == 5) {
             currentTurn = 1;
         }
-        if ((getTurnNumber (g) % 3) == 0){
+        if ((getTurnNumber(g) % 3) == 0) {
             currentTurn = 2;
         }
 
@@ -177,7 +176,8 @@ int getWhoseTurn (Game g) {
 }
 
 int getCampus(Game g, path pathToVertex) {
-    while 
+    // TODO
+    //while 
     return 0;
 }
 
@@ -254,7 +254,7 @@ int getCampuses(Game g, int player) {
 }
 
 // Dominic
-void makeAction (Game g, action a) {
+void makeAction(Game g, action a) {
     int code = a.actionCode;
     int player = getWhoseTurn(g);
     int rate;
@@ -310,20 +310,20 @@ void makeAction (Game g, action a) {
     }
 }
 
-int getIPs (Game g, int player) {
+int getIPs(Game g, int player) {
     return g->unis[player - 1].patentCount;
 }
 
-int getPublications (Game g, int player) {
+int getPublications(Game g, int player) {
     return g->unis[player - 1].publicationCount;
 }
 
-int getStudents (Game g, int player, int discipline) {
+int getStudents(Game g, int player, int discipline) {
     return g->unis[player - 1].students[discipline];
 }
 
-int getExchangeRate (Game g, int player, 
-                     int disciplineFrom, int disciplineTo) {
+int getExchangeRate(Game g, int player, 
+                    int disciplineFrom, int disciplineTo) {
     uni *playerUni = &(g->unis[player - 1]);
     int rate;
     vertex retraincenter1;
