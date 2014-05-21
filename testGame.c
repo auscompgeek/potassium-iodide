@@ -43,6 +43,7 @@ int main() {
     while (id < NUM_REGIONS) {
         assert(getDiscipline(g, id) == disciplines[id]);
         assert(getDiceValue(g, id) == diceValues[id]);
+        id++;
     }
     checkStart(g);
     playTurns(g);
@@ -86,11 +87,14 @@ void checkStart(Game g) {
 }
 
 void playTurns(Game g) {
-    int whoseTurn = NO_ONE;
-    int turnNum = -1;
+    int whoseTurn = UNI_A;
+    int turnNum = 0;
 
     // 0 UNI_A
-    nextTurn(g, &whoseTurn, &turnNum, 5);
+    throwDice(g, 5);
+    assert(getWhoseTurn(g) == UNI_A);
+    assert(getTurnNumber(g) == 0);
+
     checkStudents(g, UNI_B, 0, 4, 3, 1, 1, 1);
     obtainArc(g, "LRRLRLRLRLR");
     obtainArc(g, "LRRLRLRLRL");
@@ -171,7 +175,7 @@ void nextTurn(Game g, int *whoseTurn, int *turnNum, int diceValue) {
 void pass(Game g) {
     action gameAction;
     gameAction.actionCode = PASS;
-    assert(isLegalAction(g, gameAction) == TRUE);
+    assert(isLegalAction(g, gameAction));
     makeAction(g, gameAction);
 }
 
@@ -189,7 +193,7 @@ void buildCampus(Game g, path location) {
         i++;
     }
     gameAction.destination[i] = END_PATH;
-    assert(isLegalAction(g, gameAction) == TRUE);
+    assert(isLegalAction(g, gameAction));
     makeAction(g, gameAction);
 
     assert(getCampuses(g, getWhoseTurn(g)) == numCampuses + 1);
@@ -212,7 +216,7 @@ void buildGO8(Game g, path location) {
         i++;
     }
     gameAction.destination[i] = END_PATH;
-    assert(isLegalAction(g, gameAction) == TRUE);
+    assert(isLegalAction(g, gameAction));
     makeAction(g, gameAction);
 
     assert(getCampuses(g, getWhoseTurn(g)) == numNormalCampuses - 1);
@@ -235,7 +239,7 @@ void obtainArc(Game g, path location) {
         i++;
     }
     gameAction.destination[i] = END_PATH;
-    assert(isLegalAction(g, gameAction) == TRUE);
+    assert(isLegalAction(g, gameAction));
     makeAction(g, gameAction);
 
     assert(getARC(g, location) == getWhoseTurn(g));
@@ -247,7 +251,7 @@ void startSpinoff(Game g, int obtainPatent) {
     int count;
 
     gameAction.actionCode = START_SPINOFF;
-    assert(isLegalAction(g, gameAction) == TRUE);
+    assert(isLegalAction(g, gameAction));
     if (obtainPatent == TRUE) {
         count = getIPs(g, getWhoseTurn(g));
         gameAction.actionCode = OBTAIN_IP_PATENT;
@@ -271,7 +275,7 @@ void retrain(Game g, int disciplineFrom, int disciplineTo) {
     gameAction.actionCode = RETRAIN_STUDENTS;
     gameAction.disciplineFrom = disciplineFrom;
     gameAction.disciplineTo = disciplineTo;
-    assert(isLegalAction(g, gameAction) == TRUE);
+    assert(isLegalAction(g, gameAction));
     makeAction(g, gameAction);
     assert(getStudents(g, getWhoseTurn(g), disciplineFrom) == 
         fromCount - getExchangeRate(g, getWhoseTurn(g), 
