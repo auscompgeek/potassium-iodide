@@ -150,8 +150,7 @@ int getMostPublications(Game g) {
 }
 
 int getTurnNumber(Game g) {
-    // WIP
-    return turnNumber;
+    return g->turnNumber;
 }
 
 int getWhoseTurn(Game g) {
