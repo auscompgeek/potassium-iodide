@@ -19,18 +19,18 @@
                 11, 4, 6, 4, 7, 9, 2, 8, 10, 5}
 #define END_PATH '\0'
 
-void checkStart(Game g);
-void playTurns(Game g);
-void nextTurn(Game g, int *whoseTurn, int *turnNum, int diceValue);
+static void checkStart(Game g);
+static void playTurns(Game g);
+static void nextTurn(Game g, int *whoseTurn, int *turnNum, int diceValue);
 
-void pass(Game g);
-void buildCampus(Game g, path location);
-void buildGO8(Game g, path location);
-void obtainArc(Game g, path location);
-void startSpinoff(Game g, int obtainPatent);
-void retrain(Game g, int disciplineFrom, int disciplineTo);
+static void pass(Game g);
+static void buildCampus(Game g, path location);
+static void buildGO8(Game g, path location);
+static void obtainArc(Game g, path location);
+static void startSpinoff(Game g, int obtainPatent);
+static void retrain(Game g, int disciplineFrom, int disciplineTo);
 
-void checkStudents( Game g, int player,
+static void checkStudents( Game g, int player,
     int countThD, int countBPS, int countBQn,
     int countMJ, int countMTV, int countMMoney);
 
@@ -54,10 +54,9 @@ int main() {
     return EXIT_SUCCESS;
 }
 
-void checkStart(Game g) {
+static void checkStart(Game g) {
     assert(getTurnNumber(g) == -1);
     assert(getWhoseTurn(g) == NO_ONE);
-    assert(getTurnNumber(g) == -1);
 
     assert(getCampus(g, "RB") == CAMPUS_A);
     assert(getCampus(g, "RLRLRLRLRLL") == CAMPUS_A);
@@ -86,7 +85,7 @@ void checkStart(Game g) {
     checkStudents(g, UNI_A, 0, 3, 3, 1, 1, 1);
 }
 
-void playTurns(Game g) {
+static void playTurns(Game g) {
     int whoseTurn = UNI_A;
     int turnNum = 0;
 
@@ -160,7 +159,7 @@ void playTurns(Game g) {
     // TODO turn 
 }
 
-void nextTurn(Game g, int *whoseTurn, int *turnNum, int diceValue) {
+static void nextTurn(Game g, int *whoseTurn, int *turnNum, int diceValue) {
     pass(g);
     *whoseTurn = *whoseTurn + 1;
     if (*whoseTurn > UNI_C) {
@@ -172,14 +171,14 @@ void nextTurn(Game g, int *whoseTurn, int *turnNum, int diceValue) {
     assert(getTurnNumber(g) == *turnNum);
 }
 
-void pass(Game g) {
+static void pass(Game g) {
     action gameAction;
     gameAction.actionCode = PASS;
     assert(isLegalAction(g, gameAction));
     makeAction(g, gameAction);
 }
 
-void buildCampus(Game g, path location) {
+static void buildCampus(Game g, path location) {
     action gameAction;
     int i;
     int numCampuses = getCampuses(g, getWhoseTurn(g));
@@ -201,7 +200,7 @@ void buildCampus(Game g, path location) {
     assert(getKPIpoints(g, getWhoseTurn(g)) == kpiPoints + 10);
 }
 
-void buildGO8(Game g, path location) {
+static void buildGO8(Game g, path location) {
     action gameAction;
     int i;
     int numNormalCampuses = getCampuses(g, getWhoseTurn(g));
@@ -226,7 +225,7 @@ void buildGO8(Game g, path location) {
     assert(getKPIpoints(g, getWhoseTurn(g)) == kpiPoints + 10);
 }
 
-void obtainArc(Game g, path location) {
+static void obtainArc(Game g, path location) {
     action gameAction;
     int i;
     int numARCs = getARCs(g, getWhoseTurn(g));
@@ -246,7 +245,7 @@ void obtainArc(Game g, path location) {
     assert(getARCs(g, getWhoseTurn(g)) == numARCs + 1);
 }
 
-void startSpinoff(Game g, int obtainPatent) {
+static void startSpinoff(Game g, int obtainPatent) {
     action gameAction;
     int count;
 
@@ -265,7 +264,7 @@ void startSpinoff(Game g, int obtainPatent) {
     }
 }
 
-void retrain(Game g, int disciplineFrom, int disciplineTo) {
+static void retrain(Game g, int disciplineFrom, int disciplineTo) {
     int fromCount = getStudents(g, getWhoseTurn(g), disciplineFrom);
     int toCount = getStudents(g, getWhoseTurn(g), disciplineTo);
     assert(fromCount >= getExchangeRate(g, getWhoseTurn(g), 
@@ -284,7 +283,7 @@ void retrain(Game g, int disciplineFrom, int disciplineTo) {
         toCount + 1);
 }
 
-void checkStudents(
+static void checkStudents(
     Game g, int player,
     int countThD, int countBPS, int countBQn,
     int countMJ, int countMTV, int countMMoney) {
