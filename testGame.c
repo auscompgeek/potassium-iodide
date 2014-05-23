@@ -302,7 +302,7 @@ static void retrain(Game g, int disciplineFrom, int disciplineTo) {
     int fromCount = getStudents(g, getWhoseTurn(g), disciplineFrom);
     int toCount = getStudents(g, getWhoseTurn(g), disciplineTo);
 
-    printf("  * retrain: %d => %d\n", disciplineFrom, discliplineTo);
+    printf("  * retrain: %d => %d\n", disciplineFrom, disciplineTo);
 
     assert(fromCount >= getExchangeRate(g, getWhoseTurn(g),
         disciplineFrom, disciplineTo));

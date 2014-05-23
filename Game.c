@@ -92,7 +92,7 @@ static vertex vertexToCoord(path vertexPath) {
             invalid = TRUE;
         }
         i++;
-        // Follow path 
+        // Follow path
         while (!invalid && vertexPath[i] != END_PATH) {
             if (vertexPath[i] != LEFT &&
                 vertexPath[i] != RIGHT &&
@@ -266,7 +266,7 @@ int isLegalAction(Game g, action a) {
     } else if (code == OBTAIN_IP_PATENT) {
         result = FALSE;
     } else if (code == RETRAIN_STUDENTS) {
-        discipFrom = a.discliplineFrom;
+        discipFrom = a.disciplineFrom;
         if (discipFrom == STUDENT_THD ||
            discipFrom < 0 || discipFrom >= NUM_DISCIPLINES) {
             result = FALSE;
