@@ -9,7 +9,6 @@
 #include "Game.h"
 
 #define NUM_DISCIPLINES 6
-#define NUM_REGIONS 19
 #define ARC_LIMIT 68
 #define CAMPUS_LIMIT 50
 #define GO8_CAMPUS_LIMIT 8
@@ -50,7 +49,7 @@ static void arcToCoord(path arcPath, ARC destinationArc) {
 
 }
 
-// Given the LRB path of a vertex, 
+// Given the LRB path of a vertex,
 // returns the coords of the 2 adjacent vertexes
 // Returns NULL if invalid path
 static vertex vertexToCoord(path vertexPath) {
@@ -94,7 +93,7 @@ static void adjacentVertexes(vertex current, vertex adjacents[3]) {
 
 }
 
-// INTERNAL FUNCTIONS: label as static if you decide to implement 
+// INTERNAL FUNCTIONS: label as static if you decide to implement
 // internal functions to use for the ADT functions.
 static int compareVertex(vertex vertex1, vertex vertex2) {
     return (vertex1.x == vertex2.x) && (vertex1.y == vertex2.y);
@@ -161,7 +160,7 @@ int getWhoseTurn(Game g) {
         if ((getTurnNumber(g) % 3) == 0) {
             currentTurn = 0;
         }
-        if ((getTurnNumber(g) % 2) == 0) || 
+        if ((getTurnNumber(g) % 2) == 0) ||
            ((getTurnNumber(g) % 2) == 5) {
             currentTurn = 1;
         }
@@ -169,14 +168,14 @@ int getWhoseTurn(Game g) {
             currentTurn = 2;
         }
 
-    
+
     }
     return currentTurn;
 }
 
 int getCampus(Game g, path pathToVertex) {
     // TODO
-    //while 
+    //while
     return 0;
 }
 
@@ -190,6 +189,7 @@ int isLegalAction(Game g, action a) {
     int code = a.actionCode;
     int player = getWhoseTurn(g);
     int result;
+    int discipFrom;
 
     // no actions are valid in Terra Nullius
     if (getTurnNumber(g) == -1) {
@@ -209,11 +209,16 @@ int isLegalAction(Game g, action a) {
     } else if (code == OBTAIN_IP_PATENT) {
         result = FALSE;
     } else if (code == RETRAIN_STUDENTS) {
-        // TODO check that the codes aren't out of range, 
-        // no ThD students
-        result = getStudents(g, player, a.disciplineFrom) <=
-            getExchangeRate(g, player, a.disciplineFrom, a.disciplineTo);
+        discipFrom = a.discliplineFrom;
+        if (discipFrom == STUDENT_THD ||
+           discipFrom < 0 || discipFrom >= NUM_DISCIPLINES) {
+            result = FALSE;
+        } else {
+            result = getStudents(g, player, discipFrom) <=
+                getExchangeRate(g, player, discipFrom, a.disciplineTo);
+        }
     } else {
+        // action code is out of range
         result = FALSE;
     }
     return result;
@@ -283,10 +288,10 @@ void makeAction(Game g, action a) {
 
     } else if (code == OBTAIN_PUBLICATION) {
         playerUni->publicationCount++;
-        highestCount = 
+        highestCount =
             g->unis[g->mostPublications - 1].publicationCount;
         if (g->mostPublications == NO_ONE ||
-            playerUni->publicationCount > highestCount) {
+           playerUni->publicationCount > highestCount) {
             g->mostPublications = player;
         }
 
@@ -302,7 +307,7 @@ void makeAction(Game g, action a) {
         playerUni->students[STUDENT_MMONEY]--;
 
     } else if (code == RETRAIN_STUDENTS) {
-        rate = getExchangeRate(g, player, 
+        rate = getExchangeRate(g, player,
             a.disciplineFrom, a.disciplineTo);
         playerUni->students[a.disciplineFrom] -= rate;
         playerUni->students[a.disciplineTo]++;
@@ -321,7 +326,7 @@ int getStudents(Game g, int player, int discipline) {
     return g->unis[player - 1].students[discipline];
 }
 
-int getExchangeRate(Game g, int player, 
+int getExchangeRate(Game g, int player,
                     int disciplineFrom, int disciplineTo) {
     uni *playerUni = &(g->unis[player - 1]);
     int rate;
@@ -354,7 +359,7 @@ int getExchangeRate(Game g, int player,
         retraincenter2.y = 9;
     }
     if (vertexInPlayer(playerUni, retraincenter1) ||
-        vertexInPlayer(playerUni, retraincenter2)) {
+       vertexInPlayer(playerUni, retraincenter2)) {
         rate = 2;
     } else {
         rate = 3;
