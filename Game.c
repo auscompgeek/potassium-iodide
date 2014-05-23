@@ -209,27 +209,6 @@ int getTurnNumber(Game g) {
     return g->turnNumber;
 }
 
-int getWhoseTurn(Game g) {
-    // WIP
-    if (g->turnNumber == -1) {
-        currentTurn = -1;
-    } else if (g->turnNumber > 0) {
-        if ((getTurnNumber(g) % 3) == 0) {
-            currentTurn = 0;
-        }
-        if ((getTurnNumber(g) % 2) == 0) ||
-           ((getTurnNumber(g) % 2) == 5) {
-            currentTurn = 1;
-        }
-        if ((getTurnNumber(g) % 3) == 0) {
-            currentTurn = 2;
-        }
-
-
-    }
-    return currentTurn;
-}
-
 int getCampus(Game g, path pathToVertex) {
     // TODO
     //while
@@ -242,6 +221,10 @@ int getARC(Game g, path pathToEdge) {
 }
 
 // David
+int getWhoseTurn(Game g) {
+    return getTurnNumber(g) % 3 + 1;
+}
+
 int isLegalAction(Game g, action a) {
     int code = a.actionCode;
     int player = getWhoseTurn(g);
