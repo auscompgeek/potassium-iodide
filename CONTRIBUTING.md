@@ -38,6 +38,11 @@ Specifically:
 * An opening brace *must* have a space preceding it.
 * Use whitespace (and lack of) for clarity in expressions. For example, `1*2 + 3` is preferred over `1 * 2 + 3`.
 
+## Line limits
+Lines are not to exceed 79 characters.
+
+This is a deliberate deviation of the CSE style guide (which specifies a line limit of 72 chars).
+
 ## Blocks
 
 Please see the [CSE style guide][] section 4.  This is to be considered law.
