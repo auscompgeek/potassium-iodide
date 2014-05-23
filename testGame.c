@@ -1,9 +1,9 @@
-// Dominic He
-// Matthew Solomonson
-// David Vo
-// Shravan Jeevan
-// 09/05/2014
-// Tests the Game ADT Interface
+/*
+ * testGame.c: test a Game implementation
+ * by Dominic He, Matthew Solomonson, David Vo, Shravan Jeevan
+ * Copyleft 2014
+ * All wrongs reserved, including the blames.
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,7 +30,7 @@ static void obtainArc(Game g, path location);
 static void startSpinoff(Game g, int obtainPatent);
 static void retrain(Game g, int disciplineFrom, int disciplineTo);
 
-static void checkStudents( Game g, int player,
+static void checkStudents(Game g, int player,
     int countThD, int countBPS, int countBQn,
     int countMJ, int countMTV, int countMMoney);
 
@@ -39,22 +39,30 @@ int main() {
     int diceValues[] = DICE_VALUES;
     Game g = newGame(disciplines, diceValues);
 
+    printf("Welcome to the Pokemon Centre.\n\n"
+        "Checking the regions are initialised correctly...\n");
+
     int id = 0;
     while (id < NUM_REGIONS) {
+        printf("%d\n", id);
         assert(getDiscipline(g, id) == disciplines[id]);
         assert(getDiceValue(g, id) == diceValues[id]);
         id++;
     }
+
     checkStart(g);
     playTurns(g);
 
-    // Dispose game
+    printf("Taking out the trash...\n\n");
     disposeGame(g);
-    printf("All Tests Passed\n");
+
+    printf("All tests passed! Here's some awesome sauce. :3\n");
     return EXIT_SUCCESS;
 }
 
 static void checkStart(Game g) {
+    printf("Checking the initial state...\n");
+
     assert(getTurnNumber(g) == -1);
     assert(getWhoseTurn(g) == NO_ONE);
 
@@ -68,26 +76,37 @@ static void checkStart(Game g) {
     assert(getARCs(g, UNI_A) == 0);
     assert(getARCs(g, UNI_B) == 0);
     assert(getARCs(g, UNI_C) == 0);
+
     assert(getGO8s(g, UNI_A) == 0);
     assert(getGO8s(g, UNI_B) == 0);
     assert(getGO8s(g, UNI_A) == 0);
+
     assert(getCampuses(g, UNI_A) == 2);
     assert(getCampuses(g, UNI_B) == 2);
     assert(getCampuses(g, UNI_C) == 2);
+
     assert(getIPs(g, UNI_A) == 0);
     assert(getIPs(g, UNI_B) == 0);
     assert(getIPs(g, UNI_C) == 0);
+
     assert(getPublications(g, UNI_A) == 0);
     assert(getPublications(g, UNI_B) == 0);
     assert(getPublications(g, UNI_C) == 0);
+
     checkStudents(g, UNI_A, 0, 3, 3, 1, 1, 1);
-    checkStudents(g, UNI_A, 0, 3, 3, 1, 1, 1);
-    checkStudents(g, UNI_A, 0, 3, 3, 1, 1, 1);
+    checkStudents(g, UNI_B, 0, 3, 3, 1, 1, 1);
+    checkStudents(g, UNI_C, 0, 3, 3, 1, 1, 1);
+
+    printf("All clear!\n\n");
 }
 
 static void playTurns(Game g) {
     int whoseTurn = UNI_A;
     int turnNum = 0;
+
+    printf("Let's play a game, shall we?\n"
+           "* Turn 0...\n"
+           "  * dice: 5\n");
 
     // 0 UNI_A
     throwDice(g, 5);
@@ -99,47 +118,49 @@ static void playTurns(Game g) {
     obtainArc(g, "LRRLRLRLRL");
     checkStudents(g, UNI_A, 0, 1, 1, 1, 1, 1);
     buildCampus(g, "LRRLRLRLR");
+
     // 1 UNI_B
     nextTurn(g, &whoseTurn, &turnNum, 2);
     obtainArc(g, "LRLRLRRLRL");
     obtainArc(g, "LRLRLRRLR");
     buildCampus(g, "LRLRLRRL");
+
     // 2 UNI_C
     nextTurn(g, &whoseTurn, &turnNum, 5);
     obtainArc(g, "RRLRLLRLRLL");
-    obtainArc(g, "RRLRLLRLRLLL"); 
-    buildCampus(g, "RRLRLLRLRLLL"); 
+    obtainArc(g, "RRLRLLRLRLLL");
+    buildCampus(g, "RRLRLLRLRLLL");
 
     // 3 UNI_A
-    nextTurn(g, &whoseTurn, &turnNum, 4); 
+    nextTurn(g, &whoseTurn, &turnNum, 4);
 
     // 4 UNI_B
     nextTurn(g, &whoseTurn, &turnNum, 5);
-    
+
     // 5 UNI_C
     nextTurn(g, &whoseTurn, &turnNum, 9);
-    
+
     // 6 UNI_A
     nextTurn(g, &whoseTurn, &turnNum, 7);
-    
+
     // 7 UNI_B
     nextTurn(g, &whoseTurn, &turnNum, 8);
-    
+
     // 8 UNI_C
     nextTurn(g, &whoseTurn, &turnNum, 9);
-    
+
     // 9 UNI_A
     nextTurn(g, &whoseTurn, &turnNum, 6);
-    
+
     // 10 UNI_B
     nextTurn(g, &whoseTurn, &turnNum, 7);
-    
+
     // 11 UNI_C
     nextTurn(g, &whoseTurn, &turnNum, 9);
-    
+
     // 12 UNI_A
     nextTurn(g, &whoseTurn, &turnNum, 5);
-    
+
     // 13 UNI_B
     nextTurn(g, &whoseTurn, &turnNum, 10);
     assert(getExchangeRate(g, UNI_B, STUDENT_BQN, STUDENT_MMONEY) == 2);
@@ -156,16 +177,21 @@ static void playTurns(Game g) {
 
     nextTurn(g, &whoseTurn, &turnNum, 9);
 
-    // TODO turn 
+    // TODO turn
+
+    printf("You just lost the game.\n\n");
 }
 
 static void nextTurn(Game g, int *whoseTurn, int *turnNum, int diceValue) {
     pass(g);
     *whoseTurn = *whoseTurn + 1;
-    if (*whoseTurn > UNI_C) {
+    if (*whoseTurn >= NUM_UNIS) {
         *whoseTurn = UNI_A;
     }
     *turnNum = *turnNum + 1;
+
+    printf("* Turn %d...\n  * dice: %d\n", *turnNum, diceValue);
+
     throwDice(g, diceValue);
     assert(getWhoseTurn(g) == *whoseTurn);
     assert(getTurnNumber(g) == *turnNum);
@@ -183,6 +209,8 @@ static void buildCampus(Game g, path location) {
     int i;
     int numCampuses = getCampuses(g, getWhoseTurn(g));
     int kpiPoints = getKPIpoints(g, getWhoseTurn(g));
+
+    printf("  * build campus: %s\n", location);
 
     assert(getCampus(g, location) == VACANT_VERTEX);
     gameAction.actionCode = BUILD_CAMPUS;
@@ -207,6 +235,8 @@ static void buildGO8(Game g, path location) {
     int numGO8 = getGO8s(g, getWhoseTurn(g));
     int kpiPoints = getKPIpoints(g, getWhoseTurn(g));
 
+    printf("  * build GO8: %s\n", location);
+
     assert(getCampus(g, location) == getWhoseTurn(g));
     gameAction.actionCode = BUILD_GO8;
     i = 0;
@@ -230,6 +260,8 @@ static void obtainArc(Game g, path location) {
     int i;
     int numARCs = getARCs(g, getWhoseTurn(g));
 
+    printf("  * obtain ARC: %s\n", location);
+
     assert(getARC(g, location) == NO_ONE);
     gameAction.actionCode = OBTAIN_ARC;
     i = 0;
@@ -249,6 +281,8 @@ static void startSpinoff(Game g, int obtainPatent) {
     action gameAction;
     int count;
 
+    printf("  * start spinoff; patent: %d\n", obtainPatent);
+
     gameAction.actionCode = START_SPINOFF;
     assert(isLegalAction(g, gameAction));
     if (obtainPatent == TRUE) {
@@ -267,7 +301,10 @@ static void startSpinoff(Game g, int obtainPatent) {
 static void retrain(Game g, int disciplineFrom, int disciplineTo) {
     int fromCount = getStudents(g, getWhoseTurn(g), disciplineFrom);
     int toCount = getStudents(g, getWhoseTurn(g), disciplineTo);
-    assert(fromCount >= getExchangeRate(g, getWhoseTurn(g), 
+
+    printf("  * retrain: %d => %d\n", disciplineFrom, discliplineTo);
+
+    assert(fromCount >= getExchangeRate(g, getWhoseTurn(g),
         disciplineFrom, disciplineTo));
 
     action gameAction;
@@ -276,17 +313,17 @@ static void retrain(Game g, int disciplineFrom, int disciplineTo) {
     gameAction.disciplineTo = disciplineTo;
     assert(isLegalAction(g, gameAction));
     makeAction(g, gameAction);
-    assert(getStudents(g, getWhoseTurn(g), disciplineFrom) == 
-        fromCount - getExchangeRate(g, getWhoseTurn(g), 
+    assert(getStudents(g, getWhoseTurn(g), disciplineFrom) ==
+        fromCount - getExchangeRate(g, getWhoseTurn(g),
         disciplineFrom, disciplineTo));
     assert(getStudents(g, getWhoseTurn(g), disciplineTo) ==
         toCount + 1);
 }
 
 static void checkStudents(
-    Game g, int player,
-    int countThD, int countBPS, int countBQn,
-    int countMJ, int countMTV, int countMMoney) {
+        Game g, int player,
+        int countThD, int countBPS, int countBQn,
+        int countMJ, int countMTV, int countMMoney) {
     assert(getStudents(g, player, STUDENT_THD) == countThD);
     assert(getStudents(g, player, STUDENT_BPS) == countBPS);
     assert(getStudents(g, player, STUDENT_BQN) == countBQn);
