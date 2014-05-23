@@ -12,6 +12,10 @@
 #define ARC_LIMIT 68
 #define CAMPUS_LIMIT 50
 #define GO8_CAMPUS_LIMIT 8
+#define LEFT 'L'
+#define RIGHT 'R'
+#define BACK 'B'
+#define END_PATH '\0'
 
 typedef struct _vertex {
     int x, y;
@@ -41,6 +45,19 @@ struct _game {
     int mostARCs;
 };
 
+// internal function definitions
+static void arcToCoord(path arcPath, ARC destinationArc);
+static vertex vertexToCoord(path vertexPath);
+static void vertexToPath(vertex vertexLocation, path vertexPath);
+static void arcToPath(ARC arcCoord, path arcPath);
+static void verticesOfRegion(int regionID, vertex vertexCoords[6]);
+static vertex nextVertex(vertex current, vertex previous,
+                         char direction);
+static void adjacentVertexes(vertex current, vertex adjacents[3]);
+static int compareVertex(vertex vertex1, vertex vertex2);
+static int vertexInPlayer(uni *playerUni, vertex campus);
+
+
 // MAP FUNCTIONS: use these to get info on the map
 
 // Given the LRB path of a vertex, returns its coord value
@@ -51,10 +68,49 @@ static void arcToCoord(path arcPath, ARC destinationArc) {
 
 // Given the LRB path of a vertex,
 // returns the coords of the 2 adjacent vertexes
-// Returns NULL if invalid path
+// Returns {-1, -1} if invalid path
 static vertex vertexToCoord(path vertexPath) {
-    vertex v;
-    return v;
+    vertex current;
+    vertex previous, tempPrevious;
+    int i = 0;
+    int invalid = FALSE;
+
+    // set previous to path starting point
+    previous.x = 2;
+    previous.y = 10;
+
+    if (vertexPath[i] == END_PATH) {
+        current = previous;
+    } else {
+        if (vertexPath[i] == LEFT) {
+            current.x = 3;
+            current.y = 10;
+        } else if (vertexPath[i] == RIGHT) {
+            current.x = 2;
+            current.y = 9;
+        } else {
+            invalid = TRUE;
+        }
+        i++;
+        // Follow path 
+        while (!invalid && vertexPath[i] != END_PATH) {
+            if (vertexPath[i] != LEFT &&
+                vertexPath[i] != RIGHT &&
+                vertexPath[i] != BACK) {
+                invalid = TRUE;
+            } else {
+                tempPrevious = current;
+                current = nextVertex(current, previous, vertexPath[i]);
+                previous = tempPrevious;
+                i++;
+            }
+        }
+        if (invalid == TRUE) {
+            current.x = -1;
+            current.y = -1;
+        }
+    }
+    return current;
 }
 
 // Given the coords of a vertex, sets vertexPath to a converted
@@ -80,9 +136,10 @@ static void verticesOfRegion(int regionID, vertex vertexCoords[6]) {
 // Given a vertex and the previous vertex in a path
 // finds the next vertex given by the single direction of the
 // LRB path
-// returns NULL if the vertex ends up in the sea
+// returns {-1, -1} if the vertex ends up in the sea
 static vertex nextVertex(vertex current, vertex previous,
                          char direction) {
+    // TODO
     vertex v;
     return v;
 }
