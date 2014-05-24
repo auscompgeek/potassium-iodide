@@ -185,7 +185,7 @@ static void playTurns(Game g) {
 static void nextTurn(Game g, int *whoseTurn, int *turnNum, int diceValue) {
     pass(g);
     *whoseTurn = *whoseTurn + 1;
-    if (*whoseTurn >= NUM_UNIS) {
+    if (*whoseTurn > NUM_UNIS) {
         *whoseTurn = UNI_A;
     }
     *turnNum = *turnNum + 1;
