@@ -107,8 +107,8 @@ static void playTurns(Game g) {
     int turnNum = 0;
 
     printf("Let's play a game, shall we?\n"
-           "* Turn 0...\n"
-           "  * dice: 5\n");
+        "* Turn 0...\n"
+        "  * dice: 5\n");
 
     // 0 UNI_A
     throwDice(g, 5);
@@ -182,8 +182,9 @@ static void playTurns(Game g) {
     // 16 UNI_B
     makeTurn(9);
     checkStudents(g, UNI_B, 1, 1, 3, 0, 0, 2);
-    obtainArc(g, "LLRLRLLLL");
-    checkStudents(g, UNI_B, 1, 0, 2, 0, 0, 2);
+    //obtainArc(g, "LLRLRLLLL");
+    //checkStudents(g, UNI_B, 1, 0, 2, 0, 0, 2);
+
     // 17 UNI_C
     makeTurn(4);
     // 18 UNI_A
@@ -214,6 +215,19 @@ static void playTurns(Game g) {
     makeTurn(10);
     // ___
 
+    // David
+
+    // 31 UNI_B
+    makeTurn(7);
+    obtainArc(g, "LRLRRLRLL");
+
+    // 32 UNI_C
+    makeTurn(9);
+
+    // 33 UNI_A
+    makeTurn(6);
+    retrain(g, STUDENT_MJ, STUDENT_BPS);
+    //obtainArc(g, "");
 
     printf("You just lost the game.\n\n");
 }
@@ -226,11 +240,11 @@ static void nextTurn(Game g, int *whoseTurn, int *turnNum, int diceValue) {
     }
     *turnNum = *turnNum + 1;
 
-    printf("* Turn %d...\n  * dice: %d\n", *turnNum, diceValue);
+    printf("* Turn %d\n  * dice: %d\n", *turnNum, diceValue);
 
     throwDice(g, diceValue);
-    assert(getWhoseTurn(g) == *whoseTurn);
     assert(getTurnNumber(g) == *turnNum);
+    assert(getWhoseTurn(g) == *whoseTurn);
 }
 
 static void pass(Game g) {
