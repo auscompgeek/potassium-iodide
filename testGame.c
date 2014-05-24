@@ -19,6 +19,8 @@
                 11, 4, 6, 4, 7, 9, 2, 8, 10, 5}
 #define END_PATH '\0'
 
+#define makeTurn(dice) nextTurn(g, &whoseTurn, &turnNum, dice)
+
 static void checkStart(Game g);
 static void playTurns(Game g);
 static void nextTurn(Game g, int *whoseTurn, int *turnNum, int diceValue);
@@ -120,49 +122,49 @@ static void playTurns(Game g) {
     buildCampus(g, "LRRLRLRLR");
 
     // 1 UNI_B
-    nextTurn(g, &whoseTurn, &turnNum, 2);
+    makeTurn(2);
     obtainArc(g, "LRLRLRRLRL");
     obtainArc(g, "LRLRLRRLR");
     buildCampus(g, "LRLRLRRL");
 
     // 2 UNI_C
-    nextTurn(g, &whoseTurn, &turnNum, 5);
+    makeTurn(5);
     obtainArc(g, "RRLRLLRLRLL");
     obtainArc(g, "RRLRLLRLRLLL");
     buildCampus(g, "RRLRLLRLRLLL");
 
     // 3 UNI_A
-    nextTurn(g, &whoseTurn, &turnNum, 4);
+    makeTurn(4);
 
     // 4 UNI_B
-    nextTurn(g, &whoseTurn, &turnNum, 5);
+    makeTurn(5);
 
     // 5 UNI_C
-    nextTurn(g, &whoseTurn, &turnNum, 9);
+    makeTurn(9);
 
     // 6 UNI_A
-    nextTurn(g, &whoseTurn, &turnNum, 7);
+    makeTurn(7);
 
     // 7 UNI_B
-    nextTurn(g, &whoseTurn, &turnNum, 8);
+    makeTurn(8);
 
     // 8 UNI_C
-    nextTurn(g, &whoseTurn, &turnNum, 9);
+    makeTurn(9);
 
     // 9 UNI_A
-    nextTurn(g, &whoseTurn, &turnNum, 6);
+    makeTurn(6);
 
     // 10 UNI_B
-    nextTurn(g, &whoseTurn, &turnNum, 7);
+    makeTurn(7);
 
     // 11 UNI_C
-    nextTurn(g, &whoseTurn, &turnNum, 9);
+    makeTurn(9);
 
     // 12 UNI_A
-    nextTurn(g, &whoseTurn, &turnNum, 5);
+    makeTurn(5);
 
     // 13 UNI_B
-    nextTurn(g, &whoseTurn, &turnNum, 10);
+    makeTurn(10);
     assert(getExchangeRate(g, UNI_B, STUDENT_BQN, STUDENT_MMONEY) == 2);
     retrain(g, STUDENT_BQN, STUDENT_MMONEY);
     assert(getExchangeRate(g, UNI_B, STUDENT_BPS, STUDENT_MMONEY) == 3);
@@ -170,49 +172,49 @@ static void playTurns(Game g) {
     checkStudents(g, UNI_B, 1, 1, 2, 0, 0, 2);
 
     // 14 UNI_C
-    nextTurn(g, &whoseTurn, &turnNum, 11);
+    makeTurn(11);
 
     // 15 UNI_A
-    nextTurn(g, &whoseTurn, &turnNum, 8);
-    
+    makeTurn(8);
+
     //Matt
-    
+
     // 16 UNI_B
-    nextTurn(g, &whoseTurn, &turnNum, 9);
+    makeTurn(9);
     checkStudents(g, UNI_B, 1, 1, 3, 0, 0, 2);
     obtainArc(g, "LLRLRLLLL");
     checkStudents(g, UNI_B, 1, 0, 2, 0, 0, 2);
     // 17 UNI_C
-    nextTurn(g, &whoseTurn, &turnNum, 4);
+    makeTurn(4);
     // 18 UNI_A
-    nextTurn(g, &whoseTurn, &turnNum, 7);
+    makeTurn(7);
     // 19 UNI_B
-    nextTurn(g, &whoseTurn, &turnNum, 7);
+    makeTurn(7);
     // 20 UNI_C
-    nextTurn(g, &whoseTurn, &turnNum, 5);
+    makeTurn(5);
     // 21 UNI_A
-    nextTurn(g, &whoseTurn, &turnNum, 12);
+    makeTurn(12);
     // 22 UNI_B
-    nextTurn(g, &whoseTurn, &turnNum, 7);
+    makeTurn(7);
     // 23 UNI_C
-    nextTurn(g, &whoseTurn, &turnNum, 6);
+    makeTurn(6);
     // 24 UNI_A
-    nextTurn(g, &whoseTurn, &turnNum, 7);
+    makeTurn(7);
     // 25 UNI_B
-    nextTurn(g, &whoseTurn, &turnNum, 7);
+    makeTurn(7);
     // 26 UNI_C
-    nextTurn(g, &whoseTurn, &turnNum, 9);
+    makeTurn(9);
     // 27 UNI_A
-    nextTurn(g, &whoseTurn, &turnNum, 11);
+    makeTurn(11);
     // 28 UNI_B
-    nextTurn(g, &whoseTurn, &turnNum, 7);
+    makeTurn(7);
     // 29 UNI_C
-    nextTurn(g, &whoseTurn, &turnNum, 6);
+    makeTurn(6);
     // 30 UNI_A
-    nextTurn(g, &whoseTurn, &turnNum, 10);
+    makeTurn(10);
     // ___
-    
-    
+
+
     printf("You just lost the game.\n\n");
 }
 
