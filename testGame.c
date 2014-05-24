@@ -174,11 +174,45 @@ static void playTurns(Game g) {
 
     // 15 UNI_A
     nextTurn(g, &whoseTurn, &turnNum, 8);
-
+    
+    //Matt
+    
+    // 16 UNI_B
     nextTurn(g, &whoseTurn, &turnNum, 9);
-
-    // TODO turn
-
+    checkStudents(g, UNI_B, 1, 1, 3, 0, 0, 2);
+    obtainArc(g, "LLRLRLLLL");
+    checkStudents(g, UNI_B, 1, 0, 2, 0, 0, 2);
+    // 17 UNI_C
+    nextTurn(g, &whoseTurn, &turnNum, 4);
+    // 18 UNI_A
+    nextTurn(g, &whoseTurn, &turnNum, 7);
+    // 19 UNI_B
+    nextTurn(g, &whoseTurn, &turnNum, 7);
+    // 20 UNI_C
+    nextTurn(g, &whoseTurn, &turnNum, 5);
+    // 21 UNI_A
+    nextTurn(g, &whoseTurn, &turnNum, 12);
+    // 22 UNI_B
+    nextTurn(g, &whoseTurn, &turnNum, 7);
+    // 23 UNI_C
+    nextTurn(g, &whoseTurn, &turnNum, 6);
+    // 24 UNI_A
+    nextTurn(g, &whoseTurn, &turnNum, 7);
+    // 25 UNI_B
+    nextTurn(g, &whoseTurn, &turnNum, 7);
+    // 26 UNI_C
+    nextTurn(g, &whoseTurn, &turnNum, 9);
+    // 27 UNI_A
+    nextTurn(g, &whoseTurn, &turnNum, 11);
+    // 28 UNI_B
+    nextTurn(g, &whoseTurn, &turnNum, 7);
+    // 29 UNI_C
+    nextTurn(g, &whoseTurn, &turnNum, 6);
+    // 30 UNI_A
+    nextTurn(g, &whoseTurn, &turnNum, 10);
+    // ___
+    
+    
     printf("You just lost the game.\n\n");
 }
 
