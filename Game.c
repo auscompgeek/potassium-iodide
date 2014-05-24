@@ -209,6 +209,10 @@ int getTurnNumber(Game g) {
     return g->turnNumber;
 }
 
+int getWhoseTurn(Game g) {
+    return getTurnNumber(g) % 3 + 1;
+}
+
 int getCampus(Game g, path pathToVertex) {
     // TODO
     //while
@@ -221,10 +225,6 @@ int getARC(Game g, path pathToEdge) {
 }
 
 // David
-int getWhoseTurn(Game g) {
-    return getTurnNumber(g) % 3 + 1;
-}
-
 int isLegalAction(Game g, action a) {
     int code = a.actionCode;
     int player = getWhoseTurn(g);
