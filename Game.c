@@ -201,8 +201,19 @@ void throwDice(Game g, int diceScore) {
 }
 
 int getMostPublications(Game g) {
-    // TODO
-    return 0;
+    int uniOnePub = g->unis[0].publicationCount;
+    int uniTwoPub = g->unis[1].publicationCount;
+    int uniThrPub = g->unis[2].publicationCount;
+    if ((uniOnePub > uniTwoPub)||(uniOnePub > uniTwoPub)){
+            g->mostPublications = 0;
+        }else if ((uniTwoPub > uniOnePub) || (uniTwoPub > uniThrPub)){
+            g->mostPublications = 1;
+        }else if (uniThrPub > uniOnePub) || (uniThrPub > uniTwoPub){
+            g->mostPublications = 2;
+        }else{
+            g->mostPublications = g->mostPublications;
+        }
+    return g->mostPublications;
 }
 
 int getTurnNumber(Game g) {
