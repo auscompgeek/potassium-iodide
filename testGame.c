@@ -178,7 +178,7 @@ static void playTurns(Game g) {
     // 15 UNI_A
     makeTurn(8);
 
-    //Matt
+    /* Matt */
 
     // 16 UNI_B
     makeTurn(9);
@@ -206,17 +206,19 @@ static void playTurns(Game g) {
     makeTurn(7);
     // 26 UNI_C
     makeTurn(9);
+
     // 27 UNI_A
     makeTurn(11);
+
     // 28 UNI_B
     makeTurn(7);
     // 29 UNI_C
     makeTurn(6);
     // 30 UNI_A
     makeTurn(10);
-    // ___
 
-    // David
+    /* David */
+    // XXX Matt hasn't finished his turns yet
 
     // 31 UNI_B
     makeTurn(7);
@@ -228,7 +230,52 @@ static void playTurns(Game g) {
     // 33 UNI_A
     makeTurn(6);
     retrain(g, STUDENT_MJ, STUDENT_BPS);
-    //obtainArc(g, "");
+    obtainArc(g, "LRRLRLRLR");
+
+    // 34 UNI_B
+    makeTurn(9);
+    retrain(g, STUDENT_BQN, STUDENT_MTV);
+    retrain(g, STUDENT_BQN, STUDENT_MJ);
+    buildCampus(g, "LRRLRLLR");
+
+    // 35 UNI_C
+    makeTurn(7);
+    // 36 UNI_A
+    makeTurn(7);
+    // 37 UNI_B
+    makeTurn(6);
+    // 38 UNI_C
+    makeTurn(9);
+    // 39 UNI_A
+    makeTurn(4);
+    // 40 UNI_B
+    makeTurn(3);
+
+    // 41 UNI_C
+    makeTurn(5);
+    retrain(g, STUDENT_MJ, STUDENT_MMONEY);
+    startSpinoff(g, TRUE);
+
+    // 42 UNI_A - the meaning of life
+    makeTurn(9);
+
+    // 43 UNI_B
+    makeTurn(11);
+    //obtainArc(g, "");//46
+    //obtainArc(g, "");//60
+
+    // 44 UNI_C
+    makeTurn(10);
+    retrain(g, STUDENT_BPS, STUDENT_BQN);
+    //obtainArc(g, "");//46
+
+    // 45 UNI_A
+    makeTurn(7);
+    retrain(g, STUDENT_MJ, STUDENT_BPS);
+    //obtainArc(g, "");//50
+
+    /* Dominic */
+    // XXX Matt and David haven't finished their turns yet
 
     printf("You just lost the game.\n\n");
 }
