@@ -108,7 +108,8 @@ static void playTurns(Game g) {
 
     printf("Let's play a game, shall we?\n"
         "* Turn 0...\n"
-        "  * dice: 5\n");
+        "  * dice: 5\n"
+        "  * player: 1\n");
 
     // 0 UNI_A
     throwDice(g, 5);
@@ -234,13 +235,16 @@ static void playTurns(Game g) {
 
 static void nextTurn(Game g, int *whoseTurn, int *turnNum, int diceValue) {
     pass(g);
-    *whoseTurn = *whoseTurn + 1;
+    *whoseTurn++;
     if (*whoseTurn > NUM_UNIS) {
         *whoseTurn = UNI_A;
     }
-    *turnNum = *turnNum + 1;
+    *turnNum++;
 
-    printf("* Turn %d\n  * dice: %d\n", *turnNum, diceValue);
+    printf("* Turn %d\n"
+        "  * dice: %d\n"
+        "  * player: %d\n",
+        *turnNum, diceValue, *whoseTurn);
 
     throwDice(g, diceValue);
     assert(getTurnNumber(g) == *turnNum);
@@ -257,8 +261,9 @@ static void pass(Game g) {
 static void buildCampus(Game g, path location) {
     action gameAction;
     int i;
-    int numCampuses = getCampuses(g, getWhoseTurn(g));
-    int kpiPoints = getKPIpoints(g, getWhoseTurn(g));
+    int player = getWhoseTurn(g);
+    int numCampuses = getCampuses(g, player);
+    int kpiPoints = getKPIpoints(g, player);
 
     printf("  * build campus: %s\n", location);
 
@@ -273,21 +278,22 @@ static void buildCampus(Game g, path location) {
     assert(isLegalAction(g, gameAction));
     makeAction(g, gameAction);
 
-    assert(getCampuses(g, getWhoseTurn(g)) == numCampuses + 1);
-    assert(getCampus(g, location) == getWhoseTurn(g));
-    assert(getKPIpoints(g, getWhoseTurn(g)) == kpiPoints + 10);
+    assert(getCampuses(g, player) == numCampuses + 1);
+    assert(getCampus(g, location) == player);
+    assert(getKPIpoints(g, player) == kpiPoints + 10);
 }
 
 static void buildGO8(Game g, path location) {
     action gameAction;
     int i;
-    int numNormalCampuses = getCampuses(g, getWhoseTurn(g));
-    int numGO8 = getGO8s(g, getWhoseTurn(g));
-    int kpiPoints = getKPIpoints(g, getWhoseTurn(g));
+    int player = getWhoseTurn(g);
+    int numNormalCampuses = getCampuses(g, player);
+    int numGO8 = getGO8s(g, player);
+    int kpiPoints = getKPIpoints(g, player);
 
     printf("  * build GO8: %s\n", location);
 
-    assert(getCampus(g, location) == getWhoseTurn(g));
+    assert(getCampus(g, location) == player);
     gameAction.actionCode = BUILD_GO8;
     i = 0;
     while (location[i] != END_PATH) {
@@ -298,17 +304,18 @@ static void buildGO8(Game g, path location) {
     assert(isLegalAction(g, gameAction));
     makeAction(g, gameAction);
 
-    assert(getCampuses(g, getWhoseTurn(g)) == numNormalCampuses - 1);
-    assert(getGO8s(g, getWhoseTurn(g) == numGO8 + 1));
-    // GO8 campuse code = normal code + 3
-    assert(getCampus(g, location) == getWhoseTurn(g) + 3);
-    assert(getKPIpoints(g, getWhoseTurn(g)) == kpiPoints + 10);
+    assert(getCampuses(g, player) == numNormalCampuses - 1);
+    assert(getGO8s(g, player) == numGO8 + 1);
+    // GO8 campus code = normal code + 3
+    assert(getCampus(g, location) == player + 3);
+    assert(getKPIpoints(g, player) == kpiPoints + 10);
 }
 
 static void obtainArc(Game g, path location) {
     action gameAction;
     int i;
-    int numARCs = getARCs(g, getWhoseTurn(g));
+    int player = getWhoseTurn(g);
+    int numARCs = getARCs(g, player);
 
     printf("  * obtain ARC: %s\n", location);
 
@@ -323,51 +330,53 @@ static void obtainArc(Game g, path location) {
     assert(isLegalAction(g, gameAction));
     makeAction(g, gameAction);
 
-    assert(getARC(g, location) == getWhoseTurn(g));
-    assert(getARCs(g, getWhoseTurn(g)) == numARCs + 1);
+    assert(getARC(g, location) == player);
+    assert(getARCs(g, player) == numARCs + 1);
 }
 
 static void startSpinoff(Game g, int obtainPatent) {
     action gameAction;
     int count;
+    int player = getWhoseTurn(g);
 
     printf("  * start spinoff; patent: %d\n", obtainPatent);
 
     gameAction.actionCode = START_SPINOFF;
     assert(isLegalAction(g, gameAction));
-    if (obtainPatent == TRUE) {
-        count = getIPs(g, getWhoseTurn(g));
+    if (obtainPatent) {
+        count = getIPs(g, player);
         gameAction.actionCode = OBTAIN_IP_PATENT;
         makeAction(g, gameAction);
-        assert(getIPs(g, getWhoseTurn(g)) == count + 1);
+        assert(getIPs(g, player) == count + 1);
     } else {
-        count = getPublications(g, getWhoseTurn(g));
+        count = getPublications(g, player);
         gameAction.actionCode = OBTAIN_PUBLICATION;
         makeAction(g, gameAction);
-        assert(getPublications(g, getWhoseTurn(g)) == count + 1);
+        assert(getPublications(g, player) == count + 1);
     }
 }
 
 static void retrain(Game g, int disciplineFrom, int disciplineTo) {
-    int fromCount = getStudents(g, getWhoseTurn(g), disciplineFrom);
-    int toCount = getStudents(g, getWhoseTurn(g), disciplineTo);
+    int player = getWhoseTurn(g);
+    int fromCount = getStudents(g, player, disciplineFrom);
+    int toCount = getStudents(g, player, disciplineTo);
 
     printf("  * retrain: %d => %d\n", disciplineFrom, disciplineTo);
 
-    assert(fromCount >= getExchangeRate(g, getWhoseTurn(g),
+    assert(fromCount >= getExchangeRate(g, player,
         disciplineFrom, disciplineTo));
 
     action gameAction;
     gameAction.actionCode = RETRAIN_STUDENTS;
     gameAction.disciplineFrom = disciplineFrom;
     gameAction.disciplineTo = disciplineTo;
+
     assert(isLegalAction(g, gameAction));
     makeAction(g, gameAction);
-    assert(getStudents(g, getWhoseTurn(g), disciplineFrom) ==
-        fromCount - getExchangeRate(g, getWhoseTurn(g),
-        disciplineFrom, disciplineTo));
-    assert(getStudents(g, getWhoseTurn(g), disciplineTo) ==
-        toCount + 1);
+
+    assert(getStudents(g, player, disciplineFrom) ==
+        fromCount - getExchangeRate(g, player, disciplineFrom, disciplineTo));
+    assert(getStudents(g, player, disciplineTo) == toCount + 1);
 }
 
 static void checkStudents(
