@@ -235,11 +235,11 @@ static void playTurns(Game g) {
 
 static void nextTurn(Game g, int *whoseTurn, int *turnNum, int diceValue) {
     pass(g);
-    *whoseTurn++;
+    (*whoseTurn)++;
     if (*whoseTurn > NUM_UNIS) {
         *whoseTurn = UNI_A;
     }
-    *turnNum++;
+    (*turnNum)++;
 
     printf("* Turn %d\n"
         "  * dice: %d\n"
