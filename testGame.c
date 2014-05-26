@@ -121,59 +121,85 @@ static void playTurns(Game g) {
     obtainArc(g, "LRRLRLRLRL");
     checkStudents(g, UNI_A, 0, 1, 1, 1, 1, 1);
     buildCampus(g, "LRRLRLRLR");
+    checkStudents(g, UNI_A, 0, 0, 0, 0, 0, 1);
 
     // 1 UNI_B
     makeTurn(2);
+    checkStudents(g, UNI_A, 0, 0, 0, 0, 0, 2);
     obtainArc(g, "LRLRLRRLRL");
     obtainArc(g, "LRLRLRRLR");
+    checkStudents(g, UNI_B, 0, 2, 1, 1, 1, 1);
     buildCampus(g, "LRLRLRRL");
+    checkStudents(g, UNI_B, 0, 1, 0, 0, 0, 1);
 
     // 2 UNI_C
     makeTurn(5);
+    checkStudents(g, UNI_B, 0, 2, 0, 0, 0, 1);
     obtainArc(g, "RRLRLLRLRLL");
     obtainArc(g, "RRLRLLRLRLLL");
+    checkStudents(g, UNI_C, 0, 1, 1, 1, 1, 1);
     buildCampus(g, "RRLRLLRLRLLL");
+    checkStudents(g, UNI_C, 0, 0, 0, 0, 0, 1);
 
     // 3 UNI_A
     makeTurn(4);
+    checkStudents(g, UNI_A, 0, 0, 1, 0, 0, 2);
 
     // 4 UNI_B
     makeTurn(5);
+    checkStudents(g, UNI_B, 0, 3, 0, 0, 0, 1);
+    checkStudents(g, UNI_C, 0, 1, 0, 0, 0, 1);
 
     // 5 UNI_C
     makeTurn(9);
+    //checkStudents(g, UNI_C, 0, 3, 1, 0, 0, 1);
 
     // 6 UNI_A
     makeTurn(7);
+    checkStudents(g, UNI_A, 2, 0, 1, 0, 0, 0);
+    checkStudents(g, UNI_B, 1, 3, 1, 0, 0, 0);
+    checkStudents(g, UNI_C, 1, 1, 0, 0, 0, 0);
 
     // 7 UNI_B
     makeTurn(8);
+    //checkStudents(g, UNI_C, 1, 1, 0, 2, 2, 0);
 
     // 8 UNI_C
     makeTurn(9);
+    checkStudents(g, UNI_B, 1, 3, 2, 0, 0, 0);
 
     // 9 UNI_A
     makeTurn(6);
+    //checkStudents(g, UNI_A, 2, 0, 1, 0, 2, 0);
 
     // 10 UNI_B
     makeTurn(7);
+    checkStudents(g, UNI_B, 1, 3, 2, 0, 0, 0);
+    //checkStudents(g, UNI_C, 3, 1, 0, 0, 2, 0);
+    //checkStudents(g, UNI_A, 2, 0, 1, 0, 2, 0);
 
     // 11 UNI_C
     makeTurn(9);
+    checkStudents(g, UNI_B, 1, 3, 3, 0, 0, 0);
 
     // 12 UNI_A
     makeTurn(5);
+    checkStudents(g, UNI_B, 1, 4, 3, 0, 0, 0);
+    //checkStudents(g, UNI_C, 3, 2, 0, 0, 2, 0);
 
     // 13 UNI_B
     makeTurn(10);
+    checkStudents(g, UNI_B, 1, 4, 4, 0, 0, 0);
     assert(getExchangeRate(g, UNI_B, STUDENT_BQN, STUDENT_MMONEY) == 2);
     retrain(g, STUDENT_BQN, STUDENT_MMONEY);
+    checkStudents(g, UNI_B, 1, 4, 2, 0, 0, 1);
     assert(getExchangeRate(g, UNI_B, STUDENT_BPS, STUDENT_MMONEY) == 3);
     retrain(g, STUDENT_BPS, STUDENT_MMONEY);
     checkStudents(g, UNI_B, 1, 1, 2, 0, 0, 2);
 
     // 14 UNI_C
     makeTurn(11);
+    //checkStudents(g, UNI_A, 2, 0, 1, 1, 2, 0);
 
     // 15 UNI_A
     makeTurn(8);
@@ -182,7 +208,7 @@ static void playTurns(Game g) {
 
     // 16 UNI_B
     makeTurn(9);
-    checkStudents(g, UNI_B, 1, 1, 3, 0, 0, 2);
+    //checkStudents(g, UNI_B, 1, 1, 3, 0, 0, 2);
     //obtainArc(g, "LLRLRLLLL");
     //checkStudents(g, UNI_B, 1, 0, 2, 0, 0, 2);
 
@@ -219,7 +245,6 @@ static void playTurns(Game g) {
 
     /* David */
     // XXX Matt hasn't finished his turns yet
-
     // 31 UNI_B
     makeTurn(7);
     obtainArc(g, "LRLRRLRLL");
@@ -276,7 +301,8 @@ static void playTurns(Game g) {
 
     /* Dominic */
     // XXX Matt and David haven't finished their turns yet
-
+    
+    
     printf("You just lost the game.\n\n");
 }
 
