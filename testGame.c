@@ -19,7 +19,7 @@
                 11, 4, 6, 4, 7, 9, 2, 8, 10, 5}
 #define END_PATH '\0'
 
-#define makeTurn(dice) nextTurn(g, &whoseTurn, &turnNum, dice)
+#define roll(dice) nextTurn(g, &whoseTurn, &turnNum, dice)
 
 static void checkStart(Game g);
 static void playTurns(Game g);
@@ -68,36 +68,24 @@ static void checkStart(Game g) {
     assert(getTurnNumber(g) == -1);
     assert(getWhoseTurn(g) == NO_ONE);
 
+    int player = UNI_A;
+    while (player <= NUM_UNIS) {
+        assert(getARCs(g, player) == 0);
+        assert(getGO8s(g, player) == 0);
+        assert(getCampuses(g, player) == 2);
+        assert(getIPs(g, player) == 0);
+        assert(getPublications(g, player) == 0);
+        checkStudents(g, player, 0, 3, 3, 1, 1, 1);
+
+        player++;
+    }
+
     assert(getCampus(g, "RB") == CAMPUS_A);
     assert(getCampus(g, "RLRLRLRLRLL") == CAMPUS_A);
     assert(getCampus(g, "RRLRL") == CAMPUS_B);
     assert(getCampus(g, "RRLRLLRLRL") == CAMPUS_C);
     assert(getCampus(g, "LRLRL") == CAMPUS_C);
     assert(getCampus(g, "LRLRLRRLRL") == CAMPUS_B);
-
-    assert(getARCs(g, UNI_A) == 0);
-    assert(getARCs(g, UNI_B) == 0);
-    assert(getARCs(g, UNI_C) == 0);
-
-    assert(getGO8s(g, UNI_A) == 0);
-    assert(getGO8s(g, UNI_B) == 0);
-    assert(getGO8s(g, UNI_A) == 0);
-
-    assert(getCampuses(g, UNI_A) == 2);
-    assert(getCampuses(g, UNI_B) == 2);
-    assert(getCampuses(g, UNI_C) == 2);
-
-    assert(getIPs(g, UNI_A) == 0);
-    assert(getIPs(g, UNI_B) == 0);
-    assert(getIPs(g, UNI_C) == 0);
-
-    assert(getPublications(g, UNI_A) == 0);
-    assert(getPublications(g, UNI_B) == 0);
-    assert(getPublications(g, UNI_C) == 0);
-
-    checkStudents(g, UNI_A, 0, 3, 3, 1, 1, 1);
-    checkStudents(g, UNI_B, 0, 3, 3, 1, 1, 1);
-    checkStudents(g, UNI_C, 0, 3, 3, 1, 1, 1);
 
     printf("All clear!\n\n");
 }
@@ -124,7 +112,7 @@ static void playTurns(Game g) {
     checkStudents(g, UNI_A, 0, 0, 0, 0, 0, 1);
 
     // 1 UNI_B
-    makeTurn(2);
+    roll(2);
     checkStudents(g, UNI_A, 0, 0, 0, 0, 0, 2);
     obtainArc(g, "LRLRLRRLRL");
     obtainArc(g, "LRLRLRRLR");
@@ -133,7 +121,7 @@ static void playTurns(Game g) {
     checkStudents(g, UNI_B, 0, 1, 0, 0, 0, 1);
 
     // 2 UNI_C
-    makeTurn(5);
+    roll(5);
     checkStudents(g, UNI_B, 0, 2, 0, 0, 0, 1);
     obtainArc(g, "RRLRLLRLRLL");
     obtainArc(g, "RRLRLLRLRLLL");
@@ -142,53 +130,53 @@ static void playTurns(Game g) {
     checkStudents(g, UNI_C, 0, 0, 0, 0, 0, 1);
 
     // 3 UNI_A
-    makeTurn(4);
+    roll(4);
     checkStudents(g, UNI_A, 0, 0, 1, 0, 0, 2);
 
     // 4 UNI_B
-    makeTurn(5);
+    roll(5);
     checkStudents(g, UNI_B, 0, 3, 0, 0, 0, 1);
     checkStudents(g, UNI_C, 0, 1, 0, 0, 0, 1);
 
     // 5 UNI_C
-    makeTurn(9);
+    roll(9);
     //checkStudents(g, UNI_C, 0, 3, 1, 0, 0, 1);
 
     // 6 UNI_A
-    makeTurn(7);
+    roll(7);
     checkStudents(g, UNI_A, 2, 0, 1, 0, 0, 0);
     checkStudents(g, UNI_B, 1, 3, 1, 0, 0, 0);
     checkStudents(g, UNI_C, 1, 1, 0, 0, 0, 0);
 
     // 7 UNI_B
-    makeTurn(8);
+    roll(8);
     //checkStudents(g, UNI_C, 1, 1, 0, 2, 2, 0);
 
     // 8 UNI_C
-    makeTurn(9);
+    roll(9);
     checkStudents(g, UNI_B, 1, 3, 2, 0, 0, 0);
 
     // 9 UNI_A
-    makeTurn(6);
+    roll(6);
     //checkStudents(g, UNI_A, 2, 0, 1, 0, 2, 0);
 
     // 10 UNI_B
-    makeTurn(7);
+    roll(7);
     checkStudents(g, UNI_B, 1, 3, 2, 0, 0, 0);
     //checkStudents(g, UNI_C, 3, 1, 0, 0, 2, 0);
     //checkStudents(g, UNI_A, 2, 0, 1, 0, 2, 0);
 
     // 11 UNI_C
-    makeTurn(9);
+    roll(9);
     checkStudents(g, UNI_B, 1, 3, 3, 0, 0, 0);
 
     // 12 UNI_A
-    makeTurn(5);
+    roll(5);
     checkStudents(g, UNI_B, 1, 4, 3, 0, 0, 0);
     //checkStudents(g, UNI_C, 3, 2, 0, 0, 2, 0);
 
     // 13 UNI_B
-    makeTurn(10);
+    roll(10);
     checkStudents(g, UNI_B, 1, 4, 4, 0, 0, 0);
     assert(getExchangeRate(g, UNI_B, STUDENT_BQN, STUDENT_MMONEY) == 2);
     retrain(g, STUDENT_BQN, STUDENT_MMONEY);
@@ -198,111 +186,111 @@ static void playTurns(Game g) {
     checkStudents(g, UNI_B, 1, 1, 2, 0, 0, 2);
 
     // 14 UNI_C
-    makeTurn(11);
+    roll(11);
     //checkStudents(g, UNI_A, 2, 0, 1, 1, 2, 0);
 
     // 15 UNI_A
-    makeTurn(8);
+    roll(8);
 
     /* Matt */
 
     // 16 UNI_B
-    makeTurn(9);
+    roll(9);
     checkStudents(g, UNI_B, 1, 1, 3, 0, 0, 2);
     //obtainArc(g, "LLRLRLLLL");
     //checkStudents(g, UNI_B, 1, 0, 2, 0, 0, 2);
 
     // 17 UNI_C
-    makeTurn(4);
+    roll(4);
     // 18 UNI_A
-    makeTurn(7);
+    roll(7);
     // 19 UNI_B
-    makeTurn(7);
+    roll(7);
     // 20 UNI_C
-    makeTurn(5);
+    roll(5);
     // 21 UNI_A
-    makeTurn(12);
+    roll(12);
     // 22 UNI_B
-    makeTurn(7);
+    roll(7);
     // 23 UNI_C
-    makeTurn(6);
+    roll(6);
     // 24 UNI_A
-    makeTurn(7);
+    roll(7);
     // 25 UNI_B
-    makeTurn(7);
+    roll(7);
     // 26 UNI_C
-    makeTurn(9);
+    roll(9);
 
     // 27 UNI_A
-    makeTurn(11);
+    roll(11);
 
     // 28 UNI_B
-    makeTurn(7);
+    roll(7);
     // 29 UNI_C
-    makeTurn(6);
+    roll(6);
     // 30 UNI_A
-    makeTurn(10);
+    roll(10);
 
     /* David */
     // XXX Matt hasn't finished his turns yet
     // 31 UNI_B
-    makeTurn(7);
+    roll(7);
     obtainArc(g, "LRLRRLRLL");
 
     // 32 UNI_C
-    makeTurn(9);
+    roll(9);
 
     // 33 UNI_A
-    makeTurn(6);
+    roll(6);
     retrain(g, STUDENT_MJ, STUDENT_BPS);
     obtainArc(g, "LRRLRLRLR");
 
     // 34 UNI_B
-    makeTurn(9);
+    roll(9);
     retrain(g, STUDENT_BQN, STUDENT_MTV);
     retrain(g, STUDENT_BQN, STUDENT_MJ);
     buildCampus(g, "LRRLRLLR");
 
     // 35 UNI_C
-    makeTurn(7);
+    roll(7);
     // 36 UNI_A
-    makeTurn(7);
+    roll(7);
     // 37 UNI_B
-    makeTurn(6);
+    roll(6);
     // 38 UNI_C
-    makeTurn(9);
+    roll(9);
     // 39 UNI_A
-    makeTurn(4);
+    roll(4);
     // 40 UNI_B
-    makeTurn(3);
+    roll(3);
 
     // 41 UNI_C
-    makeTurn(5);
+    roll(5);
     retrain(g, STUDENT_MJ, STUDENT_MMONEY);
     startSpinoff(g, TRUE);
 
     // 42 UNI_A - the meaning of life
-    makeTurn(9);
+    roll(9);
 
     // 43 UNI_B
-    makeTurn(11);
+    roll(11);
     //obtainArc(g, "");//46
     //obtainArc(g, "");//60
 
     // 44 UNI_C
-    makeTurn(10);
+    roll(10);
     retrain(g, STUDENT_BPS, STUDENT_BQN);
     //obtainArc(g, "");//46
 
     // 45 UNI_A
-    makeTurn(7);
+    roll(7);
     retrain(g, STUDENT_MJ, STUDENT_BPS);
     //obtainArc(g, "");//50
 
     /* Dominic */
     // XXX Matt and David haven't finished their turns yet
-    
-    
+
+
     printf("You just lost the game.\n\n");
 }
 
