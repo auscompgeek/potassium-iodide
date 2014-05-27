@@ -37,6 +37,8 @@ static void checkStudents(Game g, int player,
     int countMJ, int countMTV, int countMMoney);
 
 int main() {
+    printf("[testGame.c] // It's magic!");
+
     int disciplines[] = DISCIPLINES;
     int diceValues[] = DICE_VALUES;
     Game g = newGame(disciplines, diceValues);
@@ -233,6 +235,7 @@ static void playTurns(Game g) {
 
     /* David */
     // XXX Matt hasn't finished his turns yet
+
     // 31 UNI_B
     roll(7);
     obtainArc(g, "LRLRRLRLL");
@@ -274,21 +277,20 @@ static void playTurns(Game g) {
 
     // 43 UNI_B
     roll(11);
-    //obtainArc(g, "");//46
-    //obtainArc(g, "");//60
+    obtainArc(g, "LRRLRLL");
+    obtainArc(g, "LRRLRLLR");
 
     // 44 UNI_C
     roll(10);
     retrain(g, STUDENT_BPS, STUDENT_BQN);
-    //obtainArc(g, "");//46
 
     // 45 UNI_A
     roll(7);
     retrain(g, STUDENT_MJ, STUDENT_BPS);
-    //obtainArc(g, "");//50
+    obtainArc(g, "LRRLRLRLR");
 
     /* Dominic */
-    // XXX Matt and David haven't finished their turns yet
+    // XXX Matt hasn't finished his turns yet
 
 
     printf("You just lost the game.\n\n");
