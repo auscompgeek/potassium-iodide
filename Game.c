@@ -6,6 +6,7 @@
  */
 
 #include <stdlib.h>
+#include <string.h>
 #include "Game.h"
 
 #define NUM_DISCIPLINES 6
@@ -56,14 +57,44 @@ static vertex nextVertex(vertex current, vertex previous,
 static void adjacentVertexes(vertex current, vertex adjacents[3]);
 static int compareVertex(vertex vertex1, vertex vertex2);
 static int vertexInPlayer(uni *playerUni, vertex campus);
+static int isValidVertex(vertex check);
 
 
-// MAP FUNCTIONS: use these to get info on the map
+// INTERNAL FUNCTIONS: label as static if you decide to implement
+// internal functions to use for the ADT functions.
+
+static int isValidVertex(vertex check) {
+    int isValid = FALSE;
+    int x, y;
+    x = check.x;
+    y = check.y;
+    if (x == 0 || x == 5) {
+        if (y >= 2 && y <= 8) {
+            isValid = TRUE;
+        }
+    } else if (x == 1 || x == 4) {
+        if (y >= 1 && y <= 9) {
+            isValid = TRUE;
+        }
+    } else if (x == 2 || x == 3) {
+        if (y >= 0 && y <= 10) {
+            isValid = TRUE;
+        }
+    }
+    return isValid;
+}
 
 // Given the LRB path of a vertex, returns its coord value
 // Returns NULL if invalid path
 static void arcToCoord(path arcPath, ARC destinationArc) {
+    path previousArc;
+    strncpy(arcPath, previousArc, PATH_LIMIT);
+    // Delete last character
+    previousArc[strlen(previousArc) - 1] = END_PATH;
 
+    // Find the co-ords of adjacent vertexes
+    destinationArc[0] = vertexToCoord(previousArc);
+    destinationArc[1] = vertexToCoord(arcPath);
 }
 
 // Given the LRB path of a vertex,
@@ -102,6 +133,9 @@ static vertex vertexToCoord(path vertexPath) {
                 tempPrevious = current;
                 current = nextVertex(current, previous, vertexPath[i]);
                 previous = tempPrevious;
+                if (!isValidVertex(current)) {
+                    invalid = TRUE;
+                }
                 i++;
             }
         }
@@ -150,8 +184,6 @@ static void adjacentVertexes(vertex current, vertex adjacents[3]) {
 
 }
 
-// INTERNAL FUNCTIONS: label as static if you decide to implement
-// internal functions to use for the ADT functions.
 static int compareVertex(vertex vertex1, vertex vertex2) {
     return (vertex1.x == vertex2.x) && (vertex1.y == vertex2.y);
 }

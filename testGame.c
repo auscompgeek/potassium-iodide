@@ -208,7 +208,7 @@ static void playTurns(Game g) {
 
     // 16 UNI_B
     makeTurn(9);
-    //checkStudents(g, UNI_B, 1, 1, 3, 0, 0, 2);
+    checkStudents(g, UNI_B, 1, 1, 3, 0, 0, 2);
     //obtainArc(g, "LLRLRLLLL");
     //checkStudents(g, UNI_B, 1, 0, 2, 0, 0, 2);
 
