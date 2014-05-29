@@ -25,6 +25,7 @@
 static void checkStart(Game g);
 static void playTurns(Game g);
 static void nextTurn(Game g, int *whoseTurn, int *turnNum, int diceValue);
+static void printStatus(Game g);
 
 static void pass(Game g);
 static void buildCampus(Game g, path location);
@@ -296,10 +297,70 @@ static void playTurns(Game g) {
     retrain(g, STUDENT_MJ, STUDENT_BPS);
     obtainArc(g, "LRRLRLRLR");
 
+    printStatus(g);
+
     /* Dominic */
     // XXX Matt hasn't finished his turns yet
 
+    /* WIP
+    // 46 UNI_B
+    roll(10);
+    retrain(g, STUDENT_BQN, STUDENT_BPS);
+    retrain(g, STUDENT_BQN, STUDENT_MTV);
+    buildCampus(g, ""); // @32
 
+    // 47 UNI_C
+    roll(4);
+
+    // 48 UNI_A
+    roll(12);
+    
+    // 49 UNI_B
+    roll(6);
+    
+    // 50 UNI_C
+    roll(5);
+    obtainArc(g, ""); // @33
+    
+    // 51 UNI_A
+    roll(10);
+
+    // 52 UNI_B
+    roll(9);
+    obtainArc(g, ""); // @47
+    obtainArc(g, ""); // @32
+    
+    // 53 UNI_C
+    roll(9);
+
+    // 54 UNI_A
+    roll(6);
+    retrain(g, STUDENT_MJ, STUDENT_BPS); // 3
+    obtainArc(g, ""); // @52
+
+    // 55 UNI_B
+    roll(6);
+
+    // 56 UNI_C
+    roll(11);
+    
+    // 57 UNI_A
+    roll(10);
+
+    // 58 UNI_B
+    roll(9);
+    retrain(g, STUDENT_BQN, STUDENT_BPS); // 2
+    buildCampus(g, ""); // @22
+    retrain(g, STUDENT_BQN, STUDENT_MTV); // 2
+    retrain(g, STUDENT_MJ, STUDENT_MMONEY); // 3
+    startSpinoff(g, FALSE);
+
+    // 59 UNI_C
+    roll(3);
+    
+    // 60 UNI_A
+    roll(6);
+    */
     printf("You just lost the game.\n\n");
 }
 
@@ -454,4 +515,25 @@ static void checkStudents(
     assert(getStudents(g, player, STUDENT_MJ) == countMJ);
     assert(getStudents(g, player, STUDENT_MTV) == countMTV);
     assert(getStudents(g, player, STUDENT_MMONEY) == countMMoney);
+}
+
+static void printStatus(Game g) {
+    int player = UNI_A;
+    while (player <= NUM_UNIS) {
+        printf("player %d:\n"
+            "%dxThD %dxBPS %dxB? %dxMJ %dxMTV %dxM$\n",
+            player,
+            getStudents(g, player, STUDENT_THD),
+            getStudents(g, player, STUDENT_BPS),
+            getStudents(g, player, STUDENT_BQN),
+            getStudents(g, player, STUDENT_MJ),
+            getStudents(g, player, STUDENT_MTV),
+            getStudents(g, player, STUDENT_MMONEY));
+        printf("%d ARCs %d campuses %d GO8s\n",
+            getARCs(g, player),
+            getCampuses(g, player),
+            getGO8s(g, player));
+        printf("%d IP %d Pubs\n", 
+            getIPs(g, player), getPublications(g, player));
+    }
 }
