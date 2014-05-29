@@ -37,7 +37,7 @@ static void checkStudents(Game g, int player,
     int countMJ, int countMTV, int countMMoney);
 
 int main() {
-    printf("[testGame.c] // It's magic!");
+    printf("[tg.c] // Gonna catch them all!\n");
 
     int disciplines[] = DISCIPLINES;
     int diceValues[] = DICE_VALUES;
@@ -446,6 +446,9 @@ static void checkStudents(
         Game g, int player,
         int countThD, int countBPS, int countBQn,
         int countMJ, int countMTV, int countMMoney) {
+    printf("  * students: %d: %dxThD %dxBPS %dxB? %dxMJ %dxMTV %dxM$\n",
+        player, countThD, countBPS, countMJ, countMTV, countMMoney);
+
     assert(getStudents(g, player, STUDENT_THD) == countThD);
     assert(getStudents(g, player, STUDENT_BPS) == countBPS);
     assert(getStudents(g, player, STUDENT_BQN) == countBQn);
