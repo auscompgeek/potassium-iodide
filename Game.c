@@ -49,12 +49,10 @@ struct _game {
 // internal function definitions
 static void arcToCoord(path arcPath, ARC destinationArc);
 static vertex vertexToCoord(path vertexPath);
-static void vertexToPath(vertex vertexLocation, path vertexPath);
-static void arcToPath(ARC arcCoord, path arcPath);
 static void verticesOfRegion(int regionID, vertex vertexCoords[6]);
 static vertex nextVertex(vertex current, vertex previous,
                          char direction);
-static void adjacentVertexes(vertex current, vertex adjacents[3]);
+static void adjacentVertices(vertex current, vertex adjacents[3]);
 static int compareVertex(vertex vertex1, vertex vertex2);
 static int vertexInPlayer(uni *playerUni, vertex campus);
 static int isValidVertex(vertex check);
@@ -92,13 +90,13 @@ static void arcToCoord(path arcPath, ARC destinationArc) {
     // Delete last character
     previousArc[strlen(previousArc) - 1] = END_PATH;
 
-    // Find the co-ords of adjacent vertexes
+    // Find the co-ords of adjacent vertices
     destinationArc[0] = vertexToCoord(previousArc);
     destinationArc[1] = vertexToCoord(arcPath);
 }
 
 // Given the LRB path of a vertex,
-// returns the coords of the 2 adjacent vertexes
+// returns the coords of the 2 adjacent vertices
 // Returns {-1, -1} if invalid path
 static vertex vertexToCoord(path vertexPath) {
     vertex current;
@@ -147,20 +145,6 @@ static vertex vertexToCoord(path vertexPath) {
     return current;
 }
 
-// Given the coords of a vertex, sets vertexPath to a converted
-// LRB path char array
-// sets to NULL if invalid coords
-static void vertexToPath(vertex vertexLocation, path vertexPath) {
-
-}
-
-// Given the coords of an ARC's adjacent vertexes
-// sets vertexPath to a converted LRB path array
-// sets to NULL if invalid coords
-static void arcToPath(ARC arcCoord, path arcPath) {
-
-}
-
 // Given a region's ID, sets vertexCoords to the vertex coords
 // that belong to the region
 static void verticesOfRegion(int regionID, vertex vertexCoords[6]) {
@@ -173,15 +157,38 @@ static void verticesOfRegion(int regionID, vertex vertexCoords[6]) {
 // returns {-1, -1} if the vertex ends up in the sea
 static vertex nextVertex(vertex current, vertex previous,
                          char direction) {
-    // TODO
-    vertex v;
-    return v;
+    vertex next;
+    if (direction == BACK) {
+        next = previous;
+    } else {
+        // WIP
+    }
+    return next;
 }
 
-// Finds the adjacent vertexes around a vertex
-// If less than 3 adjacent, sets NULL to 2nd/3rd element
-static void adjacentVertexes(vertex current, vertex adjacents[3]) {
+// Finds the adjacent vertices around a vertex
+// If less than 3 adjacent, sets {-1, -1} to 2nd/3rd element
+static void adjacentVertices(vertex current, vertex adjacents[3]) {
+    int i;
+    adjacents[0].x = current.x;
+    adjacents[0].y = current.y + 1;
+    adjacents[1].x = current.x;
+    adjacents[1].y = current.y - 1;
+    if ((current.x + current.y) % 2 == 0) {
+        adjacents[2].x = current.x + 1;
+    } else {
+        adjacents[2].x = current.x - 1;
+    }
+    adjacents[2].y = current.y;
 
+    // Check that adjacent vertices are valid
+    i = 0;
+    while (i < 3) {
+        if (!isValidVertex(adjacents[i])) {
+            adjacents[i].x = -1;
+            adjacents[i].y = -1;
+        }
+    }
 }
 
 static int compareVertex(vertex vertex1, vertex vertex2) {
@@ -296,10 +303,6 @@ int isLegalAction(Game g, action a) {
 }
 
 int getKPIpoints(Game g, int player) {
-    // Should we keep a rolling count of KPI points, neglecting the
-    // most ARCs and publications prestige awards? Would be easier.
-    //int points = g->unis[player - 1].kpiPoints;
-
     int points =
         10 * getCampuses(g, player) +
         20 * getGO8s(g, player) +
@@ -337,9 +340,19 @@ void makeAction(Game g, action a) {
     int highestCount;
     uni *playerUni = &(g->unis[player - 1]);
     ARC obtainedArc;
+    vertex obtainedVertex;
 
     if (code == BUILD_CAMPUS) {
         // TODO
+        obtainedVertex = vertexToCoord(a.destination);
+        currentCount = playerUni->campusCount;
+        playerUni->campuses[currentCount] = obtainedVertex;
+        playerUni->campusCount++;
+
+        playerUni->students[STUDENT_BPS]--;
+        playerUni->students[STUDENT_BQN]--;
+        playerUni->students[STUDENT_MJ]--;
+        playerUni->students[STUDENT_MTV]--;
     } else if (code == BUILD_GO8) {
         // TODO
     } else if (code == OBTAIN_ARC) {
