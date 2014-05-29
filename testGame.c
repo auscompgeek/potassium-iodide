@@ -7,18 +7,19 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <assert.h>
 #include "Game.h"
 
-#define DISCIPLINES {STUDENT_BQN, STUDENT_MMONEY, STUDENT_MJ, \
-                STUDENT_MMONEY, STUDENT_MJ, STUDENT_BPS, STUDENT_MTV,\
-                STUDENT_MTV, STUDENT_BPS,STUDENT_MTV, STUDENT_BQN, \
-                STUDENT_MJ, STUDENT_BQN, STUDENT_THD, STUDENT_MJ, \
-                STUDENT_MMONEY, STUDENT_MTV, STUDENT_BQN, STUDENT_BPS }
-#define DICE_VALUES {9, 10, 8, 12, 6, 5, 3, 11, 3, \
-                11, 4, 6, 4, 7, 9, 2, 8, 10, 5}
+#define DISCIPLINES { STUDENT_BQN, STUDENT_MMONEY, STUDENT_MJ, \
+            STUDENT_MMONEY, STUDENT_MJ, STUDENT_BPS, STUDENT_MTV, \
+            STUDENT_MTV, STUDENT_BPS,STUDENT_MTV, STUDENT_BQN, \
+            STUDENT_MJ, STUDENT_BQN, STUDENT_THD, STUDENT_MJ, \
+            STUDENT_MMONEY, STUDENT_MTV, STUDENT_BQN, STUDENT_BPS }
+#define DICE_VALUES {9,10,8,12,6,5,3,11,3,11,4,6,4,7,9,2,8,10,5}
 #define END_PATH '\0'
 
+// to be used by playTurns() *only* - I was lazy, so I wrote a macro...
 #define roll(dice) nextTurn(g, &whoseTurn, &turnNum, dice)
 
 static void checkStart(Game g);
@@ -42,11 +43,11 @@ int main() {
     int disciplines[] = DISCIPLINES;
     int diceValues[] = DICE_VALUES;
     Game g = newGame(disciplines, diceValues);
+    int id = 0;
 
-    printf("Welcome to the Pokemon Centre.\n\n"
+    printf("Welcome to the Pokémon Centre.\n\n"
         "Checking the regions are initialised correctly...\n");
 
-    int id = 0;
     while (id < NUM_REGIONS) {
         printf("%d\n", id);
         assert(getDiscipline(g, id) == disciplines[id]);
@@ -65,13 +66,18 @@ int main() {
 }
 
 static void checkStart(Game g) {
+    int player;
+
     printf("Checking the initial state...\n");
 
     assert(getTurnNumber(g) == -1);
     assert(getWhoseTurn(g) == NO_ONE);
 
-    int player = UNI_A;
+    printf("* player stats...\n");
+    player = UNI_A;
     while (player <= NUM_UNIS) {
+        printf("%d\n", player);
+
         assert(getARCs(g, player) == 0);
         assert(getGO8s(g, player) == 0);
         assert(getCampuses(g, player) == 2);
@@ -82,6 +88,7 @@ static void checkStart(Game g) {
         player++;
     }
 
+    printf("* campuses...\n");
     assert(getCampus(g, "RB") == CAMPUS_A);
     assert(getCampus(g, "RLRLRLRLRLL") == CAMPUS_A);
     assert(getCampus(g, "RRLRL") == CAMPUS_B);
@@ -323,7 +330,6 @@ static void pass(Game g) {
 
 static void buildCampus(Game g, path location) {
     action gameAction;
-    int i;
     int player = getWhoseTurn(g);
     int numCampuses = getCampuses(g, player);
     int kpiPoints = getKPIpoints(g, player);
@@ -332,12 +338,9 @@ static void buildCampus(Game g, path location) {
 
     assert(getCampus(g, location) == VACANT_VERTEX);
     gameAction.actionCode = BUILD_CAMPUS;
-    i = 0;
-    while (location[i] != END_PATH) {
-        gameAction.destination[i] = location[i];
-        i++;
-    }
-    gameAction.destination[i] = END_PATH;
+    strncpy(gameAction.destination, location, PATH_LIMIT - 1);
+    gameAction.destination[PATH_LIMIT - 1] = END_PATH;
+
     assert(isLegalAction(g, gameAction));
     makeAction(g, gameAction);
 
@@ -348,7 +351,6 @@ static void buildCampus(Game g, path location) {
 
 static void buildGO8(Game g, path location) {
     action gameAction;
-    int i;
     int player = getWhoseTurn(g);
     int numNormalCampuses = getCampuses(g, player);
     int numGO8 = getGO8s(g, player);
@@ -357,13 +359,11 @@ static void buildGO8(Game g, path location) {
     printf("  * build GO8: %s\n", location);
 
     assert(getCampus(g, location) == player);
+
     gameAction.actionCode = BUILD_GO8;
-    i = 0;
-    while (location[i] != END_PATH) {
-        gameAction.destination[i] = location[i];
-        i++;
-    }
-    gameAction.destination[i] = END_PATH;
+    strncpy(gameAction.destination, location, PATH_LIMIT - 1);
+    gameAction.destination[PATH_LIMIT - 1] = END_PATH;
+
     assert(isLegalAction(g, gameAction));
     makeAction(g, gameAction);
 
@@ -376,20 +376,17 @@ static void buildGO8(Game g, path location) {
 
 static void obtainArc(Game g, path location) {
     action gameAction;
-    int i;
     int player = getWhoseTurn(g);
     int numARCs = getARCs(g, player);
 
     printf("  * obtain ARC: %s\n", location);
 
     assert(getARC(g, location) == NO_ONE);
+
     gameAction.actionCode = OBTAIN_ARC;
-    i = 0;
-    while (location[i] != END_PATH) {
-        gameAction.destination[i] = location[i];
-        i++;
-    }
-    gameAction.destination[i] = END_PATH;
+    strncpy(gameAction.destination, location, PATH_LIMIT - 1);
+    gameAction.destination[PATH_LIMIT - 1] = END_PATH;
+
     assert(isLegalAction(g, gameAction));
     makeAction(g, gameAction);
 
@@ -423,11 +420,14 @@ static void retrain(Game g, int disciplineFrom, int disciplineTo) {
     int player = getWhoseTurn(g);
     int fromCount = getStudents(g, player, disciplineFrom);
     int toCount = getStudents(g, player, disciplineTo);
+    int rate = getExchangeRate(g, player, disciplineFrom, disciplineTo);
 
-    printf("  * retrain: %d => %d\n", disciplineFrom, disciplineTo);
+    printf("  * retrain: %d => %d\n"
+        "    current students: %d, %d\n",
+        "    rate: %d\n",
+        disciplineFrom, disciplineTo, fromCount, toCount, rate);
 
-    assert(fromCount >= getExchangeRate(g, player,
-        disciplineFrom, disciplineTo));
+    assert(fromCount >= rate);
 
     action gameAction;
     gameAction.actionCode = RETRAIN_STUDENTS;
@@ -437,8 +437,7 @@ static void retrain(Game g, int disciplineFrom, int disciplineTo) {
     assert(isLegalAction(g, gameAction));
     makeAction(g, gameAction);
 
-    assert(getStudents(g, player, disciplineFrom) ==
-        fromCount - getExchangeRate(g, player, disciplineFrom, disciplineTo));
+    assert(getStudents(g, player, disciplineFrom) == fromCount - rate);
     assert(getStudents(g, player, disciplineTo) == toCount + 1);
 }
 
@@ -446,7 +445,7 @@ static void checkStudents(
         Game g, int player,
         int countThD, int countBPS, int countBQn,
         int countMJ, int countMTV, int countMMoney) {
-    printf("  * students: %d: %dxThD %dxBPS %dxB? %dxMJ %dxMTV %dxM$\n",
+    printf("  students: %d: %dxThD %dxBPS %dxB? %dxMJ %dxMTV %dxM$\n",
         player, countThD, countBPS, countMJ, countMTV, countMMoney);
 
     assert(getStudents(g, player, STUDENT_THD) == countThD);
