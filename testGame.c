@@ -507,7 +507,7 @@ static void checkStudents(
         int countThD, int countBPS, int countBQn,
         int countMJ, int countMTV, int countMMoney) {
     printf("  students: %d: %dxThD %dxBPS %dxB? %dxMJ %dxMTV %dxM$\n",
-        player, countThD, countBPS, countMJ, countMTV, countMMoney);
+        player, countThD, countBPS, countBQn, countMJ, countMTV, countMMoney);
 
     assert(getStudents(g, player, STUDENT_THD) == countThD);
     assert(getStudents(g, player, STUDENT_BPS) == countBPS);
@@ -535,5 +535,6 @@ static void printStatus(Game g) {
             getGO8s(g, player));
         printf("%d IP %d Pubs\n", 
             getIPs(g, player), getPublications(g, player));
+        player++;
     }
 }
