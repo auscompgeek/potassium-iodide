@@ -484,7 +484,7 @@ static void retrain(Game g, int disciplineFrom, int disciplineTo) {
     int rate = getExchangeRate(g, player, disciplineFrom, disciplineTo);
 
     printf("  * retrain: %d => %d\n"
-        "    current students: %d, %d\n",
+        "    current students: %d, %d\n"
         "    rate: %d\n",
         disciplineFrom, disciplineTo, fromCount, toCount, rate);
 
