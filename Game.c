@@ -5,8 +5,8 @@
  * All wrongs reserved
  */
 
-#include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 #include "Game.h"
 
 #define NUM_DISCIPLINES 6
@@ -190,10 +190,40 @@ static vertex nextVertex(vertex current, vertex previous,
     } else { // facing vertically
         if ((current.x + current.y) % 2 == 0) {
             if (previous.y < current.y) { // facing northeast
-                
-            } 
+                if (direction == LEFT) {
+                    next.x = current.x;
+                    next.y = current.y + 1;
+                } else {
+                    next.x = current.x + 1;
+                    next.y = current.y;
+                }
+            } else { // facing southeast
+                if (direction == LEFT) {
+                    next.x = current.x + 1;
+                    next.y = current.y;
+                } else {
+                    next.x = current.x;
+                    next.y = current.y - 1;
+                }
+            }
         } else {
-
+            if (previous.y < current.y) { // facing northwest
+                if (direction == LEFT) {
+                    next.x = current.x - 1;
+                    next.y = current.y;
+                } else {
+                    next.x = current.x;
+                    next.y = current.y + 1;
+                }
+            } else { // facing southwest
+                if (direction == LEFT) {
+                    next.x = current.x;
+                    next.y = current.y - 1;
+                } else {
+                    next.x = current.x - 1;
+                    next.y = current.y;
+                }
+            }
         }
     }
     return next;
@@ -412,7 +442,6 @@ void makeAction(Game g, action a) {
     vertex obtainedVertex;
 
     if (code == BUILD_CAMPUS) {
-        // TODO
         obtainedVertex = vertexToCoord(a.destination);
         currentCount = playerUni->campusCount;
         playerUni->campuses[currentCount] = obtainedVertex;
@@ -424,6 +453,13 @@ void makeAction(Game g, action a) {
         playerUni->students[STUDENT_MTV]--;
     } else if (code == BUILD_GO8) {
         // TODO
+        obtainedVertex = vertexToCoord(a.destination);
+        currentCount = playerUni->gO8Count;
+        playerUni->gO8Campuses[currentCount] = obtainedVertex;
+        playerUni->gO8Count++;
+
+        playerUni->students[STUDENT_MJ] -= 2;
+        playerUni->students[STUDENT_MMONEY] -= 3;
     } else if (code == OBTAIN_ARC) {
         arcToCoord(a.destination, obtainedArc);
         currentCount = playerUni->arcCount;
@@ -483,6 +519,12 @@ int getExchangeRate(Game g, int player,
                     int disciplineFrom, int disciplineTo) {
     uni *playerUni = &(g->unis[player - 1]);
     int rate;
+
+    assert(disciplineFrom > STUDENT_THD &&
+        disciplineFrom < NUM_DISCIPLINES);
+    assert(disciplineTo > STUDENT_THD &&
+        disciplineTo < NUM_DISCIPLINES);
+
     vertex retraincenter1;
     vertex retraincenter2;
     if (disciplineFrom == STUDENT_BPS) {
