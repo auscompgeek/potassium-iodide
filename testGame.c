@@ -285,8 +285,8 @@ static void playTurns(Game g) {
 
     // 43 UNI_B
     roll(11);
-    obtainArc(g, "LRRLRLL");
     obtainArc(g, "LRRLRLLR");
+    obtainArc(g, "LRRLRLL");
 
     // 44 UNI_C
     roll(10);
@@ -295,7 +295,7 @@ static void playTurns(Game g) {
     // 45 UNI_A
     roll(7);
     retrain(g, STUDENT_MJ, STUDENT_BPS);
-    obtainArc(g, "LRRLRLRLR");
+    //obtainArc(g, "LRRLRLRLR");
 
     printStatus(g);
 
@@ -314,14 +314,14 @@ static void playTurns(Game g) {
 
     // 48 UNI_A
     roll(12);
-    
+
     // 49 UNI_B
     roll(6);
-    
+
     // 50 UNI_C
     roll(5);
     obtainArc(g, ""); // @33
-    
+
     // 51 UNI_A
     roll(10);
 
@@ -329,7 +329,7 @@ static void playTurns(Game g) {
     roll(9);
     obtainArc(g, ""); // @47
     obtainArc(g, ""); // @32
-    
+
     // 53 UNI_C
     roll(9);
 
@@ -343,7 +343,7 @@ static void playTurns(Game g) {
 
     // 56 UNI_C
     roll(11);
-    
+
     // 57 UNI_A
     roll(10);
 
@@ -357,7 +357,7 @@ static void playTurns(Game g) {
 
     // 59 UNI_C
     roll(3);
-    
+
     // 60 UNI_A
     roll(6);
     */
@@ -533,7 +533,7 @@ static void printStatus(Game g) {
             getARCs(g, player),
             getCampuses(g, player),
             getGO8s(g, player));
-        printf("%d IP %d Pubs\n", 
+        printf("%d IP %d Pubs\n",
             getIPs(g, player), getPublications(g, player));
         player++;
     }
