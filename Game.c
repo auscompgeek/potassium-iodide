@@ -50,13 +50,13 @@ struct _game {
 static void arcToCoord(path arcPath, ARC destinationArc);
 static vertex vertexToCoord(path vertexPath);
 static void verticesOfRegion(int regionID, vertex vertexCoords[6]);
-static vertex nextVertex(vertex current, vertex previous,
-                         char direction);
+static vertex nextVertex(vertex current, vertex previous, char direction);
 static void adjacentVertices(vertex current, vertex adjacents[3]);
 static int compareVertex(vertex vertex1, vertex vertex2);
 static int vertexInPlayer(uni *playerUni, vertex campus);
 static int isValidVertex(vertex check);
-
+static int isValidVertexPath(path vertexPath);
+static int isValidARCPath(path arcPath);
 
 // INTERNAL FUNCTIONS: label as static if you decide to implement
 // internal functions to use for the ADT functions.
@@ -80,6 +80,18 @@ static int isValidVertex(vertex check) {
         }
     }
     return isValid;
+}
+
+// Test for a valid vertex given a path
+static int isValidVertexPath(path vertexPath) {
+    return isValidVertex(vertexToCoord(vertexPath));
+}
+
+// Test for a valid ARC given a path
+static int isValidARCPath(path arcPath) {
+    ARC arc;
+    arcToCoord(arcPath, arc);
+    return isValidVertex(arc[0]) && isValidVertex(arc[1]);
 }
 
 // Given the LRB path of a vertex, returns its coord value
@@ -267,7 +279,7 @@ int isLegalAction(Game g, action a) {
     int code = a.actionCode;
     int player = getWhoseTurn(g);
     int result;
-    int discipFrom;
+    int discipFrom, discipTo;
 
     // no actions are valid in Terra Nullius
     if (getTurnNumber(g) == -1) {
@@ -276,25 +288,61 @@ int isLegalAction(Game g, action a) {
         result = TRUE;
     } else if (code == BUILD_CAMPUS) {
         // TODO
+        result =
+            // check the player has enough students
+            getStudents(g, player, STUDENT_BPS) >= 1 &&
+            getStudents(g, player, STUDENT_BQN) >= 1 &&
+            getStudents(g, player, STUDENT_MJ) >= 1 &&
+            getStudents(g, player, STUDENT_MTV) >= 1 &&
+
+            isValidVertexPath(a.destination) &&
+            // TODO check adjacent vertices
+            getCampus(g, a.destination) == VACANT_VERTEX;
     } else if (code == BUILD_GO8) {
         // TODO
+        result =
+            // check the player has enough students
+            getStudents(g, player, STUDENT_MJ) >= 2 &&
+            getStudents(g, player, STUDENT_MMONEY) >= 3 &&
+            // check there are less than 8 GO8 campuses
+            getGO8s(g, UNI_A) + getGO8s(g, UNI_B) + getGO8s(g, UNI_C) < 8 &&
+
+            isValidVertexPath(a.destination) &&
+            // TODO check adjacent vertices
+            getCampus(g, a.destination) == player;
     } else if (code == OBTAIN_ARC) {
         // TODO
+        result =
+            // check the player has enough students
+            getStudents(g, player, STUDENT_BQN) >= 1 &&
+            getStudents(g, player, STUDENT_BPS) >= 1 &&
+
+            isValidARCPath(a.destination) &&
+            // TODO check adjacent ARCs
+            getARC(g, a.destination) == VACANT_ARC;
     } else if (code == START_SPINOFF) {
-        // TODO
-    } else if (code == OBTAIN_PUBLICATION) {
-        result = FALSE;
-    } else if (code == OBTAIN_IP_PATENT) {
+        // the player merely needs to have enough players to start a spinoff
+        result =
+            getStudents(g, player, STUDENT_MJ) >= 1 &&
+            getStudents(g, player, STUDENT_MTV) >= 1 &&
+            getStudents(g, player, STUDENT_MMONEY) >= 1;
+    } else if (code == OBTAIN_PUBLICATION || code == OBTAIN_IP_PATENT) {
+        // The user isn't allowed to directly make these actions.
+        // They must instead START_SPINOFF and then allow the runGame.c to
+        // decide whether the spinoff results in a publication or patent.
         result = FALSE;
     } else if (code == RETRAIN_STUDENTS) {
         discipFrom = a.disciplineFrom;
-        if (discipFrom == STUDENT_THD ||
-           discipFrom < 0 || discipFrom >= NUM_DISCIPLINES) {
-            result = FALSE;
-        } else {
-            result = getStudents(g, player, discipFrom) <=
-                getExchangeRate(g, player, discipFrom, a.disciplineTo);
-        }
+        discipTo = a.disciplineTo;
+        result =
+            // ThDs can't be retrained
+            discipFrom != STUDENT_THD &&
+            // check the disciplines are in range
+            discipFrom >= 0 && discipFrom < NUM_DISCIPLINES &&
+            discipTo >= 0 && discipTo < NUM_DISCIPLINES &&
+            // check the player has enough students to be retrained
+            getStudents(g, player, discipFrom) >=
+                getExchangeRate(g, player, discipFrom, discipTo);
     } else {
         // action code is out of range
         result = FALSE;
