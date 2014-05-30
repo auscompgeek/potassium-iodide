@@ -39,7 +39,7 @@ static void checkStudents(Game g, int player,
     int countMJ, int countMTV, int countMMoney);
 
 int main() {
-    printf("[tg.c] // Gonna catch them all!\n");
+    printf("[tg.c] // nyanyanyanyanyan;\n");
 
     int disciplines[] = DISCIPLINES;
     int diceValues[] = DICE_VALUES;
@@ -68,11 +68,15 @@ int main() {
 
 static void checkStart(Game g) {
     int player;
+    action passAction;
 
     printf("Checking the initial state...\n");
 
     assert(getTurnNumber(g) == -1);
     assert(getWhoseTurn(g) == NO_ONE);
+
+    passAction.actionCode = PASS;
+    assert(!isLegalAction(g, passAction));
 
     printf("* player stats...\n");
     player = UNI_A;
@@ -150,7 +154,7 @@ static void playTurns(Game g) {
 
     // 5 UNI_C
     roll(9);
-    //checkStudents(g, UNI_C, 0, 3, 1, 0, 0, 1);
+    checkStudents(g, UNI_B, 0, 3, 1, 0, 0, 1);
 
     // 6 UNI_A
     roll(7);
