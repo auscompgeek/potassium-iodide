@@ -172,8 +172,29 @@ static vertex nextVertex(vertex current, vertex previous,
     vertex next;
     if (direction == BACK) {
         next = previous;
-    } else {
-        // WIP
+    } else if (previous.y == current.y) { // facing horizontally
+        next.x = current.x;
+        if (previous.x < current.x) { // facing east
+            if (direction == LEFT) {
+                next.y = current.y + 1;
+            } else { // direction == RIGHT
+                next.y = current.y - 1;
+            }
+        } else { // facing west
+            if (direction == LEFT) {
+                next.y = current.y - 1;
+            } else {
+                next.y = current.y + 1;
+            }
+        }
+    } else { // facing vertically
+        if ((current.x + current.y) % 2 == 0) {
+            if (previous.y < current.y) { // facing northeast
+                
+            } 
+        } else {
+
+        }
     }
     return next;
 }
