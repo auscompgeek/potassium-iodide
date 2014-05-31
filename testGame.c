@@ -238,7 +238,7 @@ static void playTurns(Game g) {
     // 27 UNI_A
     roll(11);
     retrain(g, STUDENT_MJ, STUDENT_MMONEY);
-    startSpinoff(Game g, FALSE);
+    startSpinoff(g, FALSE);
 
     // 28 UNI_B
     roll(7);
