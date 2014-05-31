@@ -47,7 +47,7 @@ int main() {
     Game g = newGame(disciplines, diceValues);
     int id = 0;
 
-    printf("Welcome to the PokÃ©mon Centre.\n\n"
+    printf("Welcome to the Pokémon Centre.\n\n"
         "Checking the regions are initialised correctly...\n");
 
     while (id < NUM_REGIONS) {
