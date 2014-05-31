@@ -252,7 +252,7 @@ static void playTurns(Game g) {
 
     // 31 UNI_B
     roll(7);
-    obtainArc(g, "LRLRRLRLL");
+    //obtainArc(g, "LRLRRLRLL");
 
     // 32 UNI_C
     roll(9);
