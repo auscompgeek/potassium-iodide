@@ -349,6 +349,7 @@ int isLegalAction(Game g, action a) {
             isValidVertexPath(a.destination) &&
             // TODO check adjacent vertices
             getCampus(g, a.destination) == VACANT_VERTEX;
+
     } else if (code == BUILD_GO8) {
         // TODO
         result =
@@ -361,6 +362,7 @@ int isLegalAction(Game g, action a) {
             isValidVertexPath(a.destination) &&
             // TODO check adjacent vertices
             getCampus(g, a.destination) == player;
+
     } else if (code == OBTAIN_ARC) {
         // TODO
         result =
@@ -371,20 +373,24 @@ int isLegalAction(Game g, action a) {
             isValidARCPath(a.destination) &&
             // TODO check adjacent ARCs
             getARC(g, a.destination) == VACANT_ARC;
+
     } else if (code == START_SPINOFF) {
         // the player merely needs to have enough players to start a spinoff
         result =
             getStudents(g, player, STUDENT_MJ) >= 1 &&
             getStudents(g, player, STUDENT_MTV) >= 1 &&
             getStudents(g, player, STUDENT_MMONEY) >= 1;
+
     } else if (code == OBTAIN_PUBLICATION || code == OBTAIN_IP_PATENT) {
         // The user isn't allowed to directly make these actions.
         // They must instead START_SPINOFF and then allow the runGame.c to
         // decide whether the spinoff results in a publication or patent.
         result = FALSE;
+
     } else if (code == RETRAIN_STUDENTS) {
         discipFrom = a.disciplineFrom;
         discipTo = a.disciplineTo;
+
         result =
             // ThDs can't be retrained
             discipFrom != STUDENT_THD &&
@@ -394,6 +400,7 @@ int isLegalAction(Game g, action a) {
             // check the player has enough students to be retrained
             getStudents(g, player, discipFrom) >=
                 getExchangeRate(g, player, discipFrom, discipTo);
+
     } else {
         // action code is out of range
         result = FALSE;
@@ -427,7 +434,8 @@ int getGO8s(Game g, int player) {
 }
 
 int getCampuses(Game g, int player) {
-    return g->unis[player - 1].campusCount;
+    uni playerUni = g->unis[player - 1];
+    return playerUni.campusCount - playerUni.gO8Count;
 }
 
 // Dominic
@@ -451,6 +459,7 @@ void makeAction(Game g, action a) {
         playerUni->students[STUDENT_BQN]--;
         playerUni->students[STUDENT_MJ]--;
         playerUni->students[STUDENT_MTV]--;
+
     } else if (code == BUILD_GO8) {
         // TODO
         obtainedVertex = vertexToCoord(a.destination);
@@ -460,6 +469,7 @@ void makeAction(Game g, action a) {
 
         playerUni->students[STUDENT_MJ] -= 2;
         playerUni->students[STUDENT_MMONEY] -= 3;
+
     } else if (code == OBTAIN_ARC) {
         arcToCoord(a.destination, obtainedArc);
         currentCount = playerUni->arcCount;
@@ -477,8 +487,8 @@ void makeAction(Game g, action a) {
 
     } else if (code == OBTAIN_PUBLICATION) {
         playerUni->publicationCount++;
-        highestCount =
-            g->unis[g->mostPublications - 1].publicationCount;
+        highestCount = g->unis[g->mostPublications - 1].publicationCount;
+
         if (g->mostPublications == NO_ONE ||
            playerUni->publicationCount > highestCount) {
             g->mostPublications = player;
@@ -496,8 +506,7 @@ void makeAction(Game g, action a) {
         playerUni->students[STUDENT_MMONEY]--;
 
     } else if (code == RETRAIN_STUDENTS) {
-        rate = getExchangeRate(g, player,
-            a.disciplineFrom, a.disciplineTo);
+        rate = getExchangeRate(g, player, a.disciplineFrom, a.disciplineTo);
         playerUni->students[a.disciplineFrom] -= rate;
         playerUni->students[a.disciplineTo]++;
     }
