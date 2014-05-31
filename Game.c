@@ -315,14 +315,31 @@ int getWhoseTurn(Game g) {
 }
 
 int getCampus(Game g, path pathToVertex) {
-    // TODO
-    //while
-    return 0;
+    campCoord = vertexToCoord(pathToVertex);
+    int playerCount = 1;
+    int getCampus = FALSE;
+    while (playerCount <= 3){
+        if (vertexInPlayer(playerCount, campCoord) == 0){
+            getCampus = TRUE;
+        }else{
+            getCampus = FALSE;
+        }
+    }
+    return getCampus;
 }
 
 int getARC(Game g, path pathToEdge) {
-    // TODO
-    return 0;
+    arcCoord = arcToCoord(pathToEdge);
+    int playerCount = 1;
+    int getARC = FALSE;
+    while (playerCount <= 3){
+        if (vertexInPlayer(playerCount, arcCoord) == 0){
+            getARC = TRUE;
+        }else{
+            getARC = FALSE;
+        }
+    }
+    return getARC;
 }
 
 // David
