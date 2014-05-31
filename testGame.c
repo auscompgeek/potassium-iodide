@@ -23,6 +23,7 @@
 #define roll(dice) nextTurn(g, &whoseTurn, &turnNum, dice)
 
 static void checkStart(Game g);
+static void checkEnd(Game g);
 static void playTurns(Game g);
 static void nextTurn(Game g, int *whoseTurn, int *turnNum, int diceValue);
 static void printStatus(Game g);
@@ -58,6 +59,7 @@ int main() {
 
     checkStart(g);
     playTurns(g);
+    checkEnd(g);
 
     printf("Taking out the trash...\n\n");
     disposeGame(g);
@@ -102,6 +104,38 @@ static void checkStart(Game g) {
     assert(getCampus(g, "LRLRLRRLRL") == CAMPUS_B);
 
     printf("All clear!\n\n");
+}
+
+static void checkEnd(Game g) { 
+    printf("Checking final stats...\n");
+    assert(getMostARCs(g) == UNI_B);
+    assert(getMostPublications(g) == UNI_A);
+    assert(getTurnNumber(g) == 54);
+    assert(getWhoseTurn(g) == UNI_A);
+
+    assert(getKPIpoints(g, UNI_A) == 58);
+    assert(getARCs(g, UNI_A) == 4);
+    assert(getGO8s(g, UNI_A) == 1);
+    assert(getCampuses(g, UNI_A) == 2);
+    assert(getIPs(g, UNI_A) == 0);
+    assert(getPublications(g, UNI_A) == 1);
+    checkStudents(g, UNI_A, 4, 0, 2, 0, 0, 0);
+
+    assert(getKPIpoints(g, UNI_B) == 70);
+    assert(getARCs(g, UNI_B) == 5);
+    assert(getGO8s(g, UNI_B) == 0);
+    assert(getCampuses(g, UNI_B) == 5);
+    assert(getIPs(g, UNI_B) == 0);
+    assert(getPublications(g, UNI_B) == 0);
+    checkStudents(g, UNI_B, 3, 2, 1, 3, 0, 0);
+
+    assert(getKPIpoints(g, UNI_C) == 44);
+    assert(getARCs(g, UNI_C) == 2);
+    assert(getGO8s(g, UNI_C) == 0);
+    assert(getCampuses(g, UNI_C) == 3);
+    assert(getIPs(g, UNI_C) == 1);
+    assert(getPublications(g, UNI_C) == 0); 
+    checkStudents(g, UNI_C, 3, 2, 1, 0, 0, 0);
 }
 
 static void playTurns(Game g) {
@@ -248,7 +282,6 @@ static void playTurns(Game g) {
     roll(10);
 
     /* David */
-    // XXX Matt hasn't finished his turns yet
 
     // 31 UNI_B
     roll(7);
@@ -304,17 +337,13 @@ static void playTurns(Game g) {
     retrain(g, STUDENT_MJ, STUDENT_BPS);
     obtainArc(g, "LRRLRLRL");
 
-    printStatus(g);
-
     /* Dominic */
-    // XXX Matt hasn't finished his turns yet
-
-    /* WIP
+    
     // 46 UNI_B
     roll(10);
     retrain(g, STUDENT_BQN, STUDENT_BPS);
     retrain(g, STUDENT_BQN, STUDENT_MTV);
-    buildCampus(g, ""); // @32
+    buildCampus(g, "LRRLRL"); // @32
 
     // 47 UNI_C
     roll(4);
@@ -325,49 +354,26 @@ static void playTurns(Game g) {
     // 49 UNI_B
     roll(6);
 
+    // From here on, handpicked.
     // 50 UNI_C
-    roll(5);
-    obtainArc(g, ""); // @33
+    roll(2);
 
     // 51 UNI_A
-    roll(10);
+    roll(2);
 
     // 52 UNI_B
-    roll(9);
-    obtainArc(g, ""); // @47
-    obtainArc(g, ""); // @32
+    roll(2);
 
     // 53 UNI_C
-    roll(9);
+    roll(5);
 
     // 54 UNI_A
-    roll(6);
-    retrain(g, STUDENT_MJ, STUDENT_BPS); // 3
-    obtainArc(g, ""); // @52
-
-    // 55 UNI_B
-    roll(6);
-
-    // 56 UNI_C
-    roll(11);
-
-    // 57 UNI_A
-    roll(10);
-
-    // 58 UNI_B
     roll(9);
-    retrain(g, STUDENT_BQN, STUDENT_BPS); // 2
-    buildCampus(g, ""); // @22
-    retrain(g, STUDENT_BQN, STUDENT_MTV); // 2
-    retrain(g, STUDENT_MJ, STUDENT_MMONEY); // 3
-    startSpinoff(g, FALSE);
+    buildGO8(g, "");
+    pass(g);
 
-    // 59 UNI_C
-    roll(3);
+    printStatus(g);
 
-    // 60 UNI_A
-    roll(6);
-    */
     printf("You just lost the game.\n\n");
 }
 
@@ -527,9 +533,10 @@ static void checkStudents(
 static void printStatus(Game g) {
     int player = UNI_A;
     while (player <= NUM_UNIS) {
-        printf("player %d:\n"
+        printf("player %d: %d KPI\n"
             "%dxThD %dxBPS %dxB? %dxMJ %dxMTV %dxM$\n",
             player,
+            getKPIpoints(g, player),
             getStudents(g, player, STUDENT_THD),
             getStudents(g, player, STUDENT_BPS),
             getStudents(g, player, STUDENT_BQN),
