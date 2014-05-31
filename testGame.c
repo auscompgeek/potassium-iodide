@@ -283,6 +283,7 @@ static void playTurns(Game g) {
 
     // 41 UNI_C
     roll(5);
+    assert(getExchangeRate(g, UNI_C, STUDENT_MJ, STUDENT_MMONEY) == 3);
     retrain(g, STUDENT_MJ, STUDENT_MMONEY);
     startSpinoff(g, TRUE);
 
@@ -301,7 +302,7 @@ static void playTurns(Game g) {
     // 45 UNI_A
     roll(7);
     retrain(g, STUDENT_MJ, STUDENT_BPS);
-    //obtainArc(g, "LRRLRLRLR");
+    obtainArc(g, "LRRLRLRL");
 
     printStatus(g);
 
