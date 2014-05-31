@@ -1,16 +1,22 @@
 CC = gcc
 CC_FLAGS = -Wall -Werror -O -std=c99
+GAME = Game.c
 
 all: test
+
+clean:
+	rm -f runGame testGame
 
 run: runGame
 	./runGame
 
-runGame: runGame.c Game.c
-	$(CC) $(CC_FLAGS) -o runGame runGame.c Game.c
+runGame: runGame.c $(GAME)
+	$(CC) $(CC_FLAGS) runGame.c $(GAME) -o runGame
 
-test: testGame
+# RUN ALL THE TESTS
+test: testGame testNextVertex
+	./testNextVertex
 	./testGame
 
-testGame: testGame.c Game.c
-	$(CC) $(CC_FLAGS) -o testGame testGame.c Game.c
+testGame: testGame.c $(GAME)
+	$(CC) $(CC_FLAGS) testGame.c $(GAME) -o testGame
