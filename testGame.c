@@ -501,6 +501,7 @@ static void retrain(Game g, int disciplineFrom, int disciplineTo) {
         "    rate: %d\n",
         disciplineFrom, disciplineTo, fromCount, toCount, rate);
 
+    assert(rate == 2 || rate == 3);
     assert(fromCount >= rate);
 
     action gameAction;
