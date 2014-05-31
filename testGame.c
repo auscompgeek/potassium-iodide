@@ -211,8 +211,8 @@ static void playTurns(Game g) {
     // 16 UNI_B
     roll(9);
     checkStudents(g, UNI_B, 1, 1, 3, 0, 0, 2);
-    //obtainArc(g, "LLRLRLLLL");
-    //checkStudents(g, UNI_B, 1, 0, 2, 0, 0, 2);
+    obtainArc(g, "LRLRRLRLL");
+    checkStudents(g, UNI_B, 1, 0, 2, 0, 0, 2);
 
     // 17 UNI_C
     roll(4);
