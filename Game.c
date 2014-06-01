@@ -330,8 +330,10 @@ static int playerHasAdjacentARC(Uni playerUni, ARC edge) {
     ARC adjacents[4];
     adjacentARCs(edge, adjacents);
 
-    while (i < 4) {
-        // TODO
+    while (i < 4 && !result) {
+        if (playerHasARC(playerUni, adjacent[i])) {
+            result = TRUE;
+        }
         i++;
     }
 
