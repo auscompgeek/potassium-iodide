@@ -70,6 +70,7 @@ static int playerHasARC(Uni playerUni, ARC edge);
 static int isValidVertex(vertex check);
 static int isValidVertexPath(path vertexPath);
 static int isValidARCPath(path arcPath);
+static int adjacentARCs(ARC edge, ARC adjacents[4]);
 
 // INTERNAL FUNCTIONS: label as static if you decide to implement
 // internal functions to use for the ADT functions.
@@ -274,6 +275,33 @@ static void adjacentVertices(vertex current, vertex adjacents[3]) {
             adjacents[i].x = -1;
             adjacents[i].y = -1;
         }
+    }
+}
+
+// Finds the adjacent ARCs around an ARC
+static int adjacentARCs(ARC edge, ARC adjacents[4]) {
+    int i, adjCount;
+    vertex adjVerts1, adjVerts2;
+    adjacentVertices(edge[0], adjVerts1);
+    adjacentVertices(edge[1], adjVerts2);
+    adjCount = 0;
+    i = 0;
+    while (i < 3) {
+        if (!compareVertex(adjVerts1[i], edge[1])) {
+            adjacents[j][0] = edge[0];
+            adjacents[j][1] = adjVerts1[i];
+            j++;
+        }
+        i++;
+    }
+    i = 0;
+    while (i < 3) {
+        if (!compareVertex(adjVerts2[i], edge[0])) {
+            adjacents[j][0] = edge[1];
+            adjacents[j][1] = adjVerts2[i];
+            j++;
+        }
+        i++;
     }
 }
 
