@@ -70,7 +70,7 @@ static int playerHasARC(Uni playerUni, ARC edge);
 static int isValidVertex(vertex check);
 static int isValidVertexPath(path vertexPath);
 static int isValidARCPath(path arcPath);
-static int adjacentARCs(ARC edge, ARC adjacents[4]);
+static void adjacentARCs(ARC edge, ARC adjacents[4]);
 
 // INTERNAL FUNCTIONS: label as static if you decide to implement
 // internal functions to use for the ADT functions.
@@ -279,14 +279,14 @@ static void adjacentVertices(vertex current, vertex adjacents[3]) {
 }
 
 // Finds the adjacent ARCs around an ARC
-static int adjacentARCs(ARC edge, ARC adjacents[4]) {
-    int i, adjCount;
-    vertex adjVerts1, adjVerts2;
+static void adjacentARCs(ARC edge, ARC adjacents[4]) {
+    int i, j;
+    vertex adjVerts1[3], adjVerts2[3];
     adjacentVertices(edge[0], adjVerts1);
     adjacentVertices(edge[1], adjVerts2);
-    adjCount = 0;
     i = 0;
     while (i < 3) {
+        j = 0;
         if (!compareVertex(adjVerts1[i], edge[1])) {
             adjacents[j][0] = edge[0];
             adjacents[j][1] = adjVerts1[i];
@@ -296,6 +296,7 @@ static int adjacentARCs(ARC edge, ARC adjacents[4]) {
     }
     i = 0;
     while (i < 3) {
+        j = 0;
         if (!compareVertex(adjVerts2[i], edge[0])) {
             adjacents[j][0] = edge[1];
             adjacents[j][1] = adjVerts2[i];
@@ -335,7 +336,7 @@ static int playerHasGO8(Uni playerUni, vertex gO8Campus) {
     int i = 0;
     int result = FALSE;
     while (i < playerUni->gO8Count && !result) {
-        if (compareVertex(playerUni->gO8Campuses[i], gO8campus)) {
+        if (compareVertex(playerUni->gO8Campuses[i], gO8Campus)) {
             result = TRUE;
         }
         i++;
@@ -406,6 +407,8 @@ static int campusOnAdjacentVertex(Game g, vertex coord) {
 Game newGame(int discipline[], int dice[]) {
     Game g = malloc(sizeof (struct _game));
     int i;
+    Uni playerUni;
+
     g->turnNumber = -1;
     g->mostPublications = NO_ONE;
     g->mostARCs = NO_ONE;
@@ -417,6 +420,27 @@ Game newGame(int discipline[], int dice[]) {
         i++;
     }
 
+    i = 0;
+    while (i < NUM_UNIS) {
+        playerUni = &g->unis[i];
+        playerUni->publicationCount = 0;
+        playerUni->patentCount = 0;
+        playerUni->arcCount = 0;
+        playerUni->campusCount = 2;
+        playerUni->gO8Count = 0;
+
+        playerUni->students[STUDENT_THD] = 0;
+        playerUni->students[STUDENT_BPS] = 3;
+        playerUni->students[STUDENT_BQN] = 3;
+        playerUni->students[STUDENT_MJ] = 1;
+        playerUni->students[STUDENT_MTV] = 1;
+        playerUni->students[STUDENT_MMONEY] = 1;
+
+        i++;
+    }
+
+    // TODO initalise the campuses
+
     return g;
 }
 
@@ -425,11 +449,11 @@ void disposeGame(Game g) {
 }
 
 int getDiscipline(Game g, int regionID) {
-    return g->regionDiscipline[NUM_REGIONS];
+    return g->regionDiscipline[regionID];
 }
 
 int getDiceValue(Game g, int regionID) {
-    return g->diceScore;
+    return g->regionDiceValue[regionID];
 }
 
 int getMostARCs(Game g) {
@@ -457,9 +481,9 @@ int getCampus(Game g, path pathToVertex) {
     int player = UNI_A;
 
     while (player <= NUM_UNIS && result == VACANT_VERTEX) {
-        if (playerHasGO8(player, campCoord)) {
+        if (playerHasGO8(&g->unis[player - 1], campCoord)) {
             result = player + 3;
-        } else if (playerHasVertex(player, campCoord)) {
+        } else if (playerHasVertex(&g->unis[player - 1], campCoord)) {
             result = player;
         }
     }
@@ -474,7 +498,7 @@ int getARC(Game g, path pathToEdge) {
     arcPathToCoords(pathToEdge, arcCoords);
 
     while (player <= NUM_UNIS && result == VACANT_ARC) {
-        if (playerHasARC(player, arcCoords)) {
+        if (playerHasARC(&g->unis[player - 1], arcCoords)) {
             result = player;
         }
     }
@@ -489,6 +513,7 @@ int isLegalAction(Game g, action a) {
     int player = getWhoseTurn(g);
     int result;
     int discipFrom, discipTo;
+    ARC destinationArc;
 
     // no actions are valid in Terra Nullius
     if (getTurnNumber(g) == -1) {
@@ -521,14 +546,14 @@ int isLegalAction(Game g, action a) {
             getCampus(g, a.destination) == player;
 
     } else if (code == OBTAIN_ARC) {
-        // TODO
+        arcPathToCoords(a.destination, destinationArc);
         result =
             // check the player has enough students
             getStudents(g, player, STUDENT_BQN) >= 1 &&
             getStudents(g, player, STUDENT_BPS) >= 1 &&
 
             isValidARCPath(a.destination) &&
-            playerHasAdjacentARC(&g->unis[player - 1], a.destination) &&
+            playerHasAdjacentARC(&g->unis[player - 1], destinationArc) &&
             getARC(g, a.destination) == VACANT_ARC;
 
     } else if (code == START_SPINOFF) {
