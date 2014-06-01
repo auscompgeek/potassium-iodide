@@ -370,6 +370,7 @@ static void playTurns(Game g) {
     // 54 UNI_A
     roll(9);
     buildGO8(g, "");
+    assert(getCampus(g, "") == GO8_A);
     pass(g);
 
     printStatus(g);
