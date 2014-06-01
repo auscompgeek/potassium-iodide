@@ -53,8 +53,8 @@ struct _game {
 };
 
 // internal function definitions
-static void arcToCoord(path arcPath, ARC destinationArc);
-static vertex vertexToCoord(path vertexPath);
+static void arcPathToCoords(path arcPath, ARC destinationArc);
+static vertex vertexPathToCoord(path vertexPath);
 static void verticesOfRegion(int regionID, vertex vertexCoords[6]);
 static vertex nextVertex(vertex current, vertex previous, char direction);
 static void adjacentVertices(vertex current, vertex adjacents[3]);
@@ -93,33 +93,33 @@ static int isValidVertex(vertex check) {
 
 // Test for a valid vertex given a path
 static int isValidVertexPath(path vertexPath) {
-    return isValidVertex(vertexToCoord(vertexPath));
+    return isValidVertex(vertexPathToCoord(vertexPath));
 }
 
 // Test for a valid ARC given a path
 static int isValidARCPath(path arcPath) {
     ARC arc;
-    arcToCoord(arcPath, arc);
+    arcPathToCoords(arcPath, arc);
     return isValidVertex(arc[0]) && isValidVertex(arc[1]);
 }
 
 // Given the LRB path of a vertex, returns its coord value
 // Returns NULL if invalid path
-static void arcToCoord(path arcPath, ARC destinationArc) {
+static void arcPathToCoords(path arcPath, ARC destinationArc) {
     path previousArc;
     strncpy(arcPath, previousArc, PATH_LIMIT);
     // Delete last character
     previousArc[strlen(previousArc) - 1] = END_PATH;
 
     // Find the co-ords of adjacent vertices
-    destinationArc[0] = vertexToCoord(previousArc);
-    destinationArc[1] = vertexToCoord(arcPath);
+    destinationArc[0] = vertexPathToCoord(previousArc);
+    destinationArc[1] = vertexPathToCoord(arcPath);
 }
 
 // Given the LRB path of a vertex,
 // returns the coords of the 2 adjacent vertices
 // Returns {-1, -1} if invalid path
-static vertex vertexToCoord(path vertexPath) {
+static vertex vertexPathToCoord(path vertexPath) {
     vertex current;
     vertex previous, tempPrevious;
     int i = 0;
@@ -369,7 +369,7 @@ int getWhoseTurn(Game g) {
 }
 
 int getCampus(Game g, path pathToVertex) {
-    vertex campCoord = vertexToCoord(pathToVertex);
+    vertex campCoord = vertexPathToCoord(pathToVertex);
     int result = NO_ONE;
     int player = UNI_A;
 
@@ -383,11 +383,10 @@ int getCampus(Game g, path pathToVertex) {
 }
 
 int getARC(Game g, path pathToEdge) {
-    // WIP
     ARC arcCoords;
     int result = NO_ONE;
     int player = UNI_A;
-    arcToCoord(pathToEdge, arcCoords);
+    arcPathToCoords(pathToEdge, arcCoords);
 
     while (player <= NUM_UNIS && result == NO_ONE) {
         if (arcInPlayer(player, arcCoords)) {
@@ -434,7 +433,6 @@ int isLegalAction(Game g, action a) {
             getGO8s(g, UNI_A) + getGO8s(g, UNI_B) + getGO8s(g, UNI_C) < 8 &&
 
             isValidVertexPath(a.destination) &&
-            // TODO check adjacent vertices
             getCampus(g, a.destination) == player;
 
     } else if (code == OBTAIN_ARC) {
@@ -525,7 +523,7 @@ void makeAction(Game g, action a) {
     vertex obtainedVertex;
 
     if (code == BUILD_CAMPUS) {
-        obtainedVertex = vertexToCoord(a.destination);
+        obtainedVertex = vertexPathToCoord(a.destination);
         currentCount = playerUni->campusCount;
         playerUni->campuses[currentCount] = obtainedVertex;
         playerUni->campusCount++;
@@ -537,7 +535,7 @@ void makeAction(Game g, action a) {
 
     } else if (code == BUILD_GO8) {
         // TODO
-        obtainedVertex = vertexToCoord(a.destination);
+        obtainedVertex = vertexPathToCoord(a.destination);
         currentCount = playerUni->gO8Count;
         playerUni->gO8Campuses[currentCount] = obtainedVertex;
         playerUni->gO8Count++;
@@ -546,7 +544,7 @@ void makeAction(Game g, action a) {
         playerUni->students[STUDENT_MMONEY] -= 3;
 
     } else if (code == OBTAIN_ARC) {
-        arcToCoord(a.destination, obtainedArc);
+        arcPathToCoords(a.destination, obtainedArc);
         currentCount = playerUni->arcCount;
         playerUni->arcs[currentCount][0] = obtainedArc[0];
         playerUni->arcs[currentCount][1] = obtainedArc[1];
@@ -667,8 +665,7 @@ void throwDice(Game g, int diceScore) {
                     playerUni = &(g->unis[currentUni - 1]);
                     if (playerHasGO8(playerUni, regVertices[i])) {
                         playerUni->students[discipline] += 2;
-                    } else if (playerHasVertex(playerUni,
-                               regVertices[i])) {
+                    } else if (playerHasVertex(playerUni, regVertices[i])) {
                         playerUni->students[discipline]++;
                     }
                     currentUni++;
