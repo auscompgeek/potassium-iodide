@@ -323,13 +323,12 @@ static int arcInPlayer(uni *playerUni, ARC edge) {
 
 Game newGame(int discipline[], int dice[]) {
     Game g = malloc(sizeof (struct _game));
-    int turnNumber = -1;
-    int regionDiscipline[NUM_REGIONS] = ;
-    int regionDiceValue[NUM_REGIONS];
-    uni unis[NUM_UNIS];
-
-    int mostPublications;
-    int mostARCs
+    g->turnNumber = -1;
+    g->regionDiscipline = NUM_REGIONS;
+    g->regionDiceValue = NUM_REGIONS;
+    g->unis = NUM_UNIS;
+    g->mostPublications = NO_ONE;
+    g->mostARCs = NO_ONE;
     
     return g;
 }
