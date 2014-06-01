@@ -284,7 +284,10 @@ static int compareVertex(vertex vertex1, vertex vertex2) {
 
 // Compares two ARCs and returns true if they are equal.
 static int compareARC(ARC arc1, ARC arc2){
-    return (arc1.x == arc2.x) && (arc1.y == arc2.y);
+    return (compareVertex(arc1[0], arc2[0]) &&
+            compareVertex(arc1[1], arc2[1])) ||
+           (compareVertex(arc1[0], arc2[1]) &&
+            compareVertex(arc1[1], arc2[0]));
 }
 
 // Checks if 
