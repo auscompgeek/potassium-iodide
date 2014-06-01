@@ -57,6 +57,7 @@ static vertex nextVertex(vertex current, vertex previous, char direction);
 static void adjacentVertices(vertex current, vertex adjacents[3]);
 static int compareVertex(vertex vertex1, vertex vertex2);
 static int vertexInPlayer(uni *playerUni, vertex campus);
+static int arcInPlayer(uni *playerUni, ARC edge);
 static int isValidVertex(vertex check);
 static int isValidVertexPath(path vertexPath);
 static int isValidARCPath(path arcPath);
@@ -278,6 +279,16 @@ static int vertexInPlayer(uni *playerUni, vertex campus) {
         if (compareVertex(playerUni->campuses[i], campus)) {
             result = TRUE;
         }
+        i++;
+    }
+    return result;
+}
+
+static int arcInPlayer(uni *playerUni, ARC edge) {
+    int result = FALSE;
+    int i = 0;
+    while (i < playerUni->arcCount && !result) {
+        // do something
         i++;
     }
     return result;
