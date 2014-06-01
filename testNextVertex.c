@@ -9,6 +9,25 @@ typedef struct _vertex {
     int x, y;
 } vertex;
 
+static vertex nextVertex(vertex curr, vertex prev, char dir);
+
+int main() {
+    vertex current, previous, next;
+    char direction;
+
+    printf("direction: ");
+    scanf("%c", &direction);
+    printf("current: ");
+    scanf("%d %d", &(current.x), &(current.y));
+    printf("previous: ");
+    scanf("%d %d", &(previous.x), &(previous.y));
+
+    next = nextVertex(current, previous, direction);
+    printf("New vertex: { %d, %d }\n", next.x, next.y);
+
+    return EXIT_SUCCESS;
+}
+
 // Given a vertex and the previous vertex in a path
 // finds the next vertex given by the single direction of the
 // LRB path
@@ -73,19 +92,4 @@ static vertex nextVertex(vertex current, vertex previous,
         }
     }
     return next;
-}
-
-int main() {
-        vertex current, previous, new;
-        char direction;
-        printf("\ndirection: ");
-        scanf("%c", &direction);
-        printf("current: ");
-        scanf("%d %d", &(current.x), &(current.y));
-        printf("\nprevious: ");
-        scanf("%d %d", &(previous.x), &(previous.y));
-        new = nextVertex(current, previous, direction);
-        printf("New vertex: { %d, %d }\n", new.x, new.y);
-    }
-    return EXIT_SUCCESS;
 }
