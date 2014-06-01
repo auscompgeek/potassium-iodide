@@ -56,6 +56,7 @@ static void verticesOfRegion(int regionID, vertex vertexCoords[6]);
 static vertex nextVertex(vertex current, vertex previous, char direction);
 static void adjacentVertices(vertex current, vertex adjacents[3]);
 static int compareVertex(vertex vertex1, vertex vertex2);
+static int compareARC(ARC arc1, ARC arc2);
 static int vertexInPlayer(uni *playerUni, vertex campus);
 static int arcInPlayer(uni *playerUni, ARC edge);
 static int isValidVertex(vertex check);
@@ -270,6 +271,11 @@ static void adjacentVertices(vertex current, vertex adjacents[3]) {
 
 static int compareVertex(vertex vertex1, vertex vertex2) {
     return (vertex1.x == vertex2.x) && (vertex1.y == vertex2.y);
+}
+static int compareARC(ARC arc1, ARC arc2){
+    fArc = arcToCoord(arc1[1], arc1[2]);
+    sArc = arcToCoord(arc2[1], arc2[2]);
+    return (fArc.x == sArc.x) && (fArc.y == sArc2.y);
 }
 
 static int vertexInPlayer(uni *playerUni, vertex campus) {
