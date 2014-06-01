@@ -386,7 +386,7 @@ Game newGame(int discipline[], int dice[]) {
 }
 
 void disposeGame(Game g) {
-    free (pointerToGame);
+    //TO DO;
 }
 
 int getDiscipline(Game g, int regionID) {
@@ -395,8 +395,7 @@ int getDiscipline(Game g, int regionID) {
 }
 
 int getDiceValue(Game g, int regionID) {
-    // TODO
-    return 0;
+    return g->diceScore;
 }
 
 int getMostARCs(Game g) {
