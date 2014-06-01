@@ -58,6 +58,7 @@ static void adjacentVertices(vertex current, vertex adjacents[3]);
 static int compareVertex(vertex vertex1, vertex vertex2);
 static int compareARC(ARC arc1, ARC arc2);
 static int vertexInPlayer(uni *playerUni, vertex campus);
+static int gO8InPlayer(uni *playerUni, vertex gO8Campus);
 static int arcInPlayer(uni *playerUni, ARC edge);
 static int isValidVertex(vertex check);
 static int isValidVertexPath(path vertexPath);
@@ -288,6 +289,17 @@ static int vertexInPlayer(uni *playerUni, vertex campus) {
     return result;
 }
 
+static int gO8InPlayer(uni *playerUni, vertex gO8Campus) {
+    int i = 0;
+    int result = FALSE;
+    while (i < playerUni->gO8Count && !result) {
+        if (compareVertex(playerUni->gO8Campuses[i], gO8campus)) {
+            result = TRUE;
+        }
+    }
+    return result;
+}
+
 static int arcInPlayer(uni *playerUni, ARC edge) {
     int result = FALSE;
     int i = 0;
@@ -328,12 +340,6 @@ int getMostARCs(Game g) {
 }
 
 /* Matthew */
-
-void throwDice(Game g, int diceScore) {
-    int turnNum = g->turnNumber;
-    turnNum++;
-}
-
 int getMostPublications(Game g) {
     return g->mostPublications;
 }
@@ -624,4 +630,26 @@ int getExchangeRate(Game g, int player,
         rate = 3;
     }
     return rate;
+}
+
+void throwDice(Game g, int diceScore) {
+    // WIP
+    g->turnNumber++;
+    int discipline;
+    int vertexCount;
+    vertex regVertices[6];
+    int owner;
+    int region = 0;
+    while (region < NUM_REGIONS) {
+        if (g->regionDiceValue[region] == diceScore) {
+            discipline = g->regionDiscipline[region];
+            verticesOfRegion(region, regVertices);
+            vertexCount = 0;
+            while (vertexCount < 6) {
+                
+                vertexCount++;
+            }
+        }
+        region++;
+    }
 }
