@@ -316,11 +316,19 @@ static int arcInPlayer(uni *playerUni, ARC edge) {
 
 Game newGame(int discipline[], int dice[]) {
     Game g = malloc(sizeof (struct _game));
+    int turnNumber = -1;
+    int regionDiscipline[NUM_REGIONS] = ;
+    int regionDiceValue[NUM_REGIONS];
+    uni unis[NUM_UNIS];
+
+    int mostPublications;
+    int mostARCs
     
     return g;
 }
 
 void disposeGame(Game g) {
+    game g = pointertoGame
     free (pointerToGame);
 }
 
