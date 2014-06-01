@@ -400,15 +400,17 @@ Game newGame(int discipline[], int dice[]) {
 }
 
 void disposeGame(Game g) {
-    //TO DO;
+    //TO;
 }
 
 int getDiscipline(Game g, int regionID) {
-    g->regionDiscipline[regionID]
-    return -1;
+
+    
+    return g->regionDiscipline[NUM_REGIONS];
 }
 
 int getDiceValue(Game g, int regionID) {
+
     return g->diceScore;
 }
 
