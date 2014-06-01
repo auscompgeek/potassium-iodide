@@ -115,7 +115,7 @@ static void arcPathToCoords(path arcPath, ARC destinationArc) {
     // Delete last character
     previousArc[strlen(previousArc) - 1] = END_PATH;
 
-    // Find the co-ords of adjacent vertices
+    // Find coords of adjacent vertices
     destinationArc[0] = vertexPathToCoord(previousArc);
     destinationArc[1] = vertexPathToCoord(arcPath);
 }
@@ -146,6 +146,7 @@ static vertex vertexPathToCoord(path vertexPath) {
             invalid = TRUE;
         }
         i++;
+
         // Follow path
         while (!invalid && vertexPath[i] != END_PATH) {
             if (vertexPath[i] != LEFT &&
@@ -306,6 +307,7 @@ static int playerHasGO8(Uni playerUni, vertex gO8Campus) {
         if (compareVertex(playerUni->gO8Campuses[i], gO8campus)) {
             result = TRUE;
         }
+        i++;
     }
     return result;
 }
@@ -314,9 +316,43 @@ static int playerHasARC(Uni playerUni, ARC edge) {
     int result = FALSE;
     int i = 0;
     while (i < playerUni->arcCount && !result) {
-        // do something
+        if (compareARC(playerUni->arcs[i], edge)) {
+            result = TRUE;
+        }
         i++;
     }
+    return result;
+}
+
+static int playerHasAdjacentARC(Uni playerUni, ARC edge) {
+    int result = FALSE;
+    int i = 0;
+    ARC adjacents[4];
+    adjacentARCs(edge, adjacents);
+
+    while (i < 4) {
+        // TODO
+        i++;
+    }
+
+    return result;
+}
+
+static int campusOnAdjacentVertex(Game g, vertex coord) {
+    int result = FALSE;
+    int i = 0;
+    int player = UNI_A;
+    vertex adjacents[3];
+    adjacentVertices(coord, adjacents);
+
+    while (i < 3) {
+        while (player <= NUM_UNIS && !result) {
+            // TODO
+            player++;
+        }
+        i++;
+    }
+
     return result;
 }
 
@@ -373,11 +409,13 @@ int getWhoseTurn(Game g) {
 
 int getCampus(Game g, path pathToVertex) {
     vertex campCoord = vertexPathToCoord(pathToVertex);
-    int result = NO_ONE;
+    int result = VACANT_VERTEX;
     int player = UNI_A;
 
-    while (player <= NUM_UNIS && result == NO_ONE) {
-        if (playerHasVertex(player, campCoord)) {
+    while (player <= NUM_UNIS && result == VACANT_VERTEX) {
+        if (playerHasGO8(player, campCoord)) {
+            result = player + 3;
+        } else if (playerHasVertex(player, campCoord)) {
             result = player;
         }
     }
@@ -387,11 +425,11 @@ int getCampus(Game g, path pathToVertex) {
 
 int getARC(Game g, path pathToEdge) {
     ARC arcCoords;
-    int result = NO_ONE;
+    int result = VACANT_ARC;
     int player = UNI_A;
     arcPathToCoords(pathToEdge, arcCoords);
 
-    while (player <= NUM_UNIS && result == NO_ONE) {
+    while (player <= NUM_UNIS && result == VACANT_ARC) {
         if (playerHasARC(player, arcCoords)) {
             result = player;
         }
@@ -423,7 +461,7 @@ int isLegalAction(Game g, action a) {
             getStudents(g, player, STUDENT_MTV) >= 1 &&
 
             isValidVertexPath(a.destination) &&
-            // TODO check adjacent vertices
+            !campusOnAdjacentVertex(g, vertexPathToCoord(a.destination)) &&
             getCampus(g, a.destination) == VACANT_VERTEX;
 
     } else if (code == BUILD_GO8) {
@@ -446,7 +484,7 @@ int isLegalAction(Game g, action a) {
             getStudents(g, player, STUDENT_BPS) >= 1 &&
 
             isValidARCPath(a.destination) &&
-            // TODO check adjacent ARCs
+            playerHasAdjacentARC(&g->unis[player - 1], a.destination) &&
             getARC(g, a.destination) == VACANT_ARC;
 
     } else if (code == START_SPINOFF) {
@@ -509,8 +547,8 @@ int getGO8s(Game g, int player) {
 }
 
 int getCampuses(Game g, int player) {
-    uni playerUni = g->unis[player - 1];
-    return playerUni.campusCount - playerUni.gO8Count;
+    Uni playerUni = &g->unis[player - 1];
+    return playerUni->campusCount - playerUni->gO8Count;
 }
 
 /* Dominic */
