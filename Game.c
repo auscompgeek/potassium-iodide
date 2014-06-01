@@ -305,17 +305,17 @@ static int arcInPlayer(uni *playerUni, ARC edge) {
 /* Shravan */
 
 Game newGame(int discipline[], int dice[]) {
-char *pointerToGame = malloc ((sizeof (char)) * 9000);
-
-    return NULL;
+    Game g = malloc(sizeof (struct _game));
+    
+    return g;
 }
 
 void disposeGame(Game g) {
-    free (pointerToGame)
+    free (pointerToGame);
 }
 
 int getDiscipline(Game g, int regionID) {
-    // TODO
+    g->regionDiscipline[regionID]
     return -1;
 }
 
