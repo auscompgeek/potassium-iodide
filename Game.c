@@ -20,15 +20,19 @@
 #define END_PATH '\0'
 #define REGIONS_TOPLEFT_X {0,0,0,1,1,1,1,2,2,2,2,2,3,3,3,3,4,4,4}
 #define REGIONS_TOPLEFT_Y {8,6,4,9,7,5,3,10,8,6,4,2,9,7,5,3,8,6,4}
-//stores 2 values in a struct (x and y)
-//for controlling the board like a grid
+
+// Imagine the board on a Cartesian plane with the origin at the bottom left.
 typedef struct _vertex {
     int x, y;
 } vertex;
-//Arcs need two values:
-// 1. The location before the ARC from where its going
+
+// ARCs have two values:
+// 1. The location before the ARC from where it's going
 // 2. The location after the ARC from location 1.
 typedef vertex ARC[2];
+
+typedef struct _uni * Uni;
+
 // Stores all the values for the uni[x/3]
 typedef struct _uni {
     int publicationCount;
@@ -43,7 +47,7 @@ typedef struct _uni {
 } uni;
 
 struct _game {
-    int turnNumber; // Calculate whoseTurn from this
+    int turnNumber;
     int regionDiscipline[NUM_REGIONS];
     int regionDiceValue[NUM_REGIONS];
     uni unis[NUM_UNIS];
@@ -60,9 +64,9 @@ static vertex nextVertex(vertex current, vertex previous, char direction);
 static void adjacentVertices(vertex current, vertex adjacents[3]);
 static int compareVertex(vertex vertex1, vertex vertex2);
 static int compareARC(ARC arc1, ARC arc2);
-static int playerHasVertex(uni *playerUni, vertex campus);
-static int playerHasGO8(uni *playerUni, vertex gO8Campus);
-static int arcInPlayer(uni *playerUni, ARC edge);
+static int playerHasVertex(Uni playerUni, vertex campus);
+static int playerHasGO8(Uni playerUni, vertex gO8Campus);
+static int playerHasARC(Uni playerUni, ARC edge);
 static int isValidVertex(vertex check);
 static int isValidVertexPath(path vertexPath);
 static int isValidARCPath(path arcPath);
@@ -186,8 +190,7 @@ static void verticesOfRegion(int regionID, vertex vertexCoords[6]) {
 // finds the next vertex given by the single direction of the
 // LRB path
 // returns {-1, -1} if the vertex ends up in the sea
-static vertex nextVertex(vertex current, vertex previous,
-                         char direction) {
+static vertex nextVertex(vertex current, vertex previous, char direction) {
     vertex next;
     if (direction == BACK) {
         next = previous;
@@ -249,7 +252,7 @@ static vertex nextVertex(vertex current, vertex previous,
 }
 
 // Finds the adjacent vertices around a vertex
-// If less than 3 adjacent, sets {-1, -1} to 2nd/3rd element
+// If less than 3 adjacent, sets 2nd/3rd vertices to {-1, -1}
 static void adjacentVertices(vertex current, vertex adjacents[3]) {
     int i;
     adjacents[0].x = current.x;
@@ -273,18 +276,18 @@ static void adjacentVertices(vertex current, vertex adjacents[3]) {
     }
 }
 
-//compares two verticies given and returns true or false if there
-//the same.
+// Compares two vertices and returns true if they are equal.
 static int compareVertex(vertex vertex1, vertex vertex2) {
     return (vertex1.x == vertex2.x) && (vertex1.y == vertex2.y);
 }
-//compares two arc points given and returns true or false if there
-//the same.
+
+// Compares two ARCs and returns true if they are equal.
 static int compareARC(ARC arc1, ARC arc2){
     return (arc1.x == arc2.x) && (arc1.y == arc2.y);
 }
-//Checks if 
-static int playerHasVertex(uni *playerUni, vertex campus) {
+
+// Checks if 
+static int playerHasVertex(Uni playerUni, vertex campus) {
     int i = 0;
     int result = FALSE;
     while (i < playerUni->campusCount && !result) {
@@ -296,7 +299,7 @@ static int playerHasVertex(uni *playerUni, vertex campus) {
     return result;
 }
 
-static int playerHasG08(uni *playerUni, vertex gO8Campus) {
+static int playerHasGO8(Uni playerUni, vertex gO8Campus) {
     int i = 0;
     int result = FALSE;
     while (i < playerUni->gO8Count && !result) {
@@ -307,7 +310,7 @@ static int playerHasG08(uni *playerUni, vertex gO8Campus) {
     return result;
 }
 
-static int arcInPlayer(uni *playerUni, ARC edge) {
+static int playerHasARC(Uni playerUni, ARC edge) {
     int result = FALSE;
     int i = 0;
     while (i < playerUni->arcCount && !result) {
@@ -389,7 +392,7 @@ int getARC(Game g, path pathToEdge) {
     arcPathToCoords(pathToEdge, arcCoords);
 
     while (player <= NUM_UNIS && result == NO_ONE) {
-        if (arcInPlayer(player, arcCoords)) {
+        if (playerHasARC(player, arcCoords)) {
             result = player;
         }
     }
@@ -518,7 +521,7 @@ void makeAction(Game g, action a) {
     int rate;
     int currentCount;
     int highestCount;
-    uni *playerUni = &(g->unis[player - 1]);
+    Uni playerUni = &(g->unis[player - 1]);
     ARC obtainedArc;
     vertex obtainedVertex;
 
@@ -599,13 +602,11 @@ int getStudents(Game g, int player, int discipline) {
 
 int getExchangeRate(Game g, int player,
                     int disciplineFrom, int disciplineTo) {
-    uni *playerUni = &(g->unis[player - 1]);
+    Uni playerUni = &(g->unis[player - 1]);
     int rate;
 
-    assert(disciplineFrom > STUDENT_THD &&
-        disciplineFrom < NUM_DISCIPLINES);
-    assert(disciplineTo > STUDENT_THD &&
-        disciplineTo < NUM_DISCIPLINES);
+    assert(disciplineFrom > STUDENT_THD && disciplineFrom < NUM_DISCIPLINES);
+    assert(disciplineTo > STUDENT_THD && disciplineTo < NUM_DISCIPLINES);
 
     vertex retraincenter1;
     vertex retraincenter2;
@@ -648,7 +649,7 @@ void throwDice(Game g, int diceScore) {
     g->turnNumber++;
     int discipline;
     int i;
-    uni *playerUni;
+    Uni playerUni;
     vertex regVertices[6];
     int currentUni;
     int region = 0;
