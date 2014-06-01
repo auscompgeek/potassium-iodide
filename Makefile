@@ -1,17 +1,20 @@
 CC = gcc
-CC_FLAGS = -Wall -Werror -O -std=c99
+CFLAGS = -Wall -Werror -O -std=c99
 GAME = Game.c
+
+.PHONY: all clean run test
 
 all: test
 
 clean:
 	rm -f runGame testGame
+	rm -f testNextVertex testVertexToCoord testVerticesOfRegion
 
 run: runGame
 	./runGame
 
 runGame: runGame.c $(GAME)
-	$(CC) $(CC_FLAGS) runGame.c $(GAME) -o runGame
+	$(CC) $(CFLAGS) runGame.c $(GAME) -o runGame
 
 # RUN ALL THE TESTS
 test: testNextVertex testVertexToCoord testVerticesOfRegion testGame
@@ -21,4 +24,4 @@ test: testNextVertex testVertexToCoord testVerticesOfRegion testGame
 	./testGame
 
 testGame: testGame.c $(GAME)
-	$(CC) $(CC_FLAGS) testGame.c $(GAME) -o testGame
+	$(CC) $(CFLAGS) testGame.c $(GAME) -o testGame
