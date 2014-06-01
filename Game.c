@@ -285,7 +285,8 @@ static int vertexInPlayer(uni *playerUni, vertex campus) {
 
 // ADT FUNCTIONS
 
-// Shravan
+/* Shravan */
+
 Game newGame(int discipline[], int dice[]) {
 char *pointerToGame = malloc ((sizeof (char)) * 9000);
 
@@ -312,7 +313,8 @@ int getMostARCs(Game g) {
     return 0;
 }
 
-// Matthew
+/* Matthew */
+
 void throwDice(Game g, int diceScore) {
     int turnNum = g->turnNumber;
     turnNum++;
@@ -326,39 +328,44 @@ int getTurnNumber(Game g) {
     return g->turnNumber;
 }
 
+/* Matthew and David */
+
 int getWhoseTurn(Game g) {
     return getTurnNumber(g) % 3 + 1;
 }
 
 int getCampus(Game g, path pathToVertex) {
-    campCoord = vertexToCoord(pathToVertex);
-    int playerCount = 1;
-    int getCampus = FALSE;
-    while (playerCount <= 3){
-        if (vertexInPlayer(playerCount, campCoord) == 0){
-            getCampus = TRUE;
-        }else{
-            getCampus = FALSE;
+    vertex campCoord = vertexToCoord(pathToVertex);
+    int result = NO_ONE;
+    int player = UNI_A;
+
+    while (player <= NUM_UNIS && result == NO_ONE) {
+        if (vertexInPlayer(player, campCoord)) {
+            result = player;
         }
     }
-    return getCampus;
+
+    return result;
 }
 
 int getARC(Game g, path pathToEdge) {
-    arcCoord = arcToCoord(pathToEdge);
-    int playerCount = 1;
-    int getARC = FALSE;
-    while (playerCount <= 3){
-        if (vertexInPlayer(playerCount, arcCoord) == 0){
-            getARC = TRUE;
-        }else{
-            getARC = FALSE;
+    // WIP
+    ARC arcCoords;
+    int result = NO_ONE;
+    int player = UNI_A;
+    arcToCoord(pathToEdge, arcCoords);
+
+    while (player <= NUM_UNIS && result == NO_ONE) {
+        if (arcInPlayer(player, arcCoords)) {
+            result = player;
         }
     }
-    return getARC;
+
+    return result;
 }
 
-// David
+/* David */
+
 int isLegalAction(Game g, action a) {
     int code = a.actionCode;
     int player = getWhoseTurn(g);
@@ -471,7 +478,8 @@ int getCampuses(Game g, int player) {
     return playerUni.campusCount - playerUni.gO8Count;
 }
 
-// Dominic
+/* Dominic */
+
 void makeAction(Game g, action a) {
     int code = a.actionCode;
     int player = getWhoseTurn(g);
