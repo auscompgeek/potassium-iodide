@@ -274,7 +274,9 @@ static int vertexInPlayer(uni *playerUni, vertex campus) {
 
 // Shravan
 Game newGame(int discipline[], int dice[]) {
-    // TODO
+char *pointerToGame = malloc ((sizeof (char)) * 9000);
+
+
     return NULL;
 }
 
