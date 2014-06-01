@@ -314,7 +314,8 @@ int getMostARCs(Game g) {
 
 // Matthew
 void throwDice(Game g, int diceScore) {
-    // TODO
+    int turnNum = g->turnNumber;
+    turnNum++;
 }
 
 int getMostPublications(Game g) {
