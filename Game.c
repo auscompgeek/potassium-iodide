@@ -273,9 +273,7 @@ static int compareVertex(vertex vertex1, vertex vertex2) {
     return (vertex1.x == vertex2.x) && (vertex1.y == vertex2.y);
 }
 static int compareARC(ARC arc1, ARC arc2){
-    fArc = arcToCoord(arc1[0], arc1[1]);
-    sArc = arcToCoord(arc2[0], arc2[1]);
-    return (fArc.x == sArc.x) && (fArc.y == sArc2.y);
+    return (arc1.x == arc2.x) && (arc1.y == arc2.y);
 }
 
 static int vertexInPlayer(uni *playerUni, vertex campus) {
