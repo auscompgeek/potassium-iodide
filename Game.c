@@ -362,13 +362,26 @@ static int campusOnAdjacentVertex(Game g, vertex coord) {
 
 Game newGame(int discipline[], int dice[]) {
     Game g = malloc(sizeof (struct _game));
+    sizeof g: 8
+    sizeof _game: 4952
+    g->turnNumber: 4
+    g->regionDiscipline: 76
+    g->regionDiceValue: 76
+    g->mostPublications: 4
+    g->mostARCs: 4
+    g->unis: 4788
+    g->unis[0]: 1596
+    sizeof _uni: 1596
+    sum of size of vars in _game: 4952
+
+    /*
     g->turnNumber = -1;
     g->regionDiscipline = NUM_REGIONS;
     g->regionDiceValue = NUM_REGIONS;
     g->unis = NUM_UNIS;
     g->mostPublications = NO_ONE;
     g->mostARCs = NO_ONE;
-    
+    */
     return g;
 }
 
