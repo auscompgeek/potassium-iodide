@@ -58,6 +58,7 @@ static void adjacentVertices(vertex current, vertex adjacents[3]);
 static int compareVertex(vertex vertex1, vertex vertex2);
 static int compareARC(ARC arc1, ARC arc2);
 static int vertexInPlayer(uni *playerUni, vertex campus);
+static int gO8InPlayer(uni *playerUni, vertex gO8Campus);
 static int arcInPlayer(uni *playerUni, ARC edge);
 static int isValidVertex(vertex check);
 static int isValidVertexPath(path vertexPath);
@@ -273,9 +274,7 @@ static int compareVertex(vertex vertex1, vertex vertex2) {
     return (vertex1.x == vertex2.x) && (vertex1.y == vertex2.y);
 }
 static int compareARC(ARC arc1, ARC arc2){
-    fArc = arcToCoord(arc1[0], arc1[1]);
-    sArc = arcToCoord(arc2[0], arc2[1]);
-    return (fArc.x == sArc.x) && (fArc.y == sArc2.y);
+    return (arc1.x == arc2.x) && (arc1.y == arc2.y);
 }
 
 static int vertexInPlayer(uni *playerUni, vertex campus) {
@@ -286,6 +285,17 @@ static int vertexInPlayer(uni *playerUni, vertex campus) {
             result = TRUE;
         }
         i++;
+    }
+    return result;
+}
+
+static int gO8InPlayer(uni *playerUni, vertex gO8Campus) {
+    int i = 0;
+    int result = FALSE;
+    while (i < playerUni->gO8Count && !result) {
+        if (compareVertex(playerUni->gO8Campuses[i], gO8campus)) {
+            result = TRUE;
+        }
     }
     return result;
 }
@@ -330,12 +340,6 @@ int getMostARCs(Game g) {
 }
 
 /* Matthew */
-
-void throwDice(Game g, int diceScore) {
-    int turnNum = g->turnNumber;
-    turnNum++;
-}
-
 int getMostPublications(Game g) {
     return g->mostPublications;
 }
@@ -626,4 +630,38 @@ int getExchangeRate(Game g, int player,
         rate = 3;
     }
     return rate;
+}
+
+void throwDice(Game g, int diceScore) {
+    g->turnNumber++;
+    int discipline;
+    int i;
+    uni *playerUni;
+    vertex regVertices[6];
+    int currentUni;
+    int region = 0;
+    while (region < NUM_REGIONS) {
+        if (g->regionDiceValue[region] == diceScore) {
+            // Find discpline of that region
+            discipline = g->regionDiscipline[region];
+            verticesOfRegion(region, regVertices);
+            i = 0;
+            while (i < 6) {
+                // Find any campuses in that region
+                currentUni = UNI_A;
+                while (currentUni <= UNI_C) {
+                    playerUni = &(g->unis[currentUni - 1]);
+                    if (gO8InPlayer(playerUni, regVertices[i])) {
+                        playerUni->students[discipline] += 2;
+                    } else if (vertexInPlayer(playerUni,
+                               regVertices[i])) {
+                        playerUni->students[discipline]++;
+                    }
+                    currentUni++;
+                }
+                i++;
+            }
+        }
+        region++;
+    }
 }
