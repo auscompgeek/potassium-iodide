@@ -338,16 +338,25 @@ static int playerHasAdjacentARC(Uni playerUni, ARC edge) {
     return result;
 }
 
+// Returns TRUE if there is a campus on a vertex adjacent to the given vertex
 static int campusOnAdjacentVertex(Game g, vertex coord) {
     int result = FALSE;
     int i = 0;
     int player = UNI_A;
+    int j;
+    Uni playerUni;
     vertex adjacents[3];
     adjacentVertices(coord, adjacents);
 
-    while (i < 3) {
+    while (i < 3 && !result) {
         while (player <= NUM_UNIS && !result) {
-            // TODO
+            playerUni = &g->unis[player];
+            j = 0;
+            while (j < playerUni->campusCount && !result) {
+                if (compareVertex(playerUni->campuses[j], adjacents[i])) {
+                    result = TRUE;
+                }
+            }
             player++;
         }
         i++;
