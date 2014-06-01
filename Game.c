@@ -355,6 +355,7 @@ static int playerHasARC(Uni playerUni, ARC edge) {
     return result;
 }
 
+// Returns TRUE if the player has an ARC adjacent to the given ARC
 static int playerHasAdjacentARC(Uni playerUni, ARC edge) {
     int result = FALSE;
     int i = 0;
@@ -362,7 +363,7 @@ static int playerHasAdjacentARC(Uni playerUni, ARC edge) {
     adjacentARCs(edge, adjacents);
 
     while (i < 4 && !result) {
-        if (playerHasARC(playerUni, adjacent[i])) {
+        if (playerHasARC(playerUni, adjacents[i])) {
             result = TRUE;
         }
         i++;
@@ -403,29 +404,31 @@ static int campusOnAdjacentVertex(Game g, vertex coord) {
 /* Shravan */
 
 Game newGame(int discipline[], int dice[]) {
-    Game g = malloc(sizeof (struct _game));  
+    Game g = malloc(sizeof (struct _game));
+    int i;
     g->turnNumber = -1;
-    g->regionDiscipline = NUM_REGIONS;
-    g->regionDiceValue = NUM_REGIONS;
-    g->unis[0].publicationCount = 0;
     g->mostPublications = NO_ONE;
     g->mostARCs = NO_ONE;
-    
+
+    i = 0;
+    while (i < NUM_REGIONS) {
+        g->regionDiscipline[i] = discipline[i];
+        g->regionDiceValue[i] = dice[i];
+        i++;
+    }
+
     return g;
 }
 
 void disposeGame(Game g) {
-    //TO;
+    free(g);
 }
 
 int getDiscipline(Game g, int regionID) {
-
-    
     return g->regionDiscipline[NUM_REGIONS];
 }
 
 int getDiceValue(Game g, int regionID) {
-
     return g->diceScore;
 }
 
