@@ -14,8 +14,10 @@ runGame: runGame.c $(GAME)
 	$(CC) $(CC_FLAGS) runGame.c $(GAME) -o runGame
 
 # RUN ALL THE TESTS
-test: testGame testNextVertex
+test: testNextVertex testVertexToCoord testVerticesOfRegion testGame
 	./testNextVertex
+	./testVertexToCoord
+	./testVerticesOfRegion
 	./testGame
 
 testGame: testGame.c $(GAME)
