@@ -20,13 +20,16 @@
 #define END_PATH '\0'
 #define REGIONS_TOPLEFT_X {0,0,0,1,1,1,1,2,2,2,2,2,3,3,3,3,4,4,4}
 #define REGIONS_TOPLEFT_Y {8,6,4,9,7,5,3,10,8,6,4,2,9,7,5,3,8,6,4}
-
+//stores 2 values in a struct (x and y)
+//for controlling the board like a grid
 typedef struct _vertex {
     int x, y;
 } vertex;
-
+//Arcs need two values:
+// 1. The location before the ARC from where its going
+// 2. The location after the ARC from location 1.
 typedef vertex ARC[2];
-
+// Stores all the values for the uni[x/3]
 typedef struct _uni {
     int publicationCount;
     int patentCount;
@@ -57,8 +60,8 @@ static vertex nextVertex(vertex current, vertex previous, char direction);
 static void adjacentVertices(vertex current, vertex adjacents[3]);
 static int compareVertex(vertex vertex1, vertex vertex2);
 static int compareARC(ARC arc1, ARC arc2);
-static int vertexInPlayer(uni *playerUni, vertex campus);
-static int gO8InPlayer(uni *playerUni, vertex gO8Campus);
+static int playerHasVertex(uni *playerUni, vertex campus);
+static int playerHasGO8(uni *playerUni, vertex gO8Campus);
 static int arcInPlayer(uni *playerUni, ARC edge);
 static int isValidVertex(vertex check);
 static int isValidVertexPath(path vertexPath);
@@ -270,14 +273,18 @@ static void adjacentVertices(vertex current, vertex adjacents[3]) {
     }
 }
 
+//compares two verticies given and returns true or false if there
+//the same.
 static int compareVertex(vertex vertex1, vertex vertex2) {
     return (vertex1.x == vertex2.x) && (vertex1.y == vertex2.y);
 }
+//compares two arc points given and returns true or false if there
+//the same.
 static int compareARC(ARC arc1, ARC arc2){
     return (arc1.x == arc2.x) && (arc1.y == arc2.y);
 }
-
-static int vertexInPlayer(uni *playerUni, vertex campus) {
+//Checks if 
+static int playerHasVertex(uni *playerUni, vertex campus) {
     int i = 0;
     int result = FALSE;
     while (i < playerUni->campusCount && !result) {
@@ -289,7 +296,7 @@ static int vertexInPlayer(uni *playerUni, vertex campus) {
     return result;
 }
 
-static int gO8InPlayer(uni *playerUni, vertex gO8Campus) {
+static int playerHasG08(uni *playerUni, vertex gO8Campus) {
     int i = 0;
     int result = FALSE;
     while (i < playerUni->gO8Count && !result) {
@@ -368,7 +375,7 @@ int getCampus(Game g, path pathToVertex) {
     int player = UNI_A;
 
     while (player <= NUM_UNIS && result == NO_ONE) {
-        if (vertexInPlayer(player, campCoord)) {
+        if (playerHasVertex(player, campCoord)) {
             result = player;
         }
     }
@@ -631,8 +638,8 @@ int getExchangeRate(Game g, int player,
         retraincenter2.x = 4;
         retraincenter2.y = 9;
     }
-    if (vertexInPlayer(playerUni, retraincenter1) ||
-       vertexInPlayer(playerUni, retraincenter2)) {
+    if (playerHasVertex(playerUni, retraincenter1) ||
+       playerHasVertex(playerUni, retraincenter2)) {
         rate = 2;
     } else {
         rate = 3;
@@ -659,9 +666,9 @@ void throwDice(Game g, int diceScore) {
                 currentUni = UNI_A;
                 while (currentUni <= UNI_C) {
                     playerUni = &(g->unis[currentUni - 1]);
-                    if (gO8InPlayer(playerUni, regVertices[i])) {
+                    if (playerHasGO8(playerUni, regVertices[i])) {
                         playerUni->students[discipline] += 2;
-                    } else if (vertexInPlayer(playerUni,
+                    } else if (playerHasVertex(playerUni,
                                regVertices[i])) {
                         playerUni->students[discipline]++;
                     }
