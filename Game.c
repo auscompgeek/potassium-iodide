@@ -402,7 +402,7 @@ static int campusOnAdjacentVertex(Game g, vertex coord) {
 
 // ADT FUNCTIONS
 
-/* Shravan */
+/* Shravan and David */
 
 Game newGame(int discipline[], int dice[]) {
     Game g = malloc(sizeof (struct _game));
@@ -456,6 +456,8 @@ int getDiceValue(Game g, int regionID) {
     return g->regionDiceValue[regionID];
 }
 
+/* Shravan */
+
 int getMostARCs(Game g) {
     return g->mostARCs;
 }
@@ -486,6 +488,7 @@ int getCampus(Game g, path pathToVertex) {
         } else if (playerHasVertex(&g->unis[player - 1], campCoord)) {
             result = player;
         }
+        player++;
     }
 
     return result;
