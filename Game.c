@@ -633,21 +633,33 @@ int getExchangeRate(Game g, int player,
 }
 
 void throwDice(Game g, int diceScore) {
-    // WIP
     g->turnNumber++;
     int discipline;
-    int vertexCount;
+    int i;
+    uni *playerUni;
     vertex regVertices[6];
-    int owner;
+    int currentUni;
     int region = 0;
     while (region < NUM_REGIONS) {
         if (g->regionDiceValue[region] == diceScore) {
+            // Find discpline of that region
             discipline = g->regionDiscipline[region];
             verticesOfRegion(region, regVertices);
-            vertexCount = 0;
-            while (vertexCount < 6) {
-                
-                vertexCount++;
+            i = 0;
+            while (i < 6) {
+                // Find any campuses in that region
+                currentUni = UNI_A;
+                while (currentUni <= UNI_C) {
+                    playerUni = &(g->unis[currentUni - 1]);
+                    if (gO8InPlayer(playerUni, regVertices[i])) {
+                        playerUni->students[discipline] += 2;
+                    } else if (vertexInPlayer(playerUni,
+                               regVertices[i])) {
+                        playerUni->students[discipline]++;
+                    }
+                    currentUni++;
+                }
+                i++;
             }
         }
         region++;
