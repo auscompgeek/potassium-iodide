@@ -439,7 +439,28 @@ Game newGame(int discipline[], int dice[]) {
         i++;
     }
 
-    // TODO initalise the campuses
+    vertex campus1, campus2;
+    // UNI_A
+    campus1.x = 2;
+    campus1.y = 10;
+    campus2.x = 3;
+    campus2.y = 0;
+    g->unis[UNI_A - 1].campuses[0] = campus1;
+    g->unis[UNI_A - 1].campuses[1] = campus2;
+    // UNI_B
+    campus1.x = 0;
+    campus1.y = 7;
+    campus2.x = 5;
+    campus2.y = 3;
+    g->unis[UNI_B - 1].campuses[0] = campus1;
+    g->unis[UNI_B - 1].campuses[1] = campus2;
+    // UNI_C
+    campus1.x = 0;
+    campus1.y = 2;
+    campus2.x = 5;
+    campus2.y = 8;
+    g->unis[UNI_C - 1].campuses[0] = campus1;
+    g->unis[UNI_C - 1].campuses[1] = campus2;
 
     return g;
 }
