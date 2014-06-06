@@ -112,7 +112,7 @@ static int isValidARCPath(path arcPath) {
 // Returns NULL if invalid path
 static void arcPathToCoords(path arcPath, ARC destinationArc) {
     path previousArc;
-    strncpy(arcPath, previousArc, PATH_LIMIT);
+    strncpy(previousArc, arcPath, PATH_LIMIT);
     // Delete last character
     previousArc[strlen(previousArc) - 1] = END_PATH;
 
