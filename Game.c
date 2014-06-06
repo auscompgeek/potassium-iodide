@@ -275,6 +275,7 @@ static void adjacentVertices(vertex current, vertex adjacents[3]) {
             adjacents[i].x = -1;
             adjacents[i].y = -1;
         }
+        i++;
     }
 }
 
@@ -525,6 +526,7 @@ int getARC(Game g, path pathToEdge) {
         if (playerHasARC(&g->unis[player - 1], arcCoords)) {
             result = player;
         }
+        player++;
     }
 
     return result;
