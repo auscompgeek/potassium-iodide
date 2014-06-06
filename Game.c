@@ -5,6 +5,7 @@
  * All wrongs reserved
  */
 
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -103,6 +104,7 @@ static int isValidVertexPath(path vertexPath) {
 
 // Test for a valid ARC given a path
 static int isValidARCPath(path arcPath) {
+    printf("isvalidarcpath()\n");
     ARC arc;
     arcPathToCoords(arcPath, arc);
     return isValidVertex(arc[0]) && isValidVertex(arc[1]);
@@ -111,6 +113,7 @@ static int isValidARCPath(path arcPath) {
 // Given the LRB path of a vertex, returns its coord value
 // Returns NULL if invalid path
 static void arcPathToCoords(path arcPath, ARC destinationArc) {
+    printf("Arc path to coords()\n");
     path previousArc;
     strncpy(previousArc, arcPath, PATH_LIMIT);
     // Delete last character
@@ -371,6 +374,7 @@ static int playerHasAdjacentARC(Uni playerUni, ARC edge) {
         i++;
     }
 
+    printf("Player has adj arc: %d", result);
     return result;
 }
 
@@ -572,6 +576,7 @@ int isLegalAction(Game g, action a) {
             getCampus(g, a.destination) == player;
 
     } else if (code == OBTAIN_ARC) {
+        printf("Checking legal obtain arc\n");
         arcPathToCoords(a.destination, destinationArc);
         result =
             // check the player has enough students
