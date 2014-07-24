@@ -1,6 +1,6 @@
-CC = gcc
-CFLAGS = -Wall -Werror -O -std=c99
-GAME = Game.c
+CC     ?= gcc
+CFLAGS ?= -Wall -Werror -O -std=c99
+GAME   ?= Game.c
 
 .PHONY: all clean run test
 
