@@ -40,18 +40,18 @@ static void checkStudents(Game g, int player,
     int countMJ, int countMTV, int countMMoney);
 
 int main() {
-    printf("[tg.c] // nyanyanyanyanyan;\n");
+    //printf("[tg.c] // nyanyanyanyanyan;\n");
 
     int disciplines[] = DISCIPLINES;
     int diceValues[] = DICE_VALUES;
     Game g = newGame(disciplines, diceValues);
     int id = 0;
 
-    printf("Welcome to the Pokémon Centre.\n\n"
+    printf("Welcome to the Pokemon Centre.\n\n"
         "Checking the regions are initialised correctly...\n");
 
     while (id < NUM_REGIONS) {
-        printf("%d\n", id);
+        printf(" %d", id);
         assert(getDiscipline(g, id) == disciplines[id]);
         assert(getDiceValue(g, id) == diceValues[id]);
         id++;
@@ -72,7 +72,7 @@ static void checkStart(Game g) {
     int player;
     action passAction;
 
-    printf("Checking the initial state...\n");
+    printf("\nChecking the initial state...\n");
 
     assert(getTurnNumber(g) == -1);
     assert(getWhoseTurn(g) == NO_ONE);
@@ -83,14 +83,12 @@ static void checkStart(Game g) {
     printf("* player stats...\n");
     player = UNI_A;
     while (player <= NUM_UNIS) {
-        printf("%d\n", player);
-
+        checkStudents(g, player, 0, 3, 3, 1, 1, 1);
         assert(getARCs(g, player) == 0);
         assert(getGO8s(g, player) == 0);
         assert(getCampuses(g, player) == 2);
         assert(getIPs(g, player) == 0);
         assert(getPublications(g, player) == 0);
-        checkStudents(g, player, 0, 3, 3, 1, 1, 1);
 
         player++;
     }
@@ -106,7 +104,7 @@ static void checkStart(Game g) {
     printf("All clear!\n\n");
 }
 
-static void checkEnd(Game g) { 
+static void checkEnd(Game g) {
     printf("Checking final stats...\n");
     assert(getMostARCs(g) == UNI_B);
     assert(getMostPublications(g) == UNI_A);
@@ -134,7 +132,7 @@ static void checkEnd(Game g) {
     assert(getGO8s(g, UNI_C) == 0);
     assert(getCampuses(g, UNI_C) == 3);
     assert(getIPs(g, UNI_C) == 1);
-    assert(getPublications(g, UNI_C) == 0); 
+    assert(getPublications(g, UNI_C) == 0);
     checkStudents(g, UNI_C, 3, 2, 1, 0, 0, 0);
 }
 
@@ -338,7 +336,7 @@ static void playTurns(Game g) {
     obtainArc(g, "LRRLRLRL");
 
     /* Dominic */
-    
+
     // 46 UNI_B
     roll(10);
     retrain(g, STUDENT_BQN, STUDENT_BPS);
