@@ -323,7 +323,7 @@ static int compareARC(ARC arc1, ARC arc2){
             compareVertex(arc1[1], arc2[0]));
 }
 
-// Checks if 
+// Checks if a player has a campus at a vertex
 static int playerHasVertex(Uni playerUni, vertex campus) {
     int i = 0;
     int result = FALSE;
@@ -444,28 +444,15 @@ Game newGame(int discipline[], int dice[]) {
         i++;
     }
 
-    vertex campus1, campus2;
     // UNI_A
-    campus1.x = 2;
-    campus1.y = 10;
-    campus2.x = 3;
-    campus2.y = 0;
-    g->unis[UNI_A - 1].campuses[0] = campus1;
-    g->unis[UNI_A - 1].campuses[1] = campus2;
+    g->unis[UNI_A - 1].campuses[0] = (vertex){2, 10};
+    g->unis[UNI_A - 1].campuses[1] = (vertex){3, 0};
     // UNI_B
-    campus1.x = 0;
-    campus1.y = 7;
-    campus2.x = 5;
-    campus2.y = 3;
-    g->unis[UNI_B - 1].campuses[0] = campus1;
-    g->unis[UNI_B - 1].campuses[1] = campus2;
+    g->unis[UNI_B - 1].campuses[0] = (vertex){0, 7};
+    g->unis[UNI_B - 1].campuses[1] = (vertex){5, 3};
     // UNI_C
-    campus1.x = 0;
-    campus1.y = 2;
-    campus2.x = 5;
-    campus2.y = 8;
-    g->unis[UNI_C - 1].campuses[0] = campus1;
-    g->unis[UNI_C - 1].campuses[1] = campus2;
+    g->unis[UNI_C - 1].campuses[0] = (vertex){0, 2};
+    g->unis[UNI_C - 1].campuses[1] = (vertex){5, 8};
 
     return g;
 }
