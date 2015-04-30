@@ -14,7 +14,7 @@ run: runGame
 	./runGame
 
 runGame: runGame.c $(GAME)
-	$(CC) $(CFLAGS) runGame.c $(GAME) -o runGame
+	$(CC) $(CFLAGS) $^ -o $@
 
 # RUN ALL THE TESTS
 test: testNextVertex testVertexToCoord testVerticesOfRegion testGame
@@ -24,4 +24,4 @@ test: testNextVertex testVertexToCoord testVerticesOfRegion testGame
 	./testGame
 
 testGame: testGame.c $(GAME)
-	$(CC) $(CFLAGS) testGame.c $(GAME) -o testGame
+	$(CC) $(CFLAGS) $^ -o $@
