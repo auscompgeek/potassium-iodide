@@ -40,15 +40,15 @@ static void checkStudents(Game g, int player,
     int countMJ, int countMTV, int countMMoney);
 
 int main() {
-    //printf("[tg.c] // nyanyanyanyanyan;\n");
+    //puts("[tg.c] // nyanyanyanyanyan;");
 
     int disciplines[] = DISCIPLINES;
     int diceValues[] = DICE_VALUES;
     Game g = newGame(disciplines, diceValues);
     int id = 0;
 
-    printf("Welcome to the Pokemon Centre.\n\n"
-        "Checking the regions are initialised correctly...\n");
+    puts("Welcome to the Pokemon Centre.\n\n"
+        "Checking the regions are initialised correctly...");
 
     while (id < NUM_REGIONS) {
         printf(" %d", id);
@@ -61,10 +61,10 @@ int main() {
     playTurns(g);
     checkEnd(g);
 
-    printf("Taking out the trash...\n\n");
+    puts("Taking out the trash...\n");
     disposeGame(g);
 
-    printf("All tests passed! Here's some awesome sauce. :3\n");
+    puts("All tests passed! Here's some awesome sauce. :3");
     return EXIT_SUCCESS;
 }
 
@@ -72,7 +72,7 @@ static void checkStart(Game g) {
     int player;
     action passAction;
 
-    printf("\nChecking the initial state...\n");
+    puts("\nChecking the initial state...");
 
     assert(getTurnNumber(g) == -1);
     assert(getWhoseTurn(g) == NO_ONE);
@@ -80,7 +80,7 @@ static void checkStart(Game g) {
     passAction.actionCode = PASS;
     assert(!isLegalAction(g, passAction));
 
-    printf("* player stats...\n");
+    puts("* player stats...");
     player = UNI_A;
     while (player <= NUM_UNIS) {
         checkStudents(g, player, 0, 3, 3, 1, 1, 1);
@@ -89,11 +89,12 @@ static void checkStart(Game g) {
         assert(getCampuses(g, player) == 2);
         assert(getIPs(g, player) == 0);
         assert(getPublications(g, player) == 0);
+        assert(getKPIpoints(g, player) == 20);
 
         player++;
     }
 
-    printf("* campuses...\n");
+    puts("* campuses...");
     assert(getCampus(g, "RB") == CAMPUS_A);
     assert(getCampus(g, "RLRLRLRLRLL") == CAMPUS_A);
     assert(getCampus(g, "RRLRL") == CAMPUS_B);
@@ -101,11 +102,13 @@ static void checkStart(Game g) {
     assert(getCampus(g, "LRLRL") == CAMPUS_C);
     assert(getCampus(g, "LRLRLRRLRL") == CAMPUS_B);
 
-    printf("All clear!\n\n");
+    puts("All clear!\n");
 }
 
 static void checkEnd(Game g) {
-    printf("Checking final stats...\n");
+    printStatus(g);
+
+    puts("Checking final stats...");
     assert(getMostARCs(g) == UNI_B);
     assert(getMostPublications(g) == UNI_A);
     assert(getTurnNumber(g) == 54);
@@ -140,10 +143,10 @@ static void playTurns(Game g) {
     int whoseTurn = UNI_A;
     int turnNum = 0;
 
-    printf("Let's play a game, shall we?\n"
+    puts("Let's play a game, shall we?\n"
         "* Turn 0...\n"
         "  * dice: 5\n"
-        "  * player: 1\n");
+        "  * player: 1");
 
     // 0 UNI_A
     throwDice(g, 5);
@@ -371,18 +374,16 @@ static void playTurns(Game g) {
     assert(getCampus(g, "") == GO8_A);
     pass(g);
 
-    printStatus(g);
-
-    printf("You just lost the game.\n\n");
+    puts("You just lost the game.\n");
 }
 
 static void nextTurn(Game g, int *whoseTurn, int *turnNum, int diceValue) {
     pass(g);
-    (*whoseTurn)++;
+    ++*whoseTurn;
     if (*whoseTurn > NUM_UNIS) {
         *whoseTurn = UNI_A;
     }
-    (*turnNum)++;
+    ++*turnNum;
 
     printf("* Turn %d\n"
         "  * dice: %d\n"
@@ -532,9 +533,12 @@ static void checkStudents(
 
 static void printStatus(Game g) {
     int player = UNI_A;
+    puts("Current stats:");
     while (player <= NUM_UNIS) {
-        printf("player %d: %d KPI\n"
-            "%dxThD %dxBPS %dxB? %dxMJ %dxMTV %dxM$\n",
+        printf(" player %d: %d KPI\n"
+            "  %dxThD %dxBPS %dxB? %dxMJ %dxMTV %dxM$\n"
+            "  %d ARCs %d campuses %d GO8s\n"
+            "  %d IP %d Pubs\n",
             player,
             getKPIpoints(g, player),
             getStudents(g, player, STUDENT_THD),
@@ -542,12 +546,10 @@ static void printStatus(Game g) {
             getStudents(g, player, STUDENT_BQN),
             getStudents(g, player, STUDENT_MJ),
             getStudents(g, player, STUDENT_MTV),
-            getStudents(g, player, STUDENT_MMONEY));
-        printf("%d ARCs %d campuses %d GO8s\n",
+            getStudents(g, player, STUDENT_MMONEY),
             getARCs(g, player),
             getCampuses(g, player),
-            getGO8s(g, player));
-        printf("%d IP %d Pubs\n",
+            getGO8s(g, player),
             getIPs(g, player), getPublications(g, player));
         player++;
     }
