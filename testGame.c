@@ -199,7 +199,7 @@ static void playTurns(Game g) {
 
     // 7 UNI_B
     roll(8);
-    //checkStudents(g, UNI_C, 1, 1, 0, 2, 2, 0);
+    checkStudents(g, UNI_C, 1, 1, 0, 2, 1, 0);
 
     // 8 UNI_C
     roll(9);
@@ -207,13 +207,13 @@ static void playTurns(Game g) {
 
     // 9 UNI_A
     roll(6);
-    //checkStudents(g, UNI_A, 2, 0, 1, 0, 2, 0);
+    checkStudents(g, UNI_A, 2, 0, 1, 2, 0, 0);
 
     // 10 UNI_B
     roll(7);
+    checkStudents(g, UNI_A, 2, 0, 1, 2, 0, 0);
     checkStudents(g, UNI_B, 1, 3, 2, 0, 0, 0);
-    //checkStudents(g, UNI_C, 3, 1, 0, 0, 2, 0);
-    //checkStudents(g, UNI_A, 2, 0, 1, 0, 2, 0);
+    checkStudents(g, UNI_C, 2, 1, 0, 2, 0, 0);
 
     // 11 UNI_C
     roll(9);
@@ -222,7 +222,7 @@ static void playTurns(Game g) {
     // 12 UNI_A
     roll(5);
     checkStudents(g, UNI_B, 1, 4, 3, 0, 0, 0);
-    //checkStudents(g, UNI_C, 3, 2, 0, 0, 2, 0);
+    checkStudents(g, UNI_C, 2, 2, 0, 2, 0, 0);
 
     // 13 UNI_B
     roll(10);
@@ -236,7 +236,7 @@ static void playTurns(Game g) {
 
     // 14 UNI_C
     roll(11);
-    //checkStudents(g, UNI_A, 2, 0, 1, 1, 2, 0);
+    checkStudents(g, UNI_A, 2, 0, 1, 2, 1, 0);
 
     // 15 UNI_A
     roll(8);
