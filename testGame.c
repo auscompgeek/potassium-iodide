@@ -143,16 +143,10 @@ static void playTurns(Game g) {
     int whoseTurn = UNI_A;
     int turnNum = 0;
 
-    puts("Let's play a game, shall we?\n"
-        "* Turn 0...\n"
-        "  * dice: 5\n"
-        "  * player: 1");
+    puts("Let's play a game, shall we?");
 
     // 0 UNI_A
-    throwDice(g, 5);
-    assert(getWhoseTurn(g) == UNI_A);
-    assert(getTurnNumber(g) == 0);
-
+    rollDice(g, 5, 0, UNI_A);
     checkStudents(g, UNI_B, 0, 4, 3, 1, 1, 1);
     obtainArc(g, "LRRLRLRLRLR");
     obtainArc(g, "LRRLRLRLRL");
@@ -384,15 +378,18 @@ static void nextTurn(Game g, int *whoseTurn, int *turnNum, int diceValue) {
         *whoseTurn = UNI_A;
     }
     ++*turnNum;
+    rollDice(g, diceValue, *turnNum, *whoseTurn);
+}
 
+static void rollDice(Game g, int diceValue, int turnNum, int whoseTurn) {
     printf("* Turn %d\n"
         "  * dice: %d\n"
         "  * player: %d\n",
-        *turnNum, diceValue, *whoseTurn);
+        turnNum, diceValue, whoseTurn);
 
     throwDice(g, diceValue);
-    assert(getTurnNumber(g) == *turnNum);
-    assert(getWhoseTurn(g) == *whoseTurn);
+    assert(getTurnNumber(g) == turnNum);
+    assert(getWhoseTurn(g) == whoseTurn);
 }
 
 static void pass(Game g) {
