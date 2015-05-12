@@ -1,7 +1,7 @@
 /*
  * testGame.c: test a Game implementation
  * by Dominic He, Matthew Solomonson, David Vo, Shravan Jeevan
- * Copyleft 2014
+ * Copyleft 2014-2015
  * All wrongs reserved, including the blames.
  */
 
@@ -70,14 +70,13 @@ int main() {
 
 static void checkStart(Game g) {
     int player;
-    action passAction;
+    action passAction = {PASS};
 
     puts("\nChecking the initial state...");
 
     assert(getTurnNumber(g) == -1);
     assert(getWhoseTurn(g) == NO_ONE);
 
-    passAction.actionCode = PASS;
     assert(!isLegalAction(g, passAction));
 
     puts("* player stats...");
@@ -393,14 +392,13 @@ static void rollDice(Game g, int diceValue, int turnNum, int whoseTurn) {
 }
 
 static void pass(Game g) {
-    action gameAction;
-    gameAction.actionCode = PASS;
+    action gameAction = {PASS};
     assert(isLegalAction(g, gameAction));
     makeAction(g, gameAction);
 }
 
 static void buildCampus(Game g, path location) {
-    action gameAction;
+    action gameAction = {BUILD_CAMPUS};
     int player = getWhoseTurn(g);
     int numCampuses = getCampuses(g, player);
     int kpiPoints = getKPIpoints(g, player);
@@ -408,7 +406,6 @@ static void buildCampus(Game g, path location) {
     printf("  * build campus: %s\n", location);
 
     assert(getCampus(g, location) == VACANT_VERTEX);
-    gameAction.actionCode = BUILD_CAMPUS;
     strncpy(gameAction.destination, location, PATH_LIMIT - 1);
     gameAction.destination[PATH_LIMIT - 1] = END_PATH;
 
@@ -421,7 +418,7 @@ static void buildCampus(Game g, path location) {
 }
 
 static void buildGO8(Game g, path location) {
-    action gameAction;
+    action gameAction = {BUILD_GO8};
     int player = getWhoseTurn(g);
     int numNormalCampuses = getCampuses(g, player);
     int numGO8 = getGO8s(g, player);
@@ -430,8 +427,6 @@ static void buildGO8(Game g, path location) {
     printf("  * build GO8: %s\n", location);
 
     assert(getCampus(g, location) == player);
-
-    gameAction.actionCode = BUILD_GO8;
     strncpy(gameAction.destination, location, PATH_LIMIT - 1);
     gameAction.destination[PATH_LIMIT - 1] = END_PATH;
 
@@ -446,7 +441,7 @@ static void buildGO8(Game g, path location) {
 }
 
 static void obtainArc(Game g, path location) {
-    action gameAction;
+    action gameAction = {OBTAIN_ARC};
     int player = getWhoseTurn(g);
     int numARCs = getARCs(g, player);
 
@@ -466,13 +461,12 @@ static void obtainArc(Game g, path location) {
 }
 
 static void startSpinoff(Game g, int obtainPatent) {
-    action gameAction;
+    action gameAction = {START_SPINOFF};
     int count;
     int player = getWhoseTurn(g);
 
     printf("  * start spinoff; patent: %d\n", obtainPatent);
 
-    gameAction.actionCode = START_SPINOFF;
     assert(isLegalAction(g, gameAction));
     if (obtainPatent) {
         count = getIPs(g, player);
@@ -501,8 +495,7 @@ static void retrain(Game g, int disciplineFrom, int disciplineTo) {
     assert(rate == 2 || rate == 3);
     assert(fromCount >= rate);
 
-    action gameAction;
-    gameAction.actionCode = RETRAIN_STUDENTS;
+    action gameAction = {RETRAIN_STUDENTS};
     gameAction.disciplineFrom = disciplineFrom;
     gameAction.disciplineTo = disciplineTo;
 
