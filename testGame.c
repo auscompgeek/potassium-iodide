@@ -26,6 +26,7 @@ static void checkStart(Game g);
 static void checkEnd(Game g);
 static void playTurns(Game g);
 static void nextTurn(Game g, int *whoseTurn, int *turnNum, int diceValue);
+static void rollDice(Game g, int diceValue, int turnNum, int whoseTurn);
 static void printStatus(Game g);
 
 static void pass(Game g);
