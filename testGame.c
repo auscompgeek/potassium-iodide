@@ -436,8 +436,8 @@ static void buildGO8(Game g, path location) {
 
     assert(getCampuses(g, player) == numNormalCampuses - 1);
     assert(getGO8s(g, player) == numGO8 + 1);
-    // GO8 campus code = normal code + 3
-    assert(getCampus(g, location) == player + 3);
+    // GO8 campus code = normal code + NUM_UNIS
+    assert(getCampus(g, location) == player + NUM_UNIS);
     assert(getKPIpoints(g, player) == kpiPoints + 10);
 }
 
