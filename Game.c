@@ -104,7 +104,6 @@ static int isValidVertexPath(path vertexPath) {
 
 // Test for a valid ARC given a path
 static int isValidARCPath(path arcPath) {
-    printf("isvalidarcpath()\n");
     ARC arc;
     arcPathToCoords(arcPath, arc);
     return isValidVertex(arc[0]) && isValidVertex(arc[1]);
@@ -113,7 +112,6 @@ static int isValidARCPath(path arcPath) {
 // Given the LRB path of a vertex, returns its coord value
 // Returns NULL if invalid path
 static void arcPathToCoords(path arcPath, ARC destinationArc) {
-    printf("Arc path to coords()\n");
     path previousArc;
     strncpy(previousArc, arcPath, PATH_LIMIT);
     // Delete last character
@@ -374,7 +372,23 @@ static int playerHasAdjacentARC(Uni playerUni, ARC edge) {
         i++;
     }
 
-    printf("Player has adj arc: %d", result);
+    return result;
+}
+
+// Returns TRUE if the player has an campus adjacent to the given vertex
+static int playerHasAdjacentCampus(Uni playerUni, vertex coord) {
+    int result = FALSE;
+    int i = 0;
+    vertex adjacents[3];
+    adjacentVertices(coord, adjacents);
+
+    while (i < 3 && !result) {
+        if (playerHasVertex(playerUni, adjacents[i])) {
+            result = TRUE;
+        }
+        i++;
+    }
+
     return result;
 }
 
@@ -563,7 +577,7 @@ int isLegalAction(Game g, action a) {
             getCampus(g, a.destination) == player;
 
     } else if (code == OBTAIN_ARC) {
-        printf("Checking legal obtain arc\n");
+        Uni playerUni = &g->unis[player - 1];
         arcPathToCoords(a.destination, destinationArc);
         result =
             // check the player has enough students
@@ -571,7 +585,9 @@ int isLegalAction(Game g, action a) {
             getStudents(g, player, STUDENT_BPS) >= 1 &&
 
             isValidARCPath(a.destination) &&
-            playerHasAdjacentARC(&g->unis[player - 1], destinationArc) &&
+            (playerHasAdjacentARC(playerUni, destinationArc) ||
+                playerHasAdjacentCampus(playerUni, destinationArc[0]) ||
+                playerHasAdjacentCampus(playerUni, destinationArc[1])) &&
             getARC(g, a.destination) == VACANT_ARC;
 
     } else if (code == START_SPINOFF) {
