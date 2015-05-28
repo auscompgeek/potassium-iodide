@@ -1,7 +1,7 @@
 /*
  * Game.c - implementation of struct _game
  * by David Vo, Dominic He, Matthew Solomonson, Shravan Jeevan
- * Copyleft 2014
+ * Copyleft 2014-2015
  * All wrongs reserved
  */
 
