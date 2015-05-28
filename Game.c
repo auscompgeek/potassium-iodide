@@ -794,6 +794,7 @@ void throwDice(Game g, int diceScore) {
     int i;
     Uni playerUni;
     vertex regVertices[6];
+    int *students;
     int currentUni;
     int region = 0;
     while (region < NUM_REGIONS) {
@@ -818,5 +819,19 @@ void throwDice(Game g, int diceScore) {
             }
         }
         region++;
+    }
+
+    if (diceScore == 7) {
+        // convert MTV and M$ to ThD
+        // note: this happens *after* students are recruited
+        currentUni = UNI_A;
+        while (currentUni <= NUM_UNIS) {
+            students = g->unis[currentUni - 1].students;
+            students[STUDENT_THD] += students[STUDENT_MTV];
+            students[STUDENT_THD] += students[STUDENT_MMONEY];
+            students[STUDENT_MTV] = 0;
+            students[STUDENT_MMONEY] = 0;
+            currentUni++;
+        }
     }
 }
