@@ -42,6 +42,7 @@ static void checkStudents(Game g, int player,
 
 int main() {
     //puts("[tg.c] // nyanyanyanyanyan;");
+    puts("Reticulating splines...\n");
 
     int disciplines[] = DISCIPLINES;
     int diceValues[] = DICE_VALUES;
@@ -372,12 +373,20 @@ static void playTurns(Game g) {
 }
 
 static void nextTurn(Game g, int *whoseTurn, int *turnNum, int diceValue) {
+    assert(getTurnNumber(g) == *turnNum);
+    assert(getWhoseTurn(g) == *whoseTurn);
+
     pass(g);
+
+    assert(getTurnNumber(g) == *turnNum);
+    assert(getWhoseTurn(g) == *whoseTurn);
+
     ++*whoseTurn;
     if (*whoseTurn > NUM_UNIS) {
         *whoseTurn = UNI_A;
     }
     ++*turnNum;
+
     rollDice(g, diceValue, *turnNum, *whoseTurn);
 }
 
