@@ -662,16 +662,15 @@ void makeAction(Game g, action a) {
     int code = a.actionCode;
     int player = getWhoseTurn(g);
     int rate;
-    int currentCount;
-    int highestCount;
+    int count;
     Uni playerUni = &(g->unis[player - 1]);
     ARC obtainedArc;
     vertex obtainedVertex;
 
     if (code == BUILD_CAMPUS) {
         obtainedVertex = vertexPathToCoord(a.destination);
-        currentCount = playerUni->campusCount;
-        playerUni->campuses[currentCount] = obtainedVertex;
+        count = playerUni->campusCount;
+        playerUni->campuses[count] = obtainedVertex;
         playerUni->campusCount++;
 
         playerUni->students[STUDENT_BPS]--;
@@ -682,8 +681,8 @@ void makeAction(Game g, action a) {
     } else if (code == BUILD_GO8) {
         // TODO
         obtainedVertex = vertexPathToCoord(a.destination);
-        currentCount = playerUni->gO8Count;
-        playerUni->gO8Campuses[currentCount] = obtainedVertex;
+        count = playerUni->gO8Count;
+        playerUni->gO8Campuses[count] = obtainedVertex;
         playerUni->gO8Count++;
 
         playerUni->students[STUDENT_MJ] -= 2;
@@ -691,13 +690,13 @@ void makeAction(Game g, action a) {
 
     } else if (code == OBTAIN_ARC) {
         arcPathToCoords(a.destination, obtainedArc);
-        currentCount = playerUni->arcCount;
-        playerUni->arcs[currentCount][0] = obtainedArc[0];
-        playerUni->arcs[currentCount][1] = obtainedArc[1];
+        count = playerUni->arcCount;
+        playerUni->arcs[count][0] = obtainedArc[0];
+        playerUni->arcs[count][1] = obtainedArc[1];
         playerUni->arcCount++;
 
-        highestCount = g->unis[g->mostARCs - 1].arcCount;
-        if (g->mostARCs == NO_ONE || currentCount + 1 > highestCount) {
+        if (g->mostARCs == NO_ONE ||
+           count + 1 > g->unis[g->mostARCs - 1].arcCount) {
             g->mostARCs = player;
         }
 
@@ -706,10 +705,10 @@ void makeAction(Game g, action a) {
 
     } else if (code == OBTAIN_PUBLICATION) {
         playerUni->publicationCount++;
-        highestCount = g->unis[g->mostPublications - 1].publicationCount;
+        count = playerUni->publicationCount + 1;
 
         if (g->mostPublications == NO_ONE ||
-           playerUni->publicationCount > highestCount) {
+           count > g->unis[g->mostPublications - 1].publicationCount) {
             g->mostPublications = player;
         }
 
