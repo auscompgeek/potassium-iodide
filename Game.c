@@ -395,21 +395,23 @@ static int playerHasAdjacentCampus(Uni playerUni, vertex coord) {
 // Returns TRUE if there is a campus on a vertex adjacent to the given vertex
 static int campusOnAdjacentVertex(Game g, vertex coord) {
     int result = FALSE;
-    int i = 0;
-    int player = UNI_A;
-    int j;
+    int i, j;
+    int player;
     Uni playerUni;
     vertex adjacents[3];
     adjacentVertices(coord, adjacents);
 
+    i = 0;
     while (i < 3 && !result) {
+        player = UNI_A;
         while (player <= NUM_UNIS && !result) {
-            playerUni = &g->unis[player];
+            playerUni = &g->unis[player - 1];
             j = 0;
             while (j < playerUni->campusCount && !result) {
                 if (compareVertex(playerUni->campuses[j], adjacents[i])) {
                     result = TRUE;
                 }
+                j++;
             }
             player++;
         }
