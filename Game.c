@@ -745,10 +745,10 @@ int getStudents(Game g, int player, int discipline) {
 int getExchangeRate(Game g, int player,
                     int disciplineFrom, int disciplineTo) {
     Uni playerUni = &(g->unis[player - 1]);
-    int rate;
+    int rate = 0;
 
     assert(disciplineFrom > STUDENT_THD && disciplineFrom < NUM_DISCIPLINES);
-    assert(disciplineTo > STUDENT_THD && disciplineTo < NUM_DISCIPLINES);
+    assert(disciplineTo >= STUDENT_THD && disciplineTo < NUM_DISCIPLINES);
 
     vertex retraincenter1;
     vertex retraincenter2;
@@ -772,7 +772,7 @@ int getExchangeRate(Game g, int player,
         retraincenter1.y = 9;
         retraincenter2.x = 2;
         retraincenter2.y = 9;
-    } else { // disciplineFrom == STUDENT_MMONEY
+    } else if (disciplineFrom == STUDENT_MMONEY) {
         retraincenter1.x = 3;
         retraincenter1.y = 9;
         retraincenter2.x = 4;
