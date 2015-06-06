@@ -556,7 +556,6 @@ int isLegalAction(Game g, action a) {
     } else if (code == PASS) {
         result = TRUE;
     } else if (code == BUILD_CAMPUS) {
-        // TODO
         result =
             // check the player has enough students
             getStudents(g, player, STUDENT_BPS) >= 1 &&
@@ -569,7 +568,6 @@ int isLegalAction(Game g, action a) {
             getCampus(g, a.destination) == VACANT_VERTEX;
 
     } else if (code == BUILD_GO8) {
-        // TODO
         result =
             // check the player has enough students
             getStudents(g, player, STUDENT_MJ) >= 2 &&
@@ -681,7 +679,6 @@ void makeAction(Game g, action a) {
         playerUni->students[STUDENT_MTV]--;
 
     } else if (code == BUILD_GO8) {
-        // TODO
         obtainedVertex = vertexPathToCoord(a.destination);
         count = playerUni->gO8Count;
         playerUni->gO8Campuses[count] = obtainedVertex;
