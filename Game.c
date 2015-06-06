@@ -106,7 +106,7 @@ static int isValidVertexPath(path vertexPath) {
 static int isValidARCPath(path arcPath) {
     ARC arc;
     arcPathToCoords(arcPath, arc);
-    return isValidVertex(arc[0]) && isValidVertex(arc[1]);
+    return isValidVertex(arc[0]) && isValidVertex(arc[1]) && !compareVertex(arc[0], arc[1]);
 }
 
 // Given the LRB path of a vertex, returns its coord value
