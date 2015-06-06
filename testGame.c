@@ -425,6 +425,7 @@ static void buildCampus(Game g, path location) {
     assert(getCampuses(g, player) == numCampuses + 1);
     assert(getCampus(g, location) == player);
     assert(getKPIpoints(g, player) == kpiPoints + 10);
+    assert(!isLegalAction(g, gameAction));
 }
 
 static void buildGO8(Game g, path location) {
@@ -448,6 +449,7 @@ static void buildGO8(Game g, path location) {
     // GO8 campus code = normal code + NUM_UNIS
     assert(getCampus(g, location) == player + NUM_UNIS);
     assert(getKPIpoints(g, player) == kpiPoints + 10);
+    assert(!isLegalAction(g, gameAction));
 }
 
 static void obtainArc(Game g, path location) {
@@ -468,6 +470,7 @@ static void obtainArc(Game g, path location) {
 
     assert(getARC(g, location) == player);
     assert(getARCs(g, player) == numARCs + 1);
+    assert(!isLegalAction(g, gameAction));
 }
 
 static void startSpinoff(Game g, int obtainPatent) {
