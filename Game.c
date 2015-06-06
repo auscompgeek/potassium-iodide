@@ -282,27 +282,26 @@ static void adjacentVertices(vertex current, vertex adjacents[3]) {
 
 // Finds the adjacent ARCs around an ARC
 static void adjacentARCs(ARC edge, ARC adjacents[4]) {
-    int i, j;
+    int count = 0;
+    int i;
     vertex adjVerts1[3], adjVerts2[3];
     adjacentVertices(edge[0], adjVerts1);
     adjacentVertices(edge[1], adjVerts2);
     i = 0;
     while (i < 3) {
-        j = 0;
-        if (!compareVertex(adjVerts1[i], edge[1])) {
-            adjacents[j][0] = edge[0];
-            adjacents[j][1] = adjVerts1[i];
-            j++;
+        if (!compareVertex(adjVerts1[i], edge[1]) && isValidVertex(adjVerts1[i])) {
+            adjacents[count][0] = edge[0];
+            adjacents[count][1] = adjVerts1[i];
+            count++;
         }
         i++;
     }
     i = 0;
     while (i < 3) {
-        j = 0;
-        if (!compareVertex(adjVerts2[i], edge[0])) {
-            adjacents[j][0] = edge[1];
-            adjacents[j][1] = adjVerts2[i];
-            j++;
+        if (!compareVertex(adjVerts2[i], edge[0]) && isValidVertex(adjVerts2[i])) {
+            adjacents[count][0] = edge[1];
+            adjacents[count][1] = adjVerts2[i];
+            count++;
         }
         i++;
     }
