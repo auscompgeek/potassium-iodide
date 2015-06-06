@@ -460,8 +460,6 @@ static void obtainArc(Game g, path location) {
     printf("  * obtain ARC: %s\n", location);
 
     assert(getARC(g, location) == NO_ONE);
-
-    gameAction.actionCode = OBTAIN_ARC;
     strncpy(gameAction.destination, location, PATH_LIMIT - 1);
     gameAction.destination[PATH_LIMIT - 1] = END_PATH;
 
