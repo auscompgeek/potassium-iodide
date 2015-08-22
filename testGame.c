@@ -506,9 +506,11 @@ static void retrain(Game g, int disciplineFrom, int disciplineTo) {
     assert(rate == 2 || rate == 3);
     assert(fromCount >= rate);
 
-    action gameAction = {RETRAIN_STUDENTS};
-    gameAction.disciplineFrom = disciplineFrom;
-    gameAction.disciplineTo = disciplineTo;
+    action gameAction = {
+        .actionCode = RETRAIN_STUDENTS,
+        .disciplineFrom = disciplineFrom,
+        .disciplineTo = disciplineTo
+    };
 
     assert(isLegalAction(g, gameAction));
     makeAction(g, gameAction);
