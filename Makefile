@@ -1,6 +1,7 @@
 CC     ?= gcc
 CFLAGS ?= -Wall -Werror -O -std=c99
 GAME   ?= Game.c
+TESTGAME ?= testGame.c
 
 .PHONY: all clean run test
 
@@ -23,5 +24,5 @@ test: testNextVertex testVertexToCoord testVerticesOfRegion testGame
 	./testVerticesOfRegion
 	./testGame
 
-testGame: testGame.c $(GAME)
+testGame: $(TESTGAME) $(GAME)
 	$(CC) $(CFLAGS) $^ -o $@
