@@ -13,6 +13,7 @@ It is recommended to use `make` to compile this project.
 
 ### make options
 * `GAME=otherGameImpl.o`: build `runGame` and `testGame` against a different Game implementation.
+* `TESTGAME=testGame.c`: link `$(GAME)` with a different `testGame.c`.
 
 ### examples
 ```
@@ -30,6 +31,6 @@ Kudos to @ismeta and @Cyberbully for running the testing system for the project!
 
 Thank you to @icedtrees for tutoring the UNSW tute, and John, Rafi, Shanush, Kelvin, and Curtis for mentoring! (Wow, that's a lot of mentors.)
 
-Also thank you to Karla for making HS1917 possible this year!
+Also thank you to @tetrakai for making HS1917 possible this year!
 
 Thank you to @he-lium for helping manage our project so well, @MattSolo for his game simulation, and also to @shravanjeevan.
