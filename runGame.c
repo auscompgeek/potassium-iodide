@@ -43,45 +43,21 @@ static void printInfo(Game g) {
             getStudents(g, i, STUDENT_MTV),
             getStudents(g, i, STUDENT_MMONEY));
     }
-    printf("KPI Points\n"
-           "UNI_A %d\n"
-           "UNI_B %d\n"
-           "UNI_C %d\n\n",
+    printf("KPI Points: UNI_A %d, UNI_B %d, UNI_C %d\n",
            getKPIpoints(g, UNI_A),
            getKPIpoints(g, UNI_B),
            getKPIpoints(g, UNI_C));
-    printf("Campuses:\n"
-           "UNI_A %d\n"
-           "UNI_B %d\n"
-           "UNI_C %d\n\n",
+    printf("Campuses: UNI_A %d, UNI_B %d, UNI_C %d\n",
            getCampuses(g, UNI_A),
            getCampuses(g, UNI_B),
            getCampuses(g, UNI_C));
-    printf("GO8s:\n"
-           "UNI_A %d\n"
-           "UNI_B %d\n"
-           "UNI_C %d\n\n",
-           getGO8s(g, UNI_A),
-           getGO8s(g, UNI_B),
-           getGO8s(g, UNI_C));
-    printf("ARCs:\n"
-           "UNI_A %d\n"
-           "UNI_B %d\n"
-           "UNI_C %d\n\n",
-           getARCs(g, UNI_A),
-           getARCs(g, UNI_B),
-           getARCs(g, UNI_C));
-    printf("IP:\n"
-           "UNI_A %d\n"
-           "UNI_B %d\n"
-           "UNI_C %d\n\n",
-           getIPs(g, UNI_A),
-           getIPs(g, UNI_B),
-           getIPs(g, UNI_C));
-    printf("Publications:\n"
-           "UNI_A %d\n"
-           "UNI_B %d\n"
-           "UNI_C %d\n",
+    printf("GO8s: UNI_A %d, UNI_B %d, UNI_C %d\n",
+           getGO8s(g, UNI_A), getGO8s(g, UNI_B), getGO8s(g, UNI_C));
+    printf("ARCs: UNI_A %d, UNI_B %d, UNI_C %d\n",
+           getARCs(g, UNI_A), getARCs(g, UNI_B), getARCs(g, UNI_C));
+    printf("IP: UNI_A %d, UNI_B %d, UNI_C %d\n",
+           getIPs(g, UNI_A), getIPs(g, UNI_B), getIPs(g, UNI_C));
+    printf("Publications: UNI_A %d, UNI_B %d, UNI_C %d\n",
            getPublications(g, UNI_A),
            getPublications(g, UNI_B),
            getPublications(g, UNI_C));
