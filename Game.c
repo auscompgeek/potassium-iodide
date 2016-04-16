@@ -30,7 +30,7 @@ typedef struct _vertex {
 // ARCs have two values:
 // 1. The location before the ARC from where it's going
 // 2. The location after the ARC from location 1.
-typedef vertex ARC[2];
+typedef vertex arc[2];
 
 typedef struct _uni * Uni;
 
@@ -42,7 +42,7 @@ typedef struct _uni {
     int arcCount;
     int campusCount;
     int gO8Count;
-    ARC arcs[ARC_LIMIT];
+    arc arcs[ARC_LIMIT];
     vertex campuses[CAMPUS_LIMIT];
     vertex gO8Campuses[GO8_CAMPUS_LIMIT];
 } uni;
@@ -58,23 +58,23 @@ struct _game {
 };
 
 // internal function definitions
-static void arcPathToCoords(path arcPath, ARC destinationArc);
+static void arcPathToCoords(path arcPath, arc destinationArc);
 static vertex vertexPathToCoord(path vertexPath);
 static void verticesOfRegion(int regionID, vertex vertexCoords[6]);
 static vertex nextVertex(vertex current, vertex previous, char direction);
 static void adjacentVertices(vertex current, vertex adjacents[3]);
 static int compareVertex(vertex vertex1, vertex vertex2);
-static int compareARC(ARC arc1, ARC arc2);
+static int compareARC(arc arc1, arc arc2);
 static int playerHasVertex(Uni playerUni, vertex campus);
 static int playerHasGO8(Uni playerUni, vertex gO8Campus);
-static int playerHasARC(Uni playerUni, ARC edge);
-static int playerHasAdjacentARC(Uni playerUni, ARC edge);
+static int playerHasARC(Uni playerUni, arc edge);
+static int playerHasAdjacentARC(Uni playerUni, arc edge);
 static int playerHasAdjacentCampus(Uni playerUni, vertex coord);
 static int campusOnAdjacentVertex(Game g, vertex coord);
 static int isValidVertex(vertex check);
 static int isValidVertexPath(path vertexPath);
 static int isValidARCPath(path arcPath);
-static void adjacentARCs(ARC edge, ARC adjacents[4]);
+static void adjacentARCs(arc edge, arc adjacents[4]);
 
 // INTERNAL FUNCTIONS: label as static if you decide to implement
 // internal functions to use for the ADT functions.
@@ -107,14 +107,14 @@ static int isValidVertexPath(path vertexPath) {
 
 // Test for a valid ARC given a path
 static int isValidARCPath(path arcPath) {
-    ARC arc;
-    arcPathToCoords(arcPath, arc);
-    return isValidVertex(arc[0]) && isValidVertex(arc[1]) && !compareVertex(arc[0], arc[1]);
+    arc a;
+    arcPathToCoords(arcPath, a);
+    return isValidVertex(a[0]) && isValidVertex(a[1]) && !compareVertex(a[0], a[1]);
 }
 
 // Given the LRB path of a vertex, returns its coord value
 // Returns NULL if invalid path
-static void arcPathToCoords(path arcPath, ARC destinationArc) {
+static void arcPathToCoords(path arcPath, arc destinationArc) {
     path previousArc;
     strncpy(previousArc, arcPath, PATH_LIMIT);
     // Delete last character
@@ -284,7 +284,7 @@ static void adjacentVertices(vertex current, vertex adjacents[3]) {
 }
 
 // Finds the adjacent ARCs around an ARC
-static void adjacentARCs(ARC edge, ARC adjacents[4]) {
+static void adjacentARCs(arc edge, arc adjacents[4]) {
     int count = 0;
     int i;
     vertex adjVerts1[3], adjVerts2[3];
@@ -316,7 +316,7 @@ static int compareVertex(vertex vertex1, vertex vertex2) {
 }
 
 // Compares two ARCs and returns true if they are equal.
-static int compareARC(ARC arc1, ARC arc2){
+static int compareARC(arc arc1, arc arc2){
     return (compareVertex(arc1[0], arc2[0]) &&
             compareVertex(arc1[1], arc2[1])) ||
            (compareVertex(arc1[0], arc2[1]) &&
@@ -348,7 +348,7 @@ static int playerHasGO8(Uni playerUni, vertex gO8Campus) {
     return result;
 }
 
-static int playerHasARC(Uni playerUni, ARC edge) {
+static int playerHasARC(Uni playerUni, arc edge) {
     int result = FALSE;
     int i = 0;
     while (i < playerUni->arcCount && !result) {
@@ -361,10 +361,10 @@ static int playerHasARC(Uni playerUni, ARC edge) {
 }
 
 // Returns TRUE if the player has an ARC adjacent to the given ARC
-static int playerHasAdjacentARC(Uni playerUni, ARC edge) {
+static int playerHasAdjacentARC(Uni playerUni, arc edge) {
     int result = FALSE;
     int i = 0;
-    ARC adjacents[4];
+    arc adjacents[4];
     adjacentARCs(edge, adjacents);
 
     while (i < 4 && !result) {
@@ -526,7 +526,7 @@ int getCampus(Game g, path pathToVertex) {
 }
 
 int getARC(Game g, path pathToEdge) {
-    ARC arcCoords;
+    arc arcCoords;
     int result = VACANT_ARC;
     int player = UNI_A;
     arcPathToCoords(pathToEdge, arcCoords);
@@ -548,7 +548,7 @@ int isLegalAction(Game g, action a) {
     int player = getWhoseTurn(g);
     int result;
     int discipFrom, discipTo;
-    ARC destinationArc;
+    arc destinationArc;
 
     // no actions are valid in Terra Nullius
     if (getTurnNumber(g) == -1) {
@@ -664,7 +664,7 @@ void makeAction(Game g, action a) {
     int rate;
     int count;
     Uni playerUni = &(g->unis[player - 1]);
-    ARC obtainedArc;
+    arc obtainedArc;
     vertex obtainedVertex;
 
     if (code == BUILD_CAMPUS) {
