@@ -49,6 +49,8 @@ int main() {
     Game g = newGame(disciplines, diceValues);
     int id = 0;
 
+    assert(g != NULL);
+
     puts("Welcome to the Pokemon Centre.\n\n"
         "Checking the regions are initialised correctly...");
 
