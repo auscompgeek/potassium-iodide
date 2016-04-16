@@ -17,7 +17,7 @@ static void pass(Game g);
 static void buildCampus(Game g, path location);
 static void buildGO8(Game g, path location);
 static void obtainArc(Game g, path location);
-static void startSpinoff(Game g, int obtainPatent);
+static void startSpinoff(Game g);
 static void retrain(Game g, int disciplineFrom, int disciplineTo);
 
 int main() {
@@ -75,18 +75,21 @@ static void buildCampus(Game g, path location) {
     int numCampuses = getCampuses(g, player);
     int kpiPoints = getKPIpoints(g, player);
 
-    printf("  * build campus: %s\n", location);
-
-    assert(getCampus(g, location) == VACANT_VERTEX);
     strncpy(gameAction.destination, location, PATH_LIMIT - 1);
     gameAction.destination[PATH_LIMIT - 1] = END_PATH;
 
-    assert(isLegalAction(g, gameAction));
-    makeAction(g, gameAction);
+    if (getCampus(g, location) != VACANT_VERTEX) {
+        printf("Error: A campus already exists at %s.\n", location);
+    } else if (isLegalAction(g, gameAction)) {
+        printf("  * build campus: %s\n", location);
+        makeAction(g, gameAction);
 
-    assert(getCampuses(g, player) == numCampuses + 1);
-    assert(getCampus(g, location) == player);
-    assert(getKPIpoints(g, player) == kpiPoints + 10);
+        assert(getCampuses(g, player) == numCampuses + 1);
+        assert(getCampus(g, location) == player);
+        assert(getKPIpoints(g, player) == kpiPoints + 10);
+    } else {
+        printf("Error: Cannot build a campus at %s.\n", location);
+    }
 }
 
 static void buildGO8(Game g, path location) {
@@ -96,20 +99,23 @@ static void buildGO8(Game g, path location) {
     int numGO8 = getGO8s(g, player);
     int kpiPoints = getKPIpoints(g, player);
 
-    printf("  * build GO8: %s\n", location);
-
-    assert(getCampus(g, location) == player);
     strncpy(gameAction.destination, location, PATH_LIMIT - 1);
     gameAction.destination[PATH_LIMIT - 1] = END_PATH;
 
-    assert(isLegalAction(g, gameAction));
-    makeAction(g, gameAction);
+    if (getCampus(g, location) != player) {
+        printf("Error: Player does not have campus at %s.\n", location);
+    } else if (isLegalAction(g, gameAction)) {
+        printf("  * build GO8: %s\n", location);
+        makeAction(g, gameAction);
 
-    assert(getCampuses(g, player) == numNormalCampuses - 1);
-    assert(getGO8s(g, player) == numGO8 + 1);
-    // GO8 campus code = normal code + NUM_UNIS
-    assert(getCampus(g, location) == player + NUM_UNIS);
-    assert(getKPIpoints(g, player) == kpiPoints + 10);
+        assert(getCampuses(g, player) == numNormalCampuses - 1);
+        assert(getGO8s(g, player) == numGO8 + 1);
+        // GO8 campus code = normal code + NUM_UNIS
+        assert(getCampus(g, location) == player + NUM_UNIS);
+        assert(getKPIpoints(g, player) == kpiPoints + 10);
+    } else {
+        puts("Error: Cannot build a Go8 campus.");
+    }
 }
 
 static void obtainArc(Game g, path location) {
@@ -117,33 +123,37 @@ static void obtainArc(Game g, path location) {
     int player = getWhoseTurn(g);
     int numARCs = getARCs(g, player);
 
-    printf("  * obtain ARC: %s\n", location);
-
-    assert(getARC(g, location) == NO_ONE);
     strncpy(gameAction.destination, location, PATH_LIMIT - 1);
     gameAction.destination[PATH_LIMIT - 1] = END_PATH;
 
-    assert(isLegalAction(g, gameAction));
-    makeAction(g, gameAction);
+    if (getARC(g, location) != NO_ONE) {
+        printf("Error: There is already an ARC at %s.\n", location);
+    } else if (isLegalAction(g, gameAction)) {
+        printf("  * obtain ARC: %s\n", location);
+        makeAction(g, gameAction);
 
-    assert(getARC(g, location) == player);
-    assert(getARCs(g, player) == numARCs + 1);
+        assert(getARC(g, location) == player);
+        assert(getARCs(g, player) == numARCs + 1);
+    } else {
+        printf("Error: Cannot build an ARC at %s.\n", location);
+    }
 }
 
-static void startSpinoff(Game g, int obtainPatent) {
+static void startSpinoff(Game g) {
     action gameAction = {START_SPINOFF};
     int count;
     int player = getWhoseTurn(g);
 
-    printf("  * start spinoff; patent: %d\n", obtainPatent);
-
-    assert(isLegalAction(g, gameAction));
-    if (obtainPatent) {
+    if (!isLegalAction(g, gameAction)) {
+        puts("Error: Not enough students to start a spinoff.");
+    } else if (random() % 2) {
+        puts("  * start spinoff, obtain patent");
         count = getIPs(g, player);
         gameAction.actionCode = OBTAIN_IP_PATENT;
         makeAction(g, gameAction);
         assert(getIPs(g, player) == count + 1);
     } else {
+        puts("  * start spinoff, obtain publication");
         count = getPublications(g, player);
         gameAction.actionCode = OBTAIN_PUBLICATION;
         makeAction(g, gameAction);
@@ -155,11 +165,6 @@ static void retrain(Game g, int disciplineFrom, int disciplineTo) {
     int player = getWhoseTurn(g);
     int fromCount = getStudents(g, player, disciplineFrom);
     int toCount = getStudents(g, player, disciplineTo);
-    int rate = getExchangeRate(g, player, disciplineFrom, disciplineTo);
-
-    printf("  * retrain: %d => %d\n", disciplineFrom, disciplineTo);
-
-    assert(fromCount >= rate);
 
     action gameAction = {
         .actionCode = RETRAIN_STUDENTS,
@@ -167,9 +172,22 @@ static void retrain(Game g, int disciplineFrom, int disciplineTo) {
         .disciplineTo = disciplineTo
     };
 
-    assert(isLegalAction(g, gameAction));
-    makeAction(g, gameAction);
+    if (disciplineFrom != STUDENT_THD) {
+        int rate = getExchangeRate(g, player, disciplineFrom, disciplineTo);
 
-    assert(getStudents(g, player, disciplineFrom) == fromCount - rate);
-    assert(getStudents(g, player, disciplineTo) == toCount + 1);
+        if (fromCount >= rate) {
+            printf("  * retrain: %d => %d\n", disciplineFrom, disciplineTo);
+
+            assert(isLegalAction(g, gameAction));
+            makeAction(g, gameAction);
+
+            assert(getStudents(g, player, disciplineFrom) == fromCount - rate);
+            assert(getStudents(g, player, disciplineTo) == toCount + 1);
+        } else {
+            printf("Error: Not enough students to retrain"
+                    " (have %d, need %d).\n", fromCount, rate);
+        }
+    } else {
+        puts("Error: ThD students cannot be retrained.");
+    }
 }
