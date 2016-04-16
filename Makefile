@@ -1,4 +1,7 @@
-CC     ?= gcc
+ifeq "$(origin CC)" "default"
+CC      = gcc
+endif
+
 CFLAGS ?= -Wall -Werror -O -std=c99
 GAME   ?= Game.c
 TESTGAME ?= testGame.c
