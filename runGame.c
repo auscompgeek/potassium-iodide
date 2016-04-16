@@ -35,7 +35,13 @@ static void printInfo(Game g) {
         } else {
             printf("UNI_C ");
         }
-        // TODO print student numbers
+        printf("%dxThD %dxBPS %dxB? %dxMJ %dxMTV %dxM$\n",
+            getStudents(g, i, STUDENT_THD),
+            getStudents(g, i, STUDENT_BPS),
+            getStudents(g, i, STUDENT_BQN),
+            getStudents(g, i, STUDENT_MJ),
+            getStudents(g, i, STUDENT_MTV),
+            getStudents(g, i, STUDENT_MMONEY));
     }
     printf("KPI Points\n"
            "UNI_A %d\n"
