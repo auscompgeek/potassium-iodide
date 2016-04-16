@@ -11,14 +11,14 @@ TESTGAME ?= testGame.c
 all: test
 
 clean:
+	rm -f Game.o runGame.o testGame.o
 	rm -f runGame testGame
 	rm -f testNextVertex testVertexToCoord testVerticesOfRegion
 
 run: runGame
 	./runGame
 
-runGame: runGame.c $(GAME)
-	$(CC) $(CFLAGS) $^ -o $@
+runGame: runGame.o $(GAME:.c=.o)
 
 # RUN ALL THE TESTS
 test: testNextVertex testVertexToCoord testVerticesOfRegion testGame
@@ -27,5 +27,4 @@ test: testNextVertex testVertexToCoord testVerticesOfRegion testGame
 	./testVerticesOfRegion
 	./testGame
 
-testGame: $(TESTGAME) $(GAME)
-	$(CC) $(CFLAGS) $^ -o $@
+testGame: $(TESTGAME:.c=.o) $(GAME:.c=.o)
