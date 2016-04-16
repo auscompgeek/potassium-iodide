@@ -749,33 +749,22 @@ int getExchangeRate(Game g, int player,
     assert(disciplineFrom > STUDENT_THD && disciplineFrom < NUM_DISCIPLINES);
     assert(disciplineTo >= STUDENT_THD && disciplineTo < NUM_DISCIPLINES);
 
-    vertex retraincenter1;
-    vertex retraincenter2;
+    vertex retraincenter1, retraincenter2;
     if (disciplineFrom == STUDENT_BPS) {
-        retraincenter1.x = 1;
-        retraincenter1.y = 2;
-        retraincenter2.x = 1;
-        retraincenter2.y = 1;
+        retraincenter1 = (vertex){1, 2};
+        retraincenter2 = (vertex){1, 1};
     } else if (disciplineFrom == STUDENT_BQN) {
-        retraincenter1.x = 5;
-        retraincenter1.y = 5;
-        retraincenter2.x = 5;
-        retraincenter2.y = 4;
+        retraincenter1 = (vertex){5, 5};
+        retraincenter2 = (vertex){5, 4};
     } else if (disciplineFrom == STUDENT_MJ) {
-        retraincenter1.x = 4;
-        retraincenter1.y = 2;
-        retraincenter2.x = 5;
-        retraincenter2.y = 2;
+        retraincenter1 = (vertex){4, 2};
+        retraincenter2 = (vertex){5, 2};
     } else if (disciplineFrom == STUDENT_MTV) {
-        retraincenter1.x = 1;
-        retraincenter1.y = 9;
-        retraincenter2.x = 2;
-        retraincenter2.y = 9;
-    } else if (disciplineFrom == STUDENT_MMONEY) {
-        retraincenter1.x = 3;
-        retraincenter1.y = 9;
-        retraincenter2.x = 4;
-        retraincenter2.y = 9;
+        retraincenter1 = (vertex){1, 9};
+        retraincenter2 = (vertex){2, 9};
+    } else { // disciplineFrom == STUDENT_MMONEY
+        retraincenter1 = (vertex){3, 9};
+        retraincenter2 = (vertex){4, 9};
     }
     if (playerHasVertex(playerUni, retraincenter1) ||
        playerHasVertex(playerUni, retraincenter2)) {
