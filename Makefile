@@ -6,7 +6,7 @@ CFLAGS ?= -Wall -Werror -O -std=c99
 GAME   ?= Game.c
 TESTGAME ?= testGame.c
 
-.PHONY: all clean run test
+.PHONY: all clean run test test-all
 
 all: test
 
@@ -21,7 +21,10 @@ run: runGame
 runGame: runGame.o $(GAME:.c=.o)
 
 # RUN ALL THE TESTS
-test: testNextVertex testVertexToCoord testVerticesOfRegion testGame
+test: testGame
+	./testGame
+
+test-all: testNextVertex testVertexToCoord testVerticesOfRegion testGame
 	./testNextVertex
 	./testVertexToCoord
 	./testVerticesOfRegion

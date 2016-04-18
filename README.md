@@ -8,7 +8,8 @@ It is recommended to use `make` to compile this project.
 
 ### make targets
 * run: build `runGame` and run it.
-* test: build `test*` and run them (default).
+* test: build `testGame` and run it (default).
+* test-all: build `test*` and run them.
 * clean: remove the compiled executables.
 
 ### make options
@@ -17,8 +18,8 @@ It is recommended to use `make` to compile this project.
 
 ### examples
 ```
-$ make  # build and run the tests
-$ make GAME=otanGame.o testGame && ./testGame  # build and run testGame against otanGame.o (hi @Cyberbully)
+$ make  # build and run testGame
+$ make GAME=otanGame.o test  # build and run testGame against otanGame.o (hi @Cyberbully)
 ```
 
 ## Collaboration links (OpenLearning)
