@@ -42,6 +42,7 @@ static void printInfo(Game g) {
             getStudents(g, i, STUDENT_MJ),
             getStudents(g, i, STUDENT_MTV),
             getStudents(g, i, STUDENT_MMONEY));
+        i++;
     }
     printf("KPI Points: UNI_A %d, UNI_B %d, UNI_C %d\n",
            getKPIpoints(g, UNI_A),
