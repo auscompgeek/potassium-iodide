@@ -28,3 +28,4 @@ test: testNextVertex testVertexToCoord testVerticesOfRegion testGame
 	./testGame
 
 testGame: $(TESTGAME:.c=.o) $(GAME:.c=.o)
+	$(CC) $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS) -o $@
