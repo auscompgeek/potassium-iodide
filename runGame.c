@@ -146,7 +146,7 @@ static void startSpinoff(Game g) {
 
     if (!isLegalAction(g, gameAction)) {
         puts("Error: Not enough students to start a spinoff.");
-    } else if (random() % 2) {
+    } else if (rand() % 2) {
         puts("  * start spinoff, obtain patent");
         count = getIPs(g, player);
         gameAction.actionCode = OBTAIN_IP_PATENT;
