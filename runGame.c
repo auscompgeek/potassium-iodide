@@ -11,8 +11,17 @@
 #include <assert.h>
 #include "Game.h"
 
+#define DEFAULT_DISCIPLINES { STUDENT_BQN, STUDENT_MMONEY, STUDENT_MJ, \
+            STUDENT_MMONEY, STUDENT_MJ, STUDENT_BPS, STUDENT_MTV, \
+            STUDENT_MTV, STUDENT_BPS,STUDENT_MTV, STUDENT_BQN, \
+            STUDENT_MJ, STUDENT_BQN, STUDENT_THD, STUDENT_MJ, \
+            STUDENT_MMONEY, STUDENT_MTV, STUDENT_BQN, STUDENT_BPS }
+#define DEFAULT_DICE {9,10,8,12,6,5,3,11,3,11,4,6,4,7,9,2,8,10,5}
 #define END_PATH '\0'
 
+static Game createGame(void);
+static int getSingleCharLine(void);
+static void printInfo(Game g);
 static void pass(Game g);
 static void buildCampus(Game g, path location);
 static void buildGO8(Game g, path location);
@@ -21,8 +30,70 @@ static void startSpinoff(Game g);
 static void retrain(Game g, int disciplineFrom, int disciplineTo);
 
 int main() {
+    Game g = createGame();
+    printInfo(g);
+
     // TODO
     return EXIT_SUCCESS;
+}
+
+static Game createGame(void) {
+    int disciplines[] = DEFAULT_DISCIPLINES;
+    int diceValues[] = DEFAULT_DICE;
+    int i;
+
+    printf("Will use the following defaults to initialise the game:\n"
+           "disciplines:");
+    i = 0;
+    while (i < NUM_REGIONS) {
+        printf(" %d", disciplines[i]);
+        i++;
+    }
+    printf("\ndice:");
+    i = 0;
+    while (i < NUM_REGIONS) {
+        printf(" %d", diceValues[i]);
+        i++;
+    }
+
+    printf("\nDo you want to choose your own instead? (y/N) ");
+    if (getSingleCharLine() == 'y') {
+        printf("Please enter %d integers for the disciplines.\n", NUM_REGIONS);
+        i = 0;
+        while (i < NUM_REGIONS) {
+            scanf("%d", &disciplines[i]);
+            i++;
+        }
+        printf("Please enter %d integers for the dice values.\n", NUM_REGIONS);
+        i = 0;
+        while (i < NUM_REGIONS) {
+            scanf("%d", &disciplines[i]);
+            i++;
+        }
+    }
+
+    puts("Creating a new game.");
+    Game g = newGame(disciplines, diceValues);
+
+    puts("Quickly checking the regions.");
+    i = 0;
+    while (i < NUM_REGIONS) {
+        assert(getDiscipline(g, i) == disciplines[i]);
+        assert(getDiceValue(g, i) == diceValues[i]);
+        i++;
+    }
+
+    return g;
+}
+
+static int getSingleCharLine(void) {
+    int chr = getchar();
+    int c = chr;
+    // consume an entire line so we can get on with our day.
+    while (chr != '\n' && chr != EOF) {
+        chr = getchar();
+    }
+    return c;
 }
 
 static void printInfo(Game g) {
