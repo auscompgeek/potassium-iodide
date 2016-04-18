@@ -173,7 +173,11 @@ static void retrain(Game g, int disciplineFrom, int disciplineTo) {
         .disciplineTo = disciplineTo
     };
 
-    if (disciplineFrom != STUDENT_THD) {
+    if (disciplineFrom < STUDENT_THD || disciplineFrom > STUDENT_MMONEY) {
+        puts("Error: disciplineFrom out of range.");
+    } else if (disciplineTo < STUDENT_THD || disciplineTo > STUDENT_MMONEY) {
+        puts("Error: disciplineTo out of range.");
+    } else if (disciplineFrom != STUDENT_THD) {
         int rate = getExchangeRate(g, player, disciplineFrom, disciplineTo);
 
         if (fromCount >= rate) {
@@ -186,7 +190,7 @@ static void retrain(Game g, int disciplineFrom, int disciplineTo) {
             assert(getStudents(g, player, disciplineTo) == toCount + 1);
         } else {
             printf("Error: Not enough students to retrain"
-                    " (have %d, need %d).\n", fromCount, rate);
+                   " (have %d, need %d).\n", fromCount, rate);
         }
     } else {
         puts("Error: ThD students cannot be retrained.");
