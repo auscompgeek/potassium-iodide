@@ -94,8 +94,17 @@ static void checkStart(Game g) {
         assert(getPublications(g, player) == 0);
         assert(getKPIpoints(g, player) == 20);
 
+        for (int discFrom = STUDENT_BPS; discFrom <= STUDENT_MMONEY; discFrom++) {
+            for (int discTo = STUDENT_THD; discTo <= STUDENT_MMONEY; discTo++) {
+                assert(getExchangeRate(g, player, discFrom, discTo) == 3);
+            }
+        }
+
         player++;
     }
+
+    assert(getMostARCs(g) == NO_ONE);
+    assert(getMostPublications(g) == NO_ONE);
 
     puts("* campuses...");
     assert(getCampus(g, "RB") == CAMPUS_A);
